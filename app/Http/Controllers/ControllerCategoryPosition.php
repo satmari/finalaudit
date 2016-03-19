@@ -52,6 +52,8 @@ class ControllerCategoryPosition extends Controller {
 		
 		$category_id = $input['category_id'];
 		$category_name = DB::table('categories')->where('category_id', $category_id)->pluck('category_name');
+
+		$link_type = "MANUAL";
 		
 		try {
 			$categoryposition = new CategoryPosition;
@@ -60,6 +62,7 @@ class ControllerCategoryPosition extends Controller {
 			$categoryposition->position_name = $position_name;
 			$categoryposition->category_id = $category_id;
 			$categoryposition->category_name = $category_name;
+			$categoryposition->link_type = $link_type;
 			
 			$categoryposition->save();
 		}

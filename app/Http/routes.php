@@ -72,6 +72,14 @@ Route::post('/machine/{id}', 'ControllerMachine@update');
 Route::get('/machine/delete/{id}', 'ControllerMachine@delete');
 Route::post('/machine/delete/{id}', 'ControllerMachine@delete');
 
+Route::get('/model', 'ControllerModel@index');
+Route::get('/model_new', 'ControllerModel@create');
+Route::post('/model_insert', 'ControllerModel@insert');
+Route::get('/model/edit/{id}', 'ControllerModel@edit');
+Route::post('/model/{id}', 'ControllerModel@update');
+Route::get('/model/delete/{id}', 'ControllerModel@delete');
+Route::post('/model/delete/{id}', 'ControllerModel@delete');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

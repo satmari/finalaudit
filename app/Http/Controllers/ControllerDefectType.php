@@ -51,6 +51,8 @@ class ControllerDefectType extends Controller {
 		
 		$defect_applay_to_all = $defect_type_input['defect_applay_to_all'];
 
+		$link_type = "AUTOMATIC";
+
 		try {
 			$defect_type = new DefectType;
 
@@ -90,6 +92,7 @@ class ControllerDefectType extends Controller {
 					$categorydefecttype->defect_type_name = $defect_type_name;
 					$categorydefecttype->category_id = $category->category_id;
 					$categorydefecttype->category_name = $category->category_name;
+					$categorydefecttype->link_type = $link_type;
 					
 					$categorydefecttype->save();
 				}
@@ -132,6 +135,8 @@ class ControllerDefectType extends Controller {
 		$defect_type_name = $input['defect_type_name'];
 		$defect_applay_to_all = $input['defect_applay_to_all'];
 
+		$link_type = "AUTOMATIC";
+
 		try {
 			//$defect_type->id = $input['id'];
 			$defect_type->defect_type_id = $input['defect_type_id'];
@@ -173,6 +178,7 @@ class ControllerDefectType extends Controller {
 					$categorydefecttype->defect_type_name = $defect_type_name;
 					$categorydefecttype->category_id = $category->category_id;
 					$categorydefecttype->category_name = $category->category_name;
+					$categorydefecttype->link_type = $link_type;
 					
 					$categorydefecttype->save();
 				}
@@ -182,8 +188,6 @@ class ControllerDefectType extends Controller {
 			}
 		} elseif ($defect_applay_to_all == "NO") {
 
-			//$defect_type = DefectType::findOrFail($id);
-			//$defect_type_id = $defect_type->defect_type_id;
 			DB::table('category_defect_types')->where('defect_type_id', '=', $defect_type_id)->delete();
 		}
 		

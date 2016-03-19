@@ -19,6 +19,7 @@ class CreateCategoryPositionsTable extends Migration {
 			$table->string('position_name')->nullable();
 			$table->string('category_id');
 			$table->string('category_name')->nullable();
+			$table->string('link_type');
 			$table->timestamps();
 		});
 	}

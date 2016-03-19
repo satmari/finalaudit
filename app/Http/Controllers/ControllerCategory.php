@@ -46,6 +46,8 @@ class ControllerCategory extends Controller {
 		$category_description_1 = $category_input['category_description_1'];
 		$category_description_2 = $category_input['category_description_2'];
 
+		$link_type = "AUTOMATIC";
+
 		try {
 			$category = new Category;
 
@@ -75,6 +77,7 @@ class ControllerCategory extends Controller {
 				$categorydefecttype->defect_type_name = $defect->defect_type_name;
 				$categorydefecttype->category_id = $category_id;
 				$categorydefecttype->category_name = $category_name;
+				$categorydefecttype->link_type = $link_type;
 				
 				$categorydefecttype->save();
 			}
@@ -95,6 +98,7 @@ class ControllerCategory extends Controller {
 				$categoryposition->position_name = $position->position_name;
 				$categoryposition->category_id = $category_id;
 				$categoryposition->category_name = $category_name;
+				$categoryposition->link_type = $link_type;
 				
 				$categoryposition->save();
 			}

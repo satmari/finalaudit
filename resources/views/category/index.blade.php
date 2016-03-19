@@ -44,8 +44,8 @@
                     <thead>
                         <tr>
                             <td>Id</td>
-                            <td>Category Id</td>
-                            <td>Category Name</td>
+                            <td><b>Category Id</b></td>
+                            <td><b>Category Name</b></td>
                             <td>Category Name 1</td>
                             <td>Category Name 2</td>
                             <td>Category Description</td>

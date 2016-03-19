@@ -19,6 +19,7 @@ class CreateCategoryDefectTypesTable extends Migration {
 			$table->string('defect_type_name')->nullable();
 			$table->string('category_id');
 			$table->string('category_name')->nullable();
+			$table->string('link_type');
 			$table->timestamps();
 		});
 	}

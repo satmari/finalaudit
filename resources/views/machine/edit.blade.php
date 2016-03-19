@@ -5,7 +5,7 @@
 	<div class="row vertical-center-row">
 		<div class="text-center col-md-4 col-md-offset-4">
 			<div class="panel panel-default">
-				<div class="panel-heading h-b">Edit Machine:</div>
+				<div class="panel-heading">Edit Machine:</div>
 				<br>
 					{!! Form::model($machine , ['method' => 'POST', 'url' => 'machine/'.$machine->id /*, 'class' => 'form-inline'*/]) !!}
 

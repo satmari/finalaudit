@@ -52,6 +52,8 @@ class ControllerCategoryDefectType extends Controller {
 		
 		$category_id = $input['category_id'];
 		$category_name = DB::table('categories')->where('category_id', $category_id)->pluck('category_name');
+
+		$link_type = "MANUAL";
 		
 		try {
 			$categorydefecttype = new CategoryDefectType;
@@ -60,6 +62,7 @@ class ControllerCategoryDefectType extends Controller {
 			$categorydefecttype->defect_type_name = $defect_type_name;
 			$categorydefecttype->category_id = $category_id;
 			$categorydefecttype->category_name = $category_name;
+			$categorydefecttype->link_type = $link_type;
 			
 			$categorydefecttype->save();
 		}

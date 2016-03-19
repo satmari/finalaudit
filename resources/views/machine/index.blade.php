@@ -5,7 +5,7 @@
     <div class="row vertical-center-row">
         <div class="text-center">
             <div class="panel panel-default">
-				<div class="panel-heading h-b">Machine Table</div>
+				<div class="panel-heading">Machine Table</div>
 				
 				<div class="panel-body">
 					<div class="">

@@ -5,7 +5,7 @@
 	<div class="row vertical-center-row">
 		<div class="text-center col-md-4 col-md-offset-4">
 			<div class="panel panel-default">
-				<div class="panel-heading h-b">Edit Defect Level:</div>
+				<div class="panel-heading">Edit Defect Level:</div>
 				<br>
 					{!! Form::model($defect_level , ['method' => 'POST', 'url' => 'defectlevel/'.$defect_level->id /*, 'class' => 'form-inline'*/]) !!}
 

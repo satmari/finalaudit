@@ -8,7 +8,7 @@
             <div class="panel panel-default">
 				<div class="panel-heading">Add new Category-Position link</div>
 				<br>
-					{!! Form::open(['method'=>'POST', 'url'=>'/categoryPosition_insert']) !!}
+					{!! Form::open(['method'=>'POST', 'url'=>'/categoryposition_insert']) !!}
 
 						<div class="panel-body">
 						<p>Position Name: </p>

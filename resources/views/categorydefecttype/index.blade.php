@@ -48,6 +48,7 @@
                             <td>Defect Type Name</td>
                             <td>Category Id</td>
                             <td>Category Name</td>
+                            <td>Link Type</td>
                             <td></td>
                         </tr>
                     </thead>
@@ -59,6 +60,7 @@
                             <td>{{ $req->defect_type_name }}</td>
                             <td>{{ $req->category_id }}</td>
                             <td>{{ $req->category_name }}</td>
+                            <td>{{ $req->link_type }}</td>
                             <td><a href="{{ url('/categorydefecttype/delete/'.$req->id) }}" class="btn btn-danger btn-xs center-block">Delete</a></td>
                         </tr>
                     @endforeach

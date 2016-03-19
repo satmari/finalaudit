@@ -42,6 +42,8 @@ class ControllerPosition extends Controller {
 		
 		$position_applay_to_all = $input['position_applay_to_all'];
 
+		$link_type = "AUTOMATIC";
+
 		try {
 			$position = new Position;
 
@@ -62,29 +64,30 @@ class ControllerPosition extends Controller {
 			return view('position.error');			
 		}
 
-		// if ($position_applay_to_all == "YES") {
+		if ($position_applay_to_all == "YES") {
 			
-		// 	$categories = DB::connection('sqlsrv')->select(DB::raw("SELECT DISTINCT category_id,category_name FROM categories"));
-		// 	//dd($categories);
+			$categories = DB::connection('sqlsrv')->select(DB::raw("SELECT DISTINCT category_id,category_name FROM categories"));
+			//dd($categories);
 
-		// 	foreach ($categories as $category) {
-		// 		//dd($category->category_name);
+			foreach ($categories as $category) {
+				//dd($category->category_name);
 
-		// 		try {
-		// 			$categoryposition = new CategoryPosition;
+				try {
+					$categoryposition = new CategoryPosition;
 
-		// 			$categoryposition->position_id = $position_id;
-		// 			$categoryposition->position_name = $position_name;
-		// 			$categoryposition->category_id = $category->category_id;
-		// 			$categoryposition->category_name = $category->category_name;
+					$categoryposition->position_id = $position_id;
+					$categoryposition->position_name = $position_name;
+					$categoryposition->category_id = $category->category_id;
+					$categoryposition->category_name = $category->category_name;
+					$categoryposition->link_type = $link_type;
 					
-		// 			$categoryposition->save();
-		// 		}
-		// 		catch (\Illuminate\Database\QueryException $e) {
-		// 			return view('position.error');			
-		// 		}
-		// 	}
-		// }
+					$categoryposition->save();
+				}
+				catch (\Illuminate\Database\QueryException $e) {
+					return view('position.error');			
+				}
+			}
+		}
 
 		//return view('position.index');
 		return Redirect::to('/position');
@@ -119,6 +122,8 @@ class ControllerPosition extends Controller {
 		$position_name = $input['position_name'];
 		$position_applay_to_all = $input['position_applay_to_all'];
 
+		$link_type = "AUTOMATIC";
+
 		try {
 			//$position->id = $input['id'];
 			$position->position_id = $input['position_id'];
@@ -147,12 +152,13 @@ class ControllerPosition extends Controller {
 				//dd($category->category_name);
 
 				try {
-					$categoryposition = new categoryposition;
+					$categoryposition = new CategoryPosition;
 
 					$categoryposition->position_id = $position_id;
 					$categoryposition->position_name = $position_name;
 					$categoryposition->category_id = $category->category_id;
 					$categoryposition->category_name = $category->category_name;
+					$categoryposition->link_type = $link_type;
 					
 					$categoryposition->save();
 				}
