@@ -13,11 +13,6 @@ use DB;
 
 class ControllerCategoryPosition extends Controller {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
 	public function index()
 	{
 		//

@@ -15,10 +15,13 @@
 						<span>Id:</span>
 						{{--  {!! Form::input('number', 'id', null, ['class' => 'form-control']) !!} --}}
 						</div> -->
-						<div class="panel-body">
+						<!-- <div class="panel-body">
 						<p>Defect Type ID:  <span style="color:red;">*</span></p>
-							{!! Form::input('string', 'defect_type_id', null, ['class' => 'form-control']) !!}
-						</div>
+							{{-- {!! Form::input('string', 'defect_type_id', null, ['class' => 'form-control']) !!} --}}
+						</div> -->
+
+						{!! Form::hidden('defect_type_id', $defect_type->defect_type_id, ['class' => 'form-control']) !!}
+
 						<div class="panel-body">
 						<p>Defect Type Name:  <span style="color:red;">*</span></p>
 							{!! Form::input('string', 'defect_type_name', null, ['class' => 'form-control']) !!}
@@ -33,7 +36,7 @@
 						</div>
 
 						<div class="panel-body">
-						<p>Defect Type Description:  <span style="color:red;">*</span></p>
+						<p>Defect Type Description: </p>
 							{!! Form::input('string', 'defect_type_description', null, ['class' => 'form-control']) !!}
 						</div>
 						<div class="panel-body">
@@ -46,17 +49,17 @@
 						</div>
 
 						<div class="panel-body">
-						<p>Defect Level Name:  <span style="color:red;">*</span></p>
-							{!! Form::select('defect_level_id', $defect_levels, $defect_level_selected_id, ['class' => 'form-control']) !!}
+						<p><b>Defect Level Name: </b></p>
+							{!! Form::select('defect_level_id', ['' => ''] + $defect_levels, $defect_level_selected_id, ['class' => 'form-control']) !!}
 						</div>
 
 						<div class="panel-body">
-						<p>Defect Applay to all:  <span style="color:red;">*</span></p>
-							{!! Form::select('defect_applay_to_all', array('NO'=>'NO','YES'=>'YES'), null, array('class' => 'form-control')); !!} 
+						<p><b>Defect Applay to all: </b></p>
+							{!! Form::select('defect_applay_to_all', array(''=>'','NO'=>'NO','YES'=>'YES'), null, array('class' => 'form-control')); !!} 
 						</div>
 
 					<div class="panel-body">
-						{!! Form::submit('Edit', ['class' => 'btn btn-success center-block']) !!}
+						{!! Form::submit('Save', ['class' => 'btn btn-success center-block']) !!}
 					</div>
 
 					@include('errors.list')

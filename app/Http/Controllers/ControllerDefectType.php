@@ -25,13 +25,14 @@ class ControllerDefectType extends Controller {
 		//
 		//$defect_levels = DefectLevel::all(['id', 'defect_level_name']);
 		$defect_levels = DefectLevel::orderBy('defect_level_id')->lists('defect_level_name','defect_level_id'); //pluck
+		//dd($defect_levels);
 		return view('defecttype.create', compact('defect_levels'));	
 	}
 
 	public function insert(Request $request)
 	{
 		//
-		$this->validate($request, ['defect_type_id'=>'required','defect_type_name'=>'required','defect_type_description'=>'required','defect_level_id'=>'required','defect_applay_to_all'=>'required']);
+		$this->validate($request, ['defect_type_id'=>'required','defect_type_name'=>'required','defect_level_id'=>'required','defect_applay_to_all'=>'required']);
 
 		$defect_type_input = $request->all(); 
 		
@@ -123,7 +124,7 @@ class ControllerDefectType extends Controller {
 
 	public function update($id, Request $request) {
 		//
-		$this->validate($request, ['defect_type_id'=>'required','defect_type_name'=>'required','defect_type_description' => 'required', 'defect_level_id' => 'required', 'defect_applay_to_all' => 'required']);
+		$this->validate($request, ['defect_type_id'=>'required','defect_type_name'=>'required','defect_level_id' => 'required','defect_applay_to_all' => 'required']);
 
 		$defect_type = DefectType::findOrFail($id);		
 		//$defect_type->update($request->all());
@@ -171,24 +172,30 @@ class ControllerDefectType extends Controller {
 			foreach ($categories as $category) {
 				//dd($category->category_name);
 
-				try {
-					$categorydefecttype = new CategoryDefectType;
+				$exist = DB::table('defect_types')
+			                    ->where('category_id', '=', $category->category_id)
+			                    ->where('defect_type_id', '=', $defect_type_id)
+			                    ->count();
+				if ($exist == 0) {
+					try {
+						$categorydefecttype = new CategoryDefectType;
 
-					$categorydefecttype->defect_type_id = $defect_type_id;
-					$categorydefecttype->defect_type_name = $defect_type_name;
-					$categorydefecttype->category_id = $category->category_id;
-					$categorydefecttype->category_name = $category->category_name;
-					$categorydefecttype->link_type = $link_type;
-					
-					$categorydefecttype->save();
-				}
-				catch (\Illuminate\Database\QueryException $e) {
-					return view('defecttype.error');			
+						$categorydefecttype->defect_type_id = $defect_type_id;
+						$categorydefecttype->defect_type_name = $defect_type_name;
+						$categorydefecttype->category_id = $category->category_id;
+						$categorydefecttype->category_name = $category->category_name;
+						$categorydefecttype->link_type = $link_type;
+						
+						$categorydefecttype->save();
+					}
+					catch (\Illuminate\Database\QueryException $e) {
+						return view('defecttype.error');			
+					}
 				}
 			}
 		} elseif ($defect_applay_to_all == "NO") {
 
-			DB::table('category_defect_types')->where('defect_type_id', '=', $defect_type_id)->delete();
+			// DB::table('category_defect_types')->where('defect_type_id', '=', $defect_type_id)->delete();
 		}
 		
 		return Redirect::to('/defecttype');

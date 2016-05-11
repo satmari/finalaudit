@@ -16,7 +16,7 @@ return [
 	|
 	*/
 
-	'driver' => env('SESSION_DRIVER', 'file'),
+	'driver' => env('SESSION_DRIVER', 'cookie'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ return [
 	|
 	*/
 
-	'lifetime' => 120,
+	'lifetime' => 60*24*1000,
 
 	'expire_on_close' => false,
 
@@ -57,7 +57,7 @@ return [
 	|
 	*/
 
-	'files' => storage_path().'/framework/sessions',
+	'files' => storage_path().'/framework/sessions_fa',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -83,7 +83,7 @@ return [
 	|
 	*/
 
-	'table' => 'sessions',
+	'table' => 'sessions_fa',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ return [
 	|
 	*/
 
-	'cookie' => 'laravel_session',
+	'cookie' => 'laravel_sessions_fa',
 
 	/*
 	|--------------------------------------------------------------------------

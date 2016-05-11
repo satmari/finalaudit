@@ -28,7 +28,7 @@
 						</div>
 
 						<div class="panel-body">
-						<p>Category Description: <span style="color:red;">*</span></p>
+						<p>Category Description: </p>
 							{!! Form::text('category_description', null, ['class' => 'form-control']) !!}
 						</div>
 						<div class="panel-body">

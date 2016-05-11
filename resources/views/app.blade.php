@@ -37,12 +37,14 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ url('/') }}">Final Audit</a>
+				<a class="navbar-brand" href="{{ url('/') }}"><b>Final Audit Application</b></a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}">Home</a></li>
+					@if(Auth::check() && Auth::user()->level() == 1)
+						<li><a href="{{ url('/') }}">Home</a></li>
+					@endif
 
 					<!-- <li class="dropdown">
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -61,10 +63,12 @@
 				<ul class="nav navbar-nav">
 					<li>
 						<div class="dropdown">
-						  <button class="btn btn-default dropdown-toggle" style="margin: 8px 5px !important;" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						    Settings
-						    <span class="caret"></span>
-						  </button>
+							@if(Auth::check() && ((Auth::user()->level() == 1) || (Auth::user()->level() == 3)))
+								  <button class="btn btn-default dropdown-toggle" style="margin: 8px 5px !important;" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								    Settings
+								    <span class="caret"></span>
+								  </button>
+						  	@endif
 						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 						    
 						    <li><a href="{{ url('/defectlevel') }}">Defect Levels</a></li>
@@ -83,17 +87,20 @@
 						    <li><a href="{{ url('/model') }}">Models</a></li>
 
 						    <li role="separator" class="divider"></li>
+						    <li><a href="{{ url('/batch_t') }}">Batch Tezenis</a></li>
+						    <li><a href="{{ url('/batch_i') }}">Batch Intimissimi</a></li>
+						    <li><a href="{{ url('/batch_c') }}">Batch Calzedonia</a></li>
 						    
 						  </ul>
 						</div>
 					</li>
 				</ul>
 
-				<!-- <ul class="nav navbar-nav">
-					<li><a href="{{ url('/defectlevel') }}">Defect Levels</a></li>
+				<ul class="nav navbar-nav">
+					<li><a href="{{ url('/batch') }}">Batch Table</a></li>
 				</ul>
 
-				<ul class="nav navbar-nav">
+				<!-- <ul class="nav navbar-nav">
 					<li><a href="{{ url('/category') }}">Categories</a></li>
 				</ul>
 				<ul class="nav navbar-nav">
@@ -111,11 +118,17 @@
 				<ul class="nav navbar-nav">
 					<li><a href="{{ url('/machine') }}">Machines</a></li>
 				</ul> -->
+				@if (Auth::guest())
+				@else
+				<ul class="nav navbar-nav navoperator">
+					<li>Operator: <big><b><span style="color:red">{{ Auth::user()->username }}</span></b></big></li>
+				</ul>
+				@endif
 				
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
 						<li><a href="{{ url('/auth/login') }}">Login</a></li>
-						<li><a href="{{ url('/auth/register') }}">Register</a></li>
+						<!-- <li><a href="{{ url('/auth/register') }}">Register</a></li> -->
 					@else
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
@@ -168,6 +181,13 @@ $(function() {
             return rex.test($(this).text());
         }).show();
 	});
+
+
+	$('#myTabs a').click(function (e) {
+  		e.preventDefault()
+  		$(this).tab('show')
+	});
+	$('#myTabs a:first').tab('show') // Select first tab
 
 	// $('#sort').bootstrapTable({
     

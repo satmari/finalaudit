@@ -25,6 +25,7 @@ class CreateModelsTable extends Migration {
 			$table->text('category_description')->nullable();
 			$table->text('category_description_1')->nullable();
 			$table->text('category_description_2')->nullable();
+			$table->string('mandatory_to_check')->nullable();
 			
 			$table->timestamps();
 		});

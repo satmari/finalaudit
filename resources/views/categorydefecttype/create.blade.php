@@ -11,13 +11,13 @@
 					{!! Form::open(['method'=>'POST', 'url'=>'/categorydefecttype_insert']) !!}
 
 						<div class="panel-body">
-						<p>Defect Type Name: </p>
-							{!! Form::select('defect_type_id', $defect_types, null,['class' => 'form-control']) !!}
+						<p>Defect Type Name: <span style="color:red;">*</span> </p>
+							{!! Form::select('defect_type_id', ['' => ''] + $defect_types, null,['class' => 'form-control']) !!}
 						</div>
 					
 						<div class="panel-body">
-						<p>Category Name: </p>
-							{!! Form::select('category_id', $category, null,['class' => 'form-control']) !!}
+						<p>Category Name:  <span style="color:red;">*</span></p>
+							{!! Form::select('category_id', ['' => ''] + $category, null,['class' => 'form-control']) !!}
 						</div>
 
 						{!! Form::submit('Link', ['class' => 'btn  btn-success center-block']) !!}

@@ -44,14 +44,14 @@
                     <thead>
                     	<tr>
 	                        <td>Id</td>
-	                        <td>Position Id</td>
-	                        <td>Position Name</td>
+	                        <td><b>Position Id</b></td>
+	                        <td><b>Position Name</b></td>
                             <td>Position Name 1</td>
                             <td>Position Name 2</td>
                             <td>Position Description</td>
                             <td>Position Description 1</td>
                             <td>Position Description 2</td>
-                            <td>Position Applay to all</td>
+                            <td style="color:palevioletred;">Position Applay to all</td>
                             <td></td>
                         </tr>
                     </thead>

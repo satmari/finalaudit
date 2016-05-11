@@ -15,10 +15,13 @@
 						<span>Id:</span>
 						{{--  {!! Form::input('number', 'id', null, ['class' => 'form-control']) !!} --}}
 						</div> -->
-						<div class="panel-body">
+						<!-- <div class="panel-body">
 						<p>Position ID:  <span style="color:red;">*</span></p>
-							{!! Form::input('string', 'position_id', null, ['class' => 'form-control']) !!}
-						</div>
+							{{-- {!! Form::input('string', 'position_id', null, ['class' => 'form-control']) !!} --}}
+						</div> -->
+
+						{!! Form::hidden('position_id', $position->position_id, ['class' => 'form-control']) !!}
+
 						<div class="panel-body">
 						<p>Position Name:  <span style="color:red;">*</span></p>
 							{!! Form::input('string', 'position_name', null, ['class' => 'form-control']) !!}
@@ -33,7 +36,7 @@
 						</div>
 
 						<div class="panel-body">
-						<p>Position Description:  <span style="color:red;">*</span></p>
+						<p>Position Description: </p>
 							{!! Form::input('string', 'position_description', null, ['class' => 'form-control']) !!}
 						</div>
 						<div class="panel-body">
@@ -46,12 +49,12 @@
 						</div>
 
 						<div class="panel-body">
-						<p>Position Applay to all:  <span style="color:red;">*</span></p>
-							{!! Form::select('position_applay_to_all', array('NO'=>'NO','YES'=>'YES'), null, array('class' => 'form-control')); !!} 
+						<p><b>Position Applay to all: </b></p>
+							{!! Form::select('position_applay_to_all', array(''=>'','NO'=>'NO','YES'=>'YES'), null, array('class' => 'form-control')); !!} 
 						</div>
 
 					<div class="panel-body">
-						{!! Form::submit('Edit', ['class' => 'btn btn-success center-block']) !!}
+						{!! Form::submit('Save', ['class' => 'btn btn-success center-block']) !!}
 					</div>
 
 					@include('errors.list')

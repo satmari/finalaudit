@@ -15,10 +15,11 @@ class CreateDefectLevelsTable extends Migration {
 		Schema::create('defect_levels', function(Blueprint $table)
 		{
 			$table->increments('id');
+
 			$table->string('defect_level_id')->unique();
 			$table->string('defect_level_name')->unique();
 			$table->string('defect_level_rejected', 3);
-			//$table->boolean('pcs_rejected');
+			
 			$table->timestamps();
 		});
 	}

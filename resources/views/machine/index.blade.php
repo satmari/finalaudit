@@ -44,8 +44,8 @@
                     <thead>
                     	<tr>
 	                        <td>Id</td>
-	                        <td>Machine Id</td>
-	                        <td>Machine Type</td>
+	                        <td><b>Machine Id</b></td>
+	                        <td><b>Machine Type</b></td>
 	                        <td>Machine Description</td>
 	                        <td></td>
                         </tr>

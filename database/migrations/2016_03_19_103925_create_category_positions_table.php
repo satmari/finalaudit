@@ -15,11 +15,13 @@ class CreateCategoryPositionsTable extends Migration {
 		Schema::create('category_positions', function(Blueprint $table)
 		{
 			$table->increments('id');
+
 			$table->string('position_id');
 			$table->string('position_name')->nullable();
 			$table->string('category_id');
 			$table->string('category_name')->nullable();
 			$table->string('link_type');
+			
 			$table->timestamps();
 		});
 	}

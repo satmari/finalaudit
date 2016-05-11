@@ -30,7 +30,8 @@
         "Collective\\Html\\HtmlServiceProvider",
         "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
         "Illuminate\\Auth\\AuthServiceProvider",
-        "Bican\\Roles\\RolesServiceProvider"
+        "Bican\\Roles\\RolesServiceProvider",
+        "Maatwebsite\\Excel\\ExcelServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -50,7 +51,8 @@
         "App\\Providers\\EventServiceProvider",
         "App\\Providers\\RouteServiceProvider",
         "Illuminate\\Auth\\AuthServiceProvider",
-        "Bican\\Roles\\RolesServiceProvider"
+        "Bican\\Roles\\RolesServiceProvider",
+        "Maatwebsite\\Excel\\ExcelServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

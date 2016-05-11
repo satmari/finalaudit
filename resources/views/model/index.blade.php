@@ -44,9 +44,10 @@
                     <thead>
                     	<tr>
 	                        <td>Id</td>
-	                        <td>Model Name</td>
-                            <td>Model Brand</td>
+	                        <td><b>Model Name</b></td>
+                            <td><b>Model Brand</b></td>
                             <td>Model Category</td>
+                            <td>Manadatory to check</td>
                             <td></td>
                         </tr>
                     </thead>
@@ -57,6 +58,7 @@
                             <td>{{ $req->model_name }}</td>
                             <td>{{ $req->model_brand }}</td>
                             <td>{{ $req->category_name }}</td>
+                            <td>{{ $req->mandatory_to_check }}</td>
                             
                             <td><a href="{{ url('/model/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
                         </tr>

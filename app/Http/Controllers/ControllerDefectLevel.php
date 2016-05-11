@@ -16,7 +16,6 @@ class ControllerDefectLevel extends Controller {
 		//
 		$defect_levels = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM defect_levels ORDER BY defect_level_id asc"));
 		return view('defectlevel.index', compact('defect_levels'));
-
 	}
 
 	public function create()

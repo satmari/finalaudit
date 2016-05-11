@@ -28,7 +28,7 @@
 						</div>
 
 						<div class="panel-body">
-						<p>Defect Type Description: <span style="color:red;">*</span></p>
+						<p>Defect Type Description: </p>
 							{!! Form::text('defect_type_description', null, ['class' => 'form-control']) !!}
 						</div>
 						<div class="panel-body">
@@ -41,14 +41,14 @@
 						</div>
 
 						<div class="panel-body">
-						<p>Defect Level Name: <span style="color:red;">*</span></p>
+						<p><b>Defect Level Name: </b></p>
 							{{-- {!! Form::text('defect_level_id', null, ['class' => 'form-control']); !!} --}}
-							{!! Form::select('defect_level_id', $defect_levels, null,['class' => 'form-control']) !!}
+							{!! Form::select('defect_level_id', ['' => ''] + $defect_levels, null,['class' => 'form-control']) !!}
 						</div>
 
 						<div class="panel-body">
-						<p>Defect Applay to all: <span style="color:red;">*</span></p>
-							{!! Form::select('defect_applay_to_all', array('NO'=>'NO','YES'=>'YES'), null, array('class' => 'form-control')); !!} 
+						<p><b>Defect Applay to all: </b></p>
+							{!! Form::select('defect_applay_to_all', array(''=>'','NO'=>'NO','YES'=>'YES'), null, array('class' => 'form-control')); !!} 
 						</div>
 						
 						{!! Form::submit('Add', ['class' => 'btn  btn-success center-block']) !!}

@@ -14,11 +14,11 @@
 						{{--  {!! Form::input('number', 'id', null, ['class' => 'form-control']) !!} --}}
 					</div> -->
 					<div class="panel-body">
-						<span>Machine Id:</span>
+						<span>Machine Id: <span style="color:red;">*</span></span>
 						{!! Form::input('string', 'machine_id', null, ['class' => 'form-control']) !!}
 					</div>
 					<div class="panel-body">
-						<span>Machine type:</span>
+						<span>Machine type: <span style="color:red;">*</span></span>
 						{!! Form::input('string', 'machine_type', null, ['class' => 'form-control']) !!}
 					</div>
 					<div class="panel-body">
@@ -27,7 +27,7 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::submit('Edit', ['class' => 'btn btn-success center-block']) !!}
+						{!! Form::submit('Save', ['class' => 'btn btn-success center-block']) !!}
 					</div>
 
 					@include('errors.list')

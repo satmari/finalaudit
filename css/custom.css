@@ -1,12 +1,12 @@
 body {
 	font-size: 12px !important;
 
-    background-image: url("images/8.png");
-    background-repeat: repeat;
+    /*background-image: url("images/8.png");
+    background-repeat: repeat;*/
 }
-.navbar {
+.nav/*bar {
     background-image: url("images/3.png");
-    background-repeat: repeat;
+    background-repeat: repeat;*/
 }
 .table {
     /*font-size: 16px !important;*/
@@ -15,9 +15,90 @@ body {
     font-size: 12px !important;
     /*font-stretch: semi-condensed;*/
 }
-.navbar-default {
-    border-color: #6EBDEA !important;
+.navbar {
+    background-image: linear-gradient(#FFFFFF, #F1F1F1 60%, #EAEAEA) !important;
 }
+.navbar-default .navbar-brand {
+    color: #777777;
+}
+.navbar-default {
+    /*border-color: #6EBDEA !important;*/
+    /*background-image: linear-gradient(#FFFFFF, #F1F1F1 60%, #EAEAEA) !important;*/
+    border-color: #286F08 !important;
+    background-image: linear-gradient(rgb(225, 255, 222), rgba(254, 255, 253, 0.37) 60%, rgb(173, 255, 179)) !important;
+}
+.navoperator {
+    /*color: red;*/
+    margin: 14px !important;
+    padding-left: 10% !important;
+}
+.span-right {
+  margin-left: 220px;
+}
+#lidefects{
+    background-color: #F1FFE1;
+}
+#lipositions {
+    background-color: #F1FFF0;
+}
+#limachines{
+    background-color: #E1FFF7;
+}
+
+.panel-default > .panel-heading {
+    color: #333333;
+    background-color: #F1FCF0 !important;
+    border-color: #dddddd;
+}
+.panel-default {
+    border-color: #dddddd;
+    box-shadow: 2px 2px 7px rgba(44, 191, 55, 0.4) !important;
+}
+.row {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+.visina {
+    height: 100px !important;
+    /*border: 1px #eee solid;*/
+    /*margin: 1px;*/
+    padding: 3px;
+    -webkit-box-shadow:inset 0px 0px 10px 1px #eee;
+    -moz-box-shadow:inset 0px 0px 10px 1px #eee;
+    box-shadow: inset 0px 0px 20px 1px #EAEAEA;
+}
+.visina-basic {
+    height: 100px !important;
+    /*border: 1px #eee solid;*/
+    /*margin: 1px;*/
+    padding: 3px;
+    -webkit-box-shadow:inset 0px 0px 10px 1px #9F9;
+    -moz-box-shadow:inset 0px 0px 10px 1px #9F9;
+    box-shadow: inset 0px 0px 20px 1px #9F9;
+}
+.visina-critical {
+    height: 100px !important;
+    /*border: 1px #eee solid;*/
+    /*margin: 1px;*/
+    padding: 3px;
+    -webkit-box-shadow:inset 0px 0px 10px 1px #FBB;
+    -moz-box-shadow:inset 0px 0px 10px 1px #FBB;
+    box-shadow: inset 0px 0px 20px 1px #FBB;
+}
+.visina-panel{
+    padding: 0px !important;
+}
+.visina_text {
+  min-height: 35px !important;
+}
+.table {
+    margin-bottom: 0px !important;
+}
+.panel-primary {
+    border-color: #286F08 !important;
+    background-color: #DDEADD !important;
+}
+
 .dataTables_wrapper .dataTables_filter {
     float: left;
 }
@@ -41,6 +122,22 @@ table.dataTable tbody td {
 }
 #check {
     box-shadow: inset 0 0px 0px rgba(0,0,0,0.075);
+}
+.side-button {
+  width: 120px !important;
+  height: 70px !important;
+  margin-bottom: 20px !important;
+}
+.final-button {
+  width: 150px !important;
+  height: 90px !important;
+  margin-bottom: 20px !important;
+  font-size: 19px !important;
+}
+.btn-info {
+    color: #333333 !important;
+    background-color: #AFFFB4 !important;
+    border-color: #286F08 !important;
 }
 .btn-b1 {
     /* border-bottom: 1px solid #59822c; */
@@ -183,3 +280,91 @@ th.h-ct {
 .table-hover>tbody>tr:hover {
     background-color: #D0D4E2 !important;
 }
+
+
+/* */
+/*label.btn span {
+  font-size: 1.5em;
+}
+
+label input[type="radio"] ~ i.fa.fa-circle-o {
+  color: #c8c8c8;
+  display: inline;
+}
+
+label input[type="radio"] ~ i.fa.fa-check-circle-o {
+  display: none;
+}
+
+label input[type="radio"]:checked ~ i.fa.fa-circle-o {
+  display: none;
+}
+
+label input[type="radio"]:checked ~ i.fa.fa-check-circle-o {
+  color: #7AA3CC;
+  display: inline;
+}
+
+label:hover input[type="radio"] ~ i.fa {
+  color: #7AA3CC;
+}
+
+label input[type="checkbox"] ~ i.fa.fa-square-o {
+  color: #c8c8c8;
+  display: inline;
+}
+
+label input[type="checkbox"] ~ i.fa.fa-check-square-o {
+  display: none;
+}
+
+label input[type="checkbox"]:checked ~ i.fa.fa-square-o {
+  display: none;
+}
+
+label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o {
+  color: #7AA3CC;
+  display: inline;
+}
+
+label:hover input[type="checkbox"] ~ i.fa {
+  color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label.active {
+  color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 2em;
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: top;
+  cursor: pointer;
+  background-color: none;
+  border: 0px solid #c8c8c8;
+  border-radius: 3px;
+  color: #c8c8c8;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+div[data-toggle="buttons"] label:hover {
+  color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label:active,
+div[data-toggle="buttons"] label.active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}*/
+
+/* */

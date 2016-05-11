@@ -16,6 +16,10 @@
 Route::get('/', 'HomeController@index');
 Route::get('home', 'HomeController@index');
 
+Route::get('/addadmin', 'addRollController@addadmin');
+Route::get('/addoperator', 'addRollController@addoperator');
+Route::get('/addguest', 'addRollController@addguest');
+
 Route::get('/defectlevel', 'ControllerDefectLevel@index');
 Route::get('/defectlevel_new', 'ControllerDefectLevel@create');
 Route::post('/defectlevel_insert', 'ControllerDefectLevel@insert');
@@ -79,6 +83,70 @@ Route::get('/model/edit/{id}', 'ControllerModel@edit');
 Route::post('/model/{id}', 'ControllerModel@update');
 Route::get('/model/delete/{id}', 'ControllerModel@delete');
 Route::post('/model/delete/{id}', 'ControllerModel@delete');
+
+Route::get('/batch_t', 'ControllerBatch_t@index');
+Route::get('/batch_t_new', 'ControllerBatch_t@create');
+Route::post('/batch_t_insert', 'ControllerBatch_t@insert');
+Route::get('/batch_t/edit/{id}', 'ControllerBatch_t@edit');
+Route::post('/batch_t/{id}', 'ControllerBatch_t@update');
+Route::get('/batch_t/delete/{id}', 'ControllerBatch_t@delete');
+Route::post('/batch_t/delete/{id}', 'ControllerBatch_t@delete');
+
+Route::get('/batch_i', 'ControllerBatch_i@index');
+Route::get('/batch_i_new', 'ControllerBatch_i@create');
+Route::post('/batch_i_insert', 'ControllerBatch_i@insert');
+Route::get('/batch_i/edit/{id}', 'ControllerBatch_i@edit');
+Route::post('/batch_i/{id}', 'ControllerBatch_i@update');
+Route::get('/batch_i/delete/{id}', 'ControllerBatch_i@delete');
+Route::post('/batch_i/delete/{id}', 'ControllerBatch_i@delete');
+
+Route::get('/batch_c', 'ControllerBatch_c@index');
+Route::get('/batch_c_new', 'ControllerBatch_c@create');
+Route::post('/batch_c_insert', 'ControllerBatch_c@insert');
+Route::get('/batch_c/edit/{id}', 'ControllerBatch_c@edit');
+Route::post('/batch_c/{id}', 'ControllerBatch_c@update');
+Route::get('/batch_c/delete/{id}', 'ControllerBatch_c@delete');
+Route::post('/batch_c/delete/{id}', 'ControllerBatch_c@delete');
+
+Route::get('/batch', 'ControllerBatch@index');
+//Route::get('/batch_new', 'ControllerBatch@create');
+//Route::post('/batch_insert', 'ControllerBatch@insert');
+Route::get('/batch/edit/{id}', 'ControllerBatch@edit');
+// Route::post('/batch/{id}', 'ControllerBatch@update');
+Route::get('/batch/delete/{id}', 'ControllerBatch@delete');
+Route::post('/batch/delete/{id}', 'ControllerBatch@delete');
+Route::get('/searchinteos', 'ControllerBatch@searchinteos');
+Route::post('/searchinteos_store', 'ControllerBatch@searchinteos_store');
+Route::get('/batch/checkbarcode/{name}', 'ControllerBatch@batch_checkbarcode');
+Route::post('/batch/checkbarcode_store', 'ControllerBatch@batch_checkbarcode_store');
+Route::get('/batch/confirm/{id}', 'ControllerBatch@confirm');
+Route::get('/batch/accept/{id}', 'ControllerBatch@accept');
+Route::get('/batch/acceptwithreservetion/{id}', 'ControllerBatch@acceptwithreservetion');
+Route::get('/batch/reject/{id}', 'ControllerBatch@reject');
+Route::get('/batch/suspend/{id}', 'ControllerBatch@suspend');
+Route::get('/batch/not_checked/{id}', 'ControllerBatch@not_checked');
+
+Route::get('/garment', 'ControllerGarment@index');
+//Route::get('/garment_new', 'ControllerGarment@create');
+//Route::post('/garment_insert', 'ControllerGarment@insert');
+Route::get('/garment/edit/{id}', 'ControllerGarment@edit');
+Route::get('/garment/by_batch/{batch_name}', 'ControllerGarment@by_batch');
+Route::get('/garment/checkbarcode/{name}', 'ControllerGarment@garment_checkbarcode');
+Route::post('/garment/checkbarcode_store', 'ControllerGarment@garment_checkbarcode_store');
+
+Route::get('/defect', 'ControllerDefect@index');
+Route::get('/defect_new/{garment_name}', 'ControllerDefect@newdefect');
+Route::post('/defect_insert', 'ControllerDefect@insert');
+Route::get('/defect/edit/{id}', 'ControllerDefect@edit');
+Route::get('/defect/by_garment/{garment_name}', 'ControllerDefect@by_garment');
+Route::get('/defect/delete/{id}', 'ControllerDefect@delete');
+Route::post('/defect/delete/{id}', 'ControllerDefect@delete');
+
+// Import
+Route::get('/import', 'ControllerImport@index');
+Route::post('/import2', 'ControllerImport@postImportUser');
+Route::post('/import3', 'ControllerImport@postImportRoll');
+Route::post('/import4', 'ControllerImport@postImportUserRole');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

@@ -16,6 +16,7 @@ return [
 	*/
 
 	'driver' => 'eloquent',
+	//'driver' => 'database',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -61,7 +62,7 @@ return [
 	'password' => [
 		'email' => 'emails.password',
 		'table' => 'password_resets',
-		'expire' => 60,
+		'expire' => 60*60*24*360,
 	],
 
 ];

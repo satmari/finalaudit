@@ -11,11 +11,11 @@
 					{!! Form::open(['method'=>'POST', 'url'=>'/machine_insert']) !!}
 
 						<div class="panel-body">
-						<p>Machine Id: </p>
+						<p>Machine Id: <span style="color:red;">*</span></p>
 							{!! Form::text('machine_id', null, ['class' => 'form-control', 'autofocus' => 'autofocus']) !!}
 						</div>
 						<div class="panel-body">
-						<p>Machine Type: </p>
+						<p>Machine Type: <span style="color:red;">*</span></p>
 							{!! Form::text('machine_type', null, ['class' => 'form-control']) !!}
 						</div>
 						<div class="panel-body">

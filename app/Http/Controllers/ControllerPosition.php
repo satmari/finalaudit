@@ -28,7 +28,7 @@ class ControllerPosition extends Controller {
 	public function insert(Request $request)
 	{
 		//
-		$this->validate($request, ['position_id'=>'required','position_name'=>'required','position_description'=>'required','position_applay_to_all'=>'required']);
+		$this->validate($request, ['position_id'=>'required','position_name'=>'required','position_applay_to_all'=>'required']);
 
 		$input = $request->all(); 
 		
@@ -72,19 +72,25 @@ class ControllerPosition extends Controller {
 			foreach ($categories as $category) {
 				//dd($category->category_name);
 
-				try {
-					$categoryposition = new CategoryPosition;
+				$exist = DB::table('defect_types')
+			                    ->where('category_id', '=', $category->category_id)
+			                    ->where('position_id', '=', $position_id)
+			                    ->count();
+				if ($exist == 0) {
+					try {
+						$categoryposition = new CategoryPosition;
 
-					$categoryposition->position_id = $position_id;
-					$categoryposition->position_name = $position_name;
-					$categoryposition->category_id = $category->category_id;
-					$categoryposition->category_name = $category->category_name;
-					$categoryposition->link_type = $link_type;
-					
-					$categoryposition->save();
-				}
-				catch (\Illuminate\Database\QueryException $e) {
-					return view('position.error');			
+						$categoryposition->position_id = $position_id;
+						$categoryposition->position_name = $position_name;
+						$categoryposition->category_id = $category->category_id;
+						$categoryposition->category_name = $category->category_name;
+						$categoryposition->link_type = $link_type;
+						
+						$categoryposition->save();
+					}
+					catch (\Illuminate\Database\QueryException $e) {
+						return view('position.error');			
+					}
 				}
 			}
 		}
@@ -110,7 +116,7 @@ class ControllerPosition extends Controller {
 
 	public function update($id, Request $request) {
 		//
-		$this->validate($request, ['position_id'=>'required','position_name'=>'required','position_description' => 'required', 'position_applay_to_all' => 'required']);
+		$this->validate($request, ['position_id'=>'required','position_name'=>'required','position_applay_to_all' => 'required']);
 
 		$position = Position::findOrFail($id);		
 		//$position->update($request->all());
@@ -168,7 +174,7 @@ class ControllerPosition extends Controller {
 			}
 		} elseif ($position_applay_to_all == "NO") {
 
-			DB::table('category_positions')->where('position_id', '=', $position_id)->delete();
+			//DB::table('category_positions')->where('position_id', '=', $position_id)->delete();
 		}
 		
 		return Redirect::to('/position');

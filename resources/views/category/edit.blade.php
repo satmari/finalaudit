@@ -19,6 +19,7 @@
 						<p>Category ID:  <span style="color:red;">*</span></p>
 							{{-- {!! Form::input('string', 'category_id', null, ['class' => 'form-control']) !!} --}}
 						</div> -->
+
 						{!! Form::hidden('category_id', $category->category_id, ['class' => 'form-control']) !!}
 						
 						<div class="panel-body">
@@ -33,9 +34,8 @@
 						<p>Category Name 2: </p>
 							{!! Form::input('string', 'category_name_2', null, ['class' => 'form-control']) !!}
 						</div>
-
 						<div class="panel-body">
-						<p>Category Description:  <span style="color:red;">*</span></p>
+						<p>Category Description: </p>
 							{!! Form::input('string', 'category_description', null, ['class' => 'form-control']) !!}
 						</div>
 						<div class="panel-body">
@@ -48,7 +48,7 @@
 						</div>
 
 					<div class="panel-body">
-						{!! Form::submit('Edit', ['class' => 'btn btn-success center-block']) !!}
+						{!! Form::submit('Save', ['class' => 'btn btn-success center-block']) !!}
 					</div>
 
 					@include('errors.list')

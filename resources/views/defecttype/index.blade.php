@@ -44,16 +44,16 @@
                     <thead>
                     	<tr>
 	                        <td>Id</td>
-	                        <td>Defect Type Id</td>
-	                        <td>Defect Type Name</td>
+	                        <td><b>Defect Type Id</b></td>
+	                        <td><b>Defect Type Name</b></td>
                             <td>Defect Type Name 1</td>
                             <td>Defect Type Name 2</td>
                             <td>Defect Type Description</td>
                             <td>Defect Type Description 1</td>
                             <td>Defect Type Description 2</td>
-                            <td style="color:red;">Defect Level Name</td>
-                            <td style="color:red;">Pcs Redjected</td>
-                            <td>Defect Applay to all</td>
+                            <td style="color:green;">Defect Level Name</td>
+                            <td style="color:green;">Pcs Rejected</td>
+                            <td style="color:palevioletred;">Defect Applay to all</td>
                             <td></td>
                         </tr>
                     </thead>

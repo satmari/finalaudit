@@ -15,15 +15,14 @@ class CreatePositionsTable extends Migration {
 		Schema::create('positions', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('position_id')->unique();
 			
+			$table->string('position_id')->unique();
 			$table->string('position_name')->unique();
 			$table->string('position_name_1')->nullable();
 			$table->string('position_name_2')->nullable();
-			$table->text('position_description');
+			$table->text('position_description')->nullable();
 			$table->text('position_description_1')->nullable();
 			$table->text('position_description_2')->nullable();
-			
 			$table->string('position_applay_to_all', 3);  
 			
 			$table->timestamps();
