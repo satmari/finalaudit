@@ -774,9 +774,20 @@ class ControllerBatch extends Controller {
 
 		$batch_status = $input['batch_status'];
 
+		if ($batch_status == 'Reject') {
+			$repaired = "NO";
+
+		} else {
+			$repaired = NULL;	
+		}
+
 		try {
 			$batch = Batch::findOrFail($id);
 			$batch->batch_status = $batch_status;
+			$batch->repaired = $repaired;
+			$batch->repaired_by_id = NULL;
+			$batch->repaired_by_name = NULL;
+			$batch->repaired_date = NULL;
 
 			$batch->save();
 			return Redirect::to('/batch');
@@ -893,6 +904,7 @@ class ControllerBatch extends Controller {
 															      ,[batch_status]
 															      ,[repaired]
 															      ,[repaired_by_name]
+															      ,[date_of_sending_to_repair]
 															  FROM [finalaudit].[dbo].[batch]
 															  WHERE batch_status = 'Reject' AND [repaired] = 'NO'
 															  ORDER BY [created_at] asc
@@ -907,14 +919,40 @@ class ControllerBatch extends Controller {
 		return view('batch.cb_to_repair_update', compact('batch'));
 	}
 
-	public function cb_to_repair_repair($id)
-	{
+	public function cb_to_repair_repair($id, Request $request)
+	{	
+		
 		try {
 			$batch = Batch::findOrFail($id);
 			$batch->repaired = "YES";
 			$batch->repaired_by_name = Auth::user()->username;
 			$batch->repaired_by_id = Auth::user()->name_id;
 			$batch->repaired_date = date("Y-m-d H:i:s");
+			
+			$batch->save();
+			return Redirect::to('/cb_to_repair');
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return Redirect::to('/cb_to_repair');
+		}
+	}
+
+	public function cb_to_repair_edit_date($id)
+	{	
+		$batch = Batch::findOrFail($id);
+		return view('batch.cb_to_repair_update_date', compact('batch'));
+	}
+
+	public function cb_to_repair_repair_date($id, Request $request)
+	{
+		$this->validate($request, ['date_of_sending_to_repair' => 'required']);
+		$input = $request->all(); 
+
+		$date_of_sending_to_repair = $input['date_of_sending_to_repair'];
+
+		try {
+			$batch = Batch::findOrFail($id);
+			$batch->date_of_sending_to_repair = $date_of_sending_to_repair;
 
 			$batch->save();
 			return Redirect::to('/cb_to_repair');
