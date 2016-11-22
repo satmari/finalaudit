@@ -46,6 +46,7 @@
                                     <tr>
                                         <!-- <td>Id</td> -->
                                         <td><b>Batch Name</b></td>
+                                        <td>Cartonbox</td>
                                         <td>SKU</td>
                                         <td>Module</td>
                                         <td>Batch qty</td>
@@ -60,6 +61,7 @@
                                     <tr>
                                         {{-- <td>{{ $req->id }}</td> --}}
                                         <td>{{ $req->batch_name }}</td>
+                                        <td>{{ $req->cartonbox }}</td>
                                         <td>{{ $req->sku }}</td>
                                         <td>{{ $req->module_name }}</td>
                                         <td>{{ $req->batch_qty }}</td>

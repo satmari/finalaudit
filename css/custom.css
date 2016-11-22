@@ -4,7 +4,7 @@ body {
     /*background-image: url("images/8.png");
     background-repeat: repeat;*/
     /*background: url("images/subtle_white_feathers.png") repeat;*/
-    background: url("images/sneaker_mesh_fabric.png") repeat;
+    background: url("images/12.png") repeat;
 
 }
 .nav/*bar {
@@ -15,7 +15,7 @@ body {
     /*font-size: 16px !important;*/
 }
 .bootstrap-table{
-    font-size: 12px !important;
+    font-size: 14px !important;
     /*font-stretch: semi-condensed;*/
 }
 .navbar {
@@ -25,10 +25,10 @@ body {
     color: #777777;
 }
 .navbar-default {
-    /*border-color: #6EBDEA !important;*/
-    /*background-image: linear-gradient(#FFFFFF, #F1F1F1 60%, #EAEAEA) !important;*/
+    /* border-color: #6EBDEA !important; */
+    /* background-image: linear-gradient(#FFFFFF, #F1F1F1 60%, #EAEAEA) !important; */
     border-color: #286F08 !important;
-    background-image: linear-gradient(rgb(225, 255, 222), rgba(254, 255, 253, 0.37) 60%, rgb(173, 255, 179)) !important;
+    background-image: linear-gradient(rgb(225, 255, 222), rgba(254, 255, 253, 0.37) 60%, rgba(51, 51, 51, 0.15)) !important;
 }
 .navoperator {
     /*color: red;*/
