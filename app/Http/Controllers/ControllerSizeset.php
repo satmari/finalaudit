@@ -29,11 +29,11 @@ class ControllerSizeset extends Controller {
 		try {
 
 			if (($user->is('admin')) OR ($user->is('guest'))) { 
-				$sizeset = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset ORDER BY id asc"));
+				$sizeset = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE (scanned = 'YES' AND shipped = 'NO') ORDER BY id asc"));
 				return view('sizeset.index', compact('sizeset'));
 			} 
 			if (($user->is('planer'))) { 
-				$sizeset = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE (collected = 'YES' AND shipped = 'NO') ORDER BY id asc"));
+				$sizeset = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE (scanned = 'YES' AND shipped = 'NO') ORDER BY id asc"));
 				return view('sizeset.index', compact('sizeset'));
 			}
 			if (($user->is('operator'))) { 

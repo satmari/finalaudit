@@ -82,7 +82,7 @@
                                         <!-- <td style="background-color: antiquewhite;">{{-- {{ $req->collected_user }} --}}</td> -->
 
                                         <td style="background-color: floralwhite;">{{ $req->shipped }}</td>
-                                        <td style="background-color: floralwhite;">{{ $req->shipped_date }}</td>
+                                        <td style="background-color: floralwhite;">{{ substr($req->shipped_date, 0, 19) }}</td>
                                         <!-- <td style="background-color: floralwhite;">{{-- {{ $req->shipped_user }} --}}</td> -->
 
                                         <td>{{ $req->temp_coloumn }}</td>

@@ -74,15 +74,15 @@
                                         <td>{{ $req->color_desc }}</td>
 
                                         <td style="background-color: aliceblue;">{{ $req->scanned }}</td>
-                                        <td style="background-color: aliceblue;">{{ $req->scanned_date }}</td>
+                                        <td style="background-color: aliceblue;">{{ substr($req->scanned_date, 0, 19) }}</td>
                                         <td style="background-color: aliceblue;">{{ $req->scanned_user }}</td>
 
                                         <td style="background-color: antiquewhite;">{{ $req->collected }}</td>
-                                        <td style="background-color: antiquewhite;">{{ $req->collected_date }}</td>
+                                        <td style="background-color: antiquewhite;">{{ substr($req->collected_date, 0, 19) }}</td>
                                         <td style="background-color: antiquewhite;">{{ $req->collected_user }}</td>
 
                                         <td style="background-color: floralwhite;">{{ $req->shipped }}</td>
-                                        <td style="background-color: floralwhite;">{{ $req->shipped_date }}</td>
+                                        <td style="background-color: floralwhite;">{{ substr($req->shipped_date, 0, 19) }}</td>
                                         <td style="background-color: floralwhite;">{{ $req->shipped_user }}</td>
 
                                         <td>{{ $req->temp_coloumn }}</td>

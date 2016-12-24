@@ -5,7 +5,7 @@
     <div class="row vertical-center-row">
         <div class="text-center">
             <div class="panel panel-default">
-                <div class="panel-heading">Batch <b>ntimissimi</b> Table</div>
+                <div class="panel-heading">Batch <b>Intimissimi</b> Table</div>
                 
                 @if (Auth::check() && Auth::user()->level() != 3)
                 <div class="panel-body">

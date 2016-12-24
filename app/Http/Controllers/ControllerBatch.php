@@ -222,7 +222,7 @@ class ControllerBatch extends Controller {
 		$this->validate($request, ['cb_code' => 'required|min:12|max:13']);
 
 		$input = $request->all(); // change use (delete or comment user Requestl; )
-		//1971107960
+		//
 
 		$cbcode = $input['cb_code'];
 		// dd($cbcode);

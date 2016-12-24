@@ -4,7 +4,12 @@ body {
     /*background-image: url("images/8.png");
     background-repeat: repeat;*/
     /*background: url("images/subtle_white_feathers.png") repeat;*/
-    background: url("images/12.png") repeat;
+    /*background: url("images/12.png") repeat;*/
+    background: url("images/cr/7.jpg") no-repeat center center fixed !important;
+    -webkit-background-size: cover; /* For WebKit*/
+    -moz-background-size: cover;    /* Mozilla*/
+    -o-background-size: cover;      /* Opera*/
+    background-size: cover !important;  
 
 }
 .nav/*bar {

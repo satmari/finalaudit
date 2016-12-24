@@ -29,11 +29,11 @@ class ControllerEcommerce extends Controller {
 		try {
 
 			if (($user->is('admin')) OR ($user->is('guest'))) { 
-				$ecommerce = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM ecommerce ORDER BY id asc"));
+				$ecommerce = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM ecommerce WHERE (scanned = 'YES' AND shipped = 'NO') ORDER BY id asc"));
 				return view('ecommerce.index', compact('ecommerce'));
 			} 
 			if (($user->is('planer'))) { 
-				$ecommerce = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM ecommerce WHERE (collected = 'YES' AND shipped = 'NO') ORDER BY id asc"));
+				$ecommerce = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM ecommerce WHERE (scanned = 'YES' AND shipped = 'NO') ORDER BY id asc"));
 				return view('ecommerce.index', compact('ecommerce'));
 			}
 			if (($user->is('operator'))) { 
