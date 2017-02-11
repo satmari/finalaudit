@@ -41,8 +41,6 @@ class ControllerCategory extends Controller {
 		$category_description_1 = $category_input['category_description_1'];
 		$category_description_2 = $category_input['category_description_2'];
 
-		$link_type = "AUTOMATIC";
-
 		try {
 			$category = new Category;
 
@@ -59,6 +57,8 @@ class ControllerCategory extends Controller {
 		catch (\Illuminate\Database\QueryException $e) {
 			return view('category.error');			
 		}
+
+		$link_type = "AUTOMATIC";
 
 		$defecttypes = DB::connection('sqlsrv')->select(DB::raw("SELECT defect_type_id,defect_type_name FROM defect_types WHERE defect_applay_to_all = 'YES'"));
 		//dd($defecttypes);

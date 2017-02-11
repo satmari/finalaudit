@@ -36,7 +36,7 @@
 					               	<option name="email" value="audit4">Audit4 - Jelena Šeritović</option>
 					               	<option name="email" value="audit5">Audit5 - Dragana Živanović</option>
 					               	<option name="email" value="audit6">Audit6 - Dajana Ivanković</option>
-					               	<option name="email" value="audit7">Audit7 - Slađana Plavšić</option>
+					               	<option name="email" value="audit7">Audit7 - Klaudia Dobroka</option>
 					               	<option name="email" value="audit10">Audit - Not check user</option>
 					               	<option name="email" value="audit9">Planer</option>
 					               	<option name="email" value="admin">Admin</option>

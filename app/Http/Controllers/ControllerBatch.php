@@ -237,7 +237,7 @@ class ControllerBatch extends Controller {
 		// ));
 
 		// Live database
-		try {
+		// try {
 			
 			$inteos = DB::connection('sqlsrv2')->select(DB::raw("SELECT 	
 			/*[CNF_CartonBox].IntKeyPO, */
@@ -492,7 +492,7 @@ class ControllerBatch extends Controller {
 			}
 			
 			// Record Batch
-			try {
+			// try {
 				$table = new Batch;
 
 				$table->checked_by_name = $checked_by_name;
@@ -537,11 +537,11 @@ class ControllerBatch extends Controller {
 				$table->deleted = FALSE;
 						
 				$table->save();
-			}
-			catch (\Illuminate\Database\QueryException $e) {
-				$msg = "Problem to save batch in table";
-				return view('batch.error',compact('msg'));
-			}
+			// }
+			// catch (\Illuminate\Database\QueryException $e) {
+			// 	$msg = "Problem to save batch in table";
+			// 	return view('batch.error',compact('msg'));
+			// }
 
 			// Record Garmets
 			$batch_qty;
@@ -586,12 +586,12 @@ class ControllerBatch extends Controller {
 			
 			return Redirect::to('/batch/checkbarcode/'.$batch_name);
 
-		}
-		catch (\Illuminate\Database\QueryException $e) {
-			//return Redirect::to('/searchinteos');
-			$msg = "Problem to save batch in table. try agan.";
-			return view('batch.error',compact('msg'));
-		}	
+		// }
+		// catch (\Illuminate\Database\QueryException $e) {
+		// 	//return Redirect::to('/searchinteos');
+		// 	$msg = "Problem to save batch in table. try agan.";
+		// 	return view('batch.error',compact('msg'));
+		// }	
 	}
 
 	public function batch_checkbarcode ($name)

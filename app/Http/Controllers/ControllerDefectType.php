@@ -26,7 +26,7 @@ class ControllerDefectType extends Controller {
 		//$defect_levels = DefectLevel::all(['id', 'defect_level_name']);
 		$defect_levels = DefectLevel::orderBy('defect_level_id')->lists('defect_level_name','defect_level_id'); //pluck
 		//dd($defect_levels);
-		return view('defecttype.create', compact('defect_levels'));	
+		return view('defecttype.create', compact('defect_levels'));
 	}
 
 	public function insert(Request $request)

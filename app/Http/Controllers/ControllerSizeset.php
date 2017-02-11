@@ -83,7 +83,7 @@ class ControllerSizeset extends Controller {
 		$shipped = $input['shipped'];
 
 
-		try {
+		// try {
 			//$defect_level->id = $input['id'];
 			// $defect_level->defect_level_id = $input['sku'];
 			// $defect_level->defect_level_name = $input['defect_level_name'];
@@ -91,10 +91,10 @@ class ControllerSizeset extends Controller {
 			//$defect_level->pcs_rejected = $input['pcs_rejected'];
 					
 			// $defect_level->save();
-		}
-		catch (\Illuminate\Database\QueryException $e) {
-			return view('defectlevel.error');			
-		}
+		// }
+		// catch (\Illuminate\Database\QueryException $e) {
+		// 	return view('defectlevel.error');			
+		// }
 		
 		return Redirect::to('/sizeset');
 	}
