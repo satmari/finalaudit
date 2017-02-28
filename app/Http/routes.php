@@ -151,6 +151,7 @@ Route::get('/batch/acceptwithreservetion/{id}', 'ControllerBatch@acceptwithreser
 Route::get('/batch/reject/{id}', 'ControllerBatch@reject');
 Route::get('/batch/suspend/{id}', 'ControllerBatch@suspend');
 Route::get('/batch/not_checked/{id}', 'ControllerBatch@not_checked');
+Route::get('/history', 'ControllerBatch@history');
 
 // Batch BULK
 Route::get('/batch_bulk', 'ControllerBatch_bulk@index');

@@ -205,6 +205,16 @@ class ControllerBatch extends Controller {
 		}
 	}
 
+	public function history()
+	{
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT *,
+																(SELECT COUNT(garment.batch_name) FROM garment WHERE garment.batch_name = batch.batch_name AND garment.garment_status = 'Rejected') as RejectedCount
+																FROM batch 
+																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-7,GETDATE())
+																ORDER BY batch.id desc"));
+		return view('batch.indexhistory', compact('batch'));
+	}
+
 	public function searchinteos()
 	{
 		//
