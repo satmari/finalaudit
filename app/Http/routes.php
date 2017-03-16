@@ -179,6 +179,8 @@ Route::get('/cb_to_repair/edit/{id}', 'ControllerBatch@cb_to_repair_edit');
 Route::post('/cb_to_repair/reparied/{id}', 'ControllerBatch@cb_to_repair_repair');
 Route::get('/cb_to_repair/edit_date/{id}', 'ControllerBatch@cb_to_repair_edit_date');
 Route::post('/cb_to_repair/repair_date/{id}', 'ControllerBatch@cb_to_repair_repair_date');
+Route::get('/cb_to_repair/edit_comment/{id}', 'ControllerBatch@cb_to_repair_edit_comment');
+Route::post('/cb_to_repair/repair_comment/{id}', 'ControllerBatch@cb_to_repair_repair_comment');
 
 // Batch BULK to repar
 Route::get('/cb_to_repair_bulk', 'ControllerBatch_bulk@cb_to_repair_bulk');

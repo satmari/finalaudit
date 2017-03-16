@@ -46,13 +46,15 @@
                                         <td><b>Batch Name</b></td>
                                         <td>SKU</td>
                                         <td>PO</td>
+                                        <td>Flash</td>
                                         <td>Module</td>
                                         <td>CB barcode</td>
                                         <td>CB repaired</td>
                                         <td>Repairing Date</td>
+                                        <td>Comment</td>
                                         <td></td>
                                         <td></td>
-                                        <!-- <td></td> -->
+                                        <td></td>
                                     </tr>
                                 </thead>
                                 <tbody class="searchable">
@@ -62,11 +64,19 @@
                                         <td>{{ $req->batch_name }}</td>
                                         <td>{{ $req->sku }}</td>
                                         <td>{{ $req->po  }}</td>
+                                        <td>{{ $req->flash  }}</td>
                                         <td>{{ $req->module_name }}</td>
                                         <td>{{ $req->cartonbox }}</td>
                                         <td>{{ $req->repaired }}</td>
                                         {{-- <td>{{ date_format(strtotime($req->date_of_sending_to_repair),"d.m.Y ") }}</td> --}}
                                         <td>{{ substr($req->date_of_sending_to_repair, 0, 10) }}</td>
+                                        <td>{{ $req->repaired_comment }}</td>
+                                        
+                                        <td>
+                                        @if((Auth::check() && (Auth::user()->level() == 5)) OR (Auth::check() && (Auth::user()->level() == 1)))
+                                            <a href="{{ url('/cb_to_repair/edit_comment/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit Comment</a>
+                                        @endif
+                                        </td>
                                         <td>
                                         @if(Auth::check() && ((Auth::user()->level() == 2)))
                                             <a href="{{ url('/cb_to_repair/edit_date/'.$req->id) }}" class="btn btn-info btn-xs center-block">Repairing Date</a>

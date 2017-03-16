@@ -59,6 +59,17 @@ class CreateBatchTable extends Migration {
 			$table->boolean('deleted')->nullable();
 			
 			$table->timestamps();
+
+			// $table->string('repaired')->nullable();
+   			// $table->string('repaired_by_id')->nullable();
+			// $table->string('repaired_by_name')->nullable();
+			// $table->dateTime('repaired_date')->nullable();
+			// $table->dateTime('date_of_sending_to_repair')->nullable();
+
+			// $table->string('repaired_comment')->nullable();
+
+			// $table->string('flash')->nullable();
+
 		});
 	}
 

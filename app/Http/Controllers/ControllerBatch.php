@@ -349,6 +349,22 @@ class ControllerBatch extends Controller {
 	    	$po = $inteos_array[0]['POnum'];
 
 	  		//$brand = substr($po, 2, 1); // T;I;C
+
+	  		// NAV - PO information
+			$nav = DB::connection('sqlsrv4')->select(DB::raw("SELECT [Cutting Prod_ Line] as Flash
+				  FROM [Gordon_LIVE].[dbo].[GORDON\$Production Order]
+				  WHERE [No_] = :po"
+				), array(
+					'po' => $po
+			));
+
+			if (isset($nav[0]->Flash)) {
+				$flash = $nav[0]->Flash;
+			} else {
+				$flash = '';
+			}
+			
+
 			
 			$models = DB::connection('sqlsrv')->select(DB::raw("SELECT category_name,category_id,model_brand,mandatory_to_check FROM models WHERE model_name = '".$style."'"));
 			
@@ -545,6 +561,8 @@ class ControllerBatch extends Controller {
 				$table->batch_status = $batch_status;
 
 				$table->deleted = FALSE;
+
+				$table->flash = $flash;
 						
 				$table->save();
 			// }
@@ -915,6 +933,8 @@ class ControllerBatch extends Controller {
 															      ,[repaired]
 															      ,[repaired_by_name]
 															      ,[date_of_sending_to_repair]
+															      ,[repaired_comment]
+															      ,[flash]
 															  FROM [finalaudit].[dbo].[batch]
 															  WHERE batch_status = 'Reject' AND [repaired] = 'NO'
 															  ORDER BY [created_at] asc
@@ -965,6 +985,37 @@ class ControllerBatch extends Controller {
 			$batch->date_of_sending_to_repair = $date_of_sending_to_repair;
 
 			$batch->save();
+			return Redirect::to('/cb_to_repair');
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return Redirect::to('/cb_to_repair');
+		}
+	}
+
+	public function cb_to_repair_edit_comment($id)
+	{	
+		$batch = Batch::findOrFail($id);
+		return view('batch.cb_to_repair_update_comment', compact('batch'));
+	}
+
+	public function cb_to_repair_repair_comment($id, Request $request)
+	{
+		// $this->validate($request, ['comment' => 'required']);
+		$input = $request->all(); 
+
+		if (isset($input['comment'])) {
+			$comment = $input['comment'];	
+		} else {
+			$comment = '';
+		}
+
+		
+		try {
+			$batch = Batch::findOrFail($id);
+			$batch->repaired_comment = $comment;
+
+			$batch->save();
+
 			return Redirect::to('/cb_to_repair');
 		}
 		catch (\Illuminate\Database\QueryException $e) {
