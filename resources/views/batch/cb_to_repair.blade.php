@@ -43,18 +43,18 @@
                                 <thead>
                                     <tr>
                                         <!-- <td>Id</td> -->
-                                        <td><b>Batch Name</b></td>
-                                        <td>SKU</td>
-                                        <td>PO</td>
-                                        <td>Flash</td>
-                                        <td>Module</td>
-                                        <td>CB barcode</td>
-                                        <td>CB repaired</td>
-                                        <td>Repairing Date</td>
-                                        <td>Comment</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <th><b>Batch Name</b></th>
+                                        <th data-sortable="true">SKU</th>
+                                        <th>PO</th>
+                                        <th data-sortable="true">Flash</th>
+                                        <th data-sortable="true">Module</th>
+                                        <th>CB barcode</th>
+                                        <th>CB repaired</th>
+                                        <th>Repairing Date</th>
+                                        <th>Comment</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody class="searchable">
@@ -62,10 +62,10 @@
                                     <tr>
                                         {{-- <td>{{ $req->id }}</td> --}}
                                         <td>{{ $req->batch_name }}</td>
-                                        <td>{{ $req->sku }}</td>
+                                        <td >{{ $req->sku }}</td>
                                         <td>{{ $req->po  }}</td>
-                                        <td>{{ $req->flash  }}</td>
-                                        <td>{{ $req->module_name }}</td>
+                                        <td >{{ $req->flash  }}</td>
+                                        <td >{{ $req->module_name }}</td>
                                         <td>{{ $req->cartonbox }}</td>
                                         <td>{{ $req->repaired }}</td>
                                         {{-- <td>{{ date_format(strtotime($req->date_of_sending_to_repair),"d.m.Y ") }}</td> --}}

@@ -239,9 +239,9 @@ $(function() {
   	});
 
   	
-	// $('#sort').bootstrapTable({
+	$('#sort').bootstrapTable({
     
-	// });
+	});
 
 	//$('.table tr').each(function(){
   		

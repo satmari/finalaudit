@@ -47,8 +47,8 @@
                                         <!-- <td>Id</td> -->
                                         <td><b>Batch Name</b></td>
                                         <td>Cartonbox</td>
-                                        <td>SKU</td>
-                                        <td>Module</td>
+                                        <td data-sortable="true">SKU</td>
+                                        <td data-sortable="true">Module</td>
                                         <td>Batch qty</td>
                                         <td>Rejected Garments</td>
                                         <td>Final Status</td>
