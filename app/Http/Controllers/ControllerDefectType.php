@@ -26,13 +26,13 @@ class ControllerDefectType extends Controller {
 		//$defect_levels = DefectLevel::all(['id', 'defect_level_name']);
 		$defect_levels = DefectLevel::orderBy('defect_level_id')->lists('defect_level_name','defect_level_id'); //pluck
 		//dd($defect_levels);
-		return view('defecttype.create', compact('defect_levels'));	
+		return view('defecttype.create', compact('defect_levels'));
 	}
 
 	public function insert(Request $request)
 	{
 		//
-		$this->validate($request, ['defect_type_id'=>'required','defect_type_name'=>'required','defect_level_id'=>'required','defect_applay_to_all'=>'required']);
+		$this->validate($request, ['defect_type_id'=>'required','defect_type_name'=>'required','defect_level_id'=>'required','defect_applay_to_all'=>'required','visible'=>'required']);
 
 		$defect_type_input = $request->all(); 
 		
@@ -43,6 +43,7 @@ class ControllerDefectType extends Controller {
 		$defect_type_description = $defect_type_input['defect_type_description'];
 		$defect_type_description_1 = $defect_type_input['defect_type_description_1'];
 		$defect_type_description_2 = $defect_type_input['defect_type_description_2'];
+		$visible = $defect_type_input['visible'];
 
 		$defect_level_id = $defect_type_input['defect_level_id'];
 		$defect_level = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM defect_levels WHERE defect_level_id = '".$defect_level_id."'"));
@@ -70,6 +71,7 @@ class ControllerDefectType extends Controller {
 			$defect_type->defect_level_rejected = $defect_level_rejected;
 
 			$defect_type->defect_applay_to_all = $defect_applay_to_all;
+			$defect_type->visible = $visible;
 			
 			$defect_type->save();
 
@@ -124,13 +126,16 @@ class ControllerDefectType extends Controller {
 
 	public function update($id, Request $request) {
 		//
-		$this->validate($request, ['defect_type_id'=>'required','defect_type_name'=>'required','defect_level_id' => 'required','defect_applay_to_all' => 'required']);
+		$this->validate($request, ['defect_type_id'=>'required','defect_type_name'=>'required','defect_level_id' => 'required','defect_applay_to_all' => 'required','visible'=>'required']);
 
 		$defect_type = DefectType::findOrFail($id);		
 		//$defect_type->update($request->all());
 
 		$input = $request->all(); 
 		//dd($input);
+
+		$defect_level_id = $input['defect_level_id']; 
+		$defect_level = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM defect_levels WHERE defect_level_id = '".$defect_level_id."'"));
 
 		$defect_type_id = $input['defect_type_id'];
 		$defect_type_name = $input['defect_type_name'];
@@ -149,14 +154,12 @@ class ControllerDefectType extends Controller {
 			$defect_type->defect_type_description_1 = $input['defect_type_description_1'];
 			$defect_type->defect_type_description_2 = $input['defect_type_description_2'];
 			
-			$defect_level_id = $input['defect_level_id']; 
-			$defect_level = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM defect_levels WHERE defect_level_id = '".$defect_level_id."'"));
-
 			$defect_type->defect_level_id = $defect_level_id;
 			$defect_type->defect_level_name = $defect_level[0]->defect_level_name;
 			$defect_type->defect_level_rejected = $defect_level[0]->defect_level_rejected;
 
 			$defect_type->defect_applay_to_all = $input['defect_applay_to_all'];
+			$defect_type->visible = $input['visible'];
 						
 			$defect_type->save();
 		}
@@ -167,15 +170,14 @@ class ControllerDefectType extends Controller {
 		if ($defect_applay_to_all == "YES") {
 			
 			$categories = DB::connection('sqlsrv')->select(DB::raw("SELECT DISTINCT category_id,category_name FROM categories"));
-			//dd($categories);
+			// dd($categories);
 
 			foreach ($categories as $category) {
-				//dd($category->category_name);
+				// dd($category->category_id);
 
-				$exist = DB::table('defect_types')
-			                    ->where('category_id', '=', $category->category_id)
-			                    ->where('defect_type_id', '=', $defect_type_id)
-			                    ->count();
+				$exist = DB::table('category_defect_types')->where('category_id', '=', $category->category_id)->where('defect_type_id', '=', $defect_type_id)->count();
+				// dd($exist);
+
 				if ($exist == 0) {
 					try {
 						$categorydefecttype = new CategoryDefectType;

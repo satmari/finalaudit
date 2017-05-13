@@ -7,11 +7,13 @@
             <div class="panel panel-default">
 				<div class="panel-heading">Model Table</div>
 				
+                @if (Auth::check() && Auth::user()->level() != 3)
 				<div class="panel-body">
 					<div class="">
 						<a href="{{url('/model_new')}}" class="btn btn-default btn-info">Add new Model</a>
 					</div>
 				</div>
+                @endif
 
 				<div class="input-group"> <span class="input-group-addon">Filter</span>
                     <input id="filter" type="text" class="form-control" placeholder="Type here...">
@@ -43,24 +45,26 @@
                 -->
                     <thead>
                     	<tr>
-	                        <td>Id</td>
+	                        <!-- <td>Id</td> -->
 	                        <td><b>Model Name</b></td>
                             <td><b>Model Brand</b></td>
                             <td>Model Category</td>
-                            <td>Manadatory to check</td>
+                            <td>Mandatory to check</td>
                             <td></td>
                         </tr>
                     </thead>
                     <tbody class="searchable">
 			        @foreach ($model as $req)
                         <tr>
-                            <td>{{ $req->id }}</td>
+                            {{--<td>{{ $req->id }}</td>--}}
                             <td>{{ $req->model_name }}</td>
                             <td>{{ $req->model_brand }}</td>
                             <td>{{ $req->category_name }}</td>
                             <td>{{ $req->mandatory_to_check }}</td>
+                            @if (Auth::check() && Auth::user()->level() != 3)
+                                <td><a href="{{ url('/model/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
+                            @endif
                             
-                            <td><a href="{{ url('/model/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
                         </tr>
                     @endforeach
                     

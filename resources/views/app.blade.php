@@ -45,20 +45,6 @@
 					@if(Auth::check() && Auth::user()->level() == 1)
 						<li><a href="{{ url('/') }}">Home</a></li>
 					@endif
-
-					<!-- <li class="dropdown">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-			          <ul class="dropdown-menu">
-			            <li><a href="#">Action</a></li>
-			            <li><a href="#">Another action</a></li>
-			            <li><a href="#">Something else here</a></li>
-			            <li role="separator" class="divider"></li>
-			            <li><a href="#">Separated link</a></li>
-			            <li role="separator" class="divider"></li>
-			            <li><a href="#">One more separated link</a></li>
-			          </ul>
-			        </li> -->
-
 				</ul>
 				<ul class="nav navbar-nav">
 					<li>
@@ -90,40 +76,99 @@
 						    <li><a href="{{ url('/batch_t') }}">Batch Tezenis</a></li>
 						    <li><a href="{{ url('/batch_i') }}">Batch Intimissimi</a></li>
 						    <li><a href="{{ url('/batch_c') }}">Batch Calzedonia</a></li>
-						    
+
+						    <li role="separator" class="divider"></li>
+							<li><a href="{{ url('/activity_type') }}">Activity Types</a></li>
 						  </ul>
 						</div>
 					</li>
 				</ul>
 
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/batch') }}">Batch Table</a></li>
-				</ul>
+				@if(Auth::check() && ((Auth::user()->level() == 2)))
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/batch') }}">Batch Table</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/history') }}">Batch History</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/ecommerce_all') }}">E-commerce (All)</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/sizeset') }}">Size set <span class="badge"></span></a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/sizeset_all') }}">Size set (All)</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/activity') }}">Activities <span class="badge"></span></a></li>
+					</ul>
+					
+				@endif
 
-				<!-- <ul class="nav navbar-nav">
-					<li><a href="{{ url('/category') }}">Categories</a></li>
-				</ul>
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/defecttype') }}">Defect Types</a></li>
-				</ul>
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/categorydefecttype') }}">Category-DefectType Link</a></li>
-				</ul>
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/position') }}">Positions</a></li>
-				</ul>
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/categoryposition') }}">Category-Position Link</a></li>
-				</ul>
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/machine') }}">Machines</a></li>
-				</ul> -->
+				@if(Auth::check() && (Auth::user()->level() == 5))
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/ecommerce_all') }}">E-commerce (All)</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/sizeset') }}">Size set <span class="badge"></span></a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/sizeset_all') }}">Size set (All)</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/import') }}">Import files</a></li>
+					</ul>
+				@endif
+
+				@if(Auth::check() && ((Auth::user()->level() == 3)  OR (Auth::user()->level() == 1)))
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/batch') }}">Batch Table</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/ecommerce_all') }}">E-commerce (All)</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/sizeset') }}">Size set <span class="badge"></span></a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/sizeset_all') }}">Size set (All)</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/activity') }}">Activities <span class="badge"></span></a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/import') }}">Import files</a></li>
+					</ul>
+
+				@endif
+				
+				{{-- 
 				@if (Auth::guest())
 				@else
 				<ul class="nav navbar-nav navoperator">
 					<li>Operator: <big><b><span style="color:red">{{ Auth::user()->username }}</span></b></big></li>
 				</ul>
 				@endif
+				--}}
 				
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
@@ -131,7 +176,7 @@
 						<!-- <li><a href="{{ url('/auth/register') }}">Register</a></li> -->
 					@else
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Operator: <big><b><span style="color:red">{{ Auth::user()->username }}</span></b></big><span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
 							</ul>
@@ -189,9 +234,14 @@ $(function() {
 	});
 	$('#myTabs a:first').tab('show') // Select first tab
 
-	// $('#sort').bootstrapTable({
+	$(function() {
+    	$( "#datepicker" ).datepicker();
+  	});
+
+  	
+	$('#sort').bootstrapTable({
     
-	// });
+	});
 
 	//$('.table tr').each(function(){
   		

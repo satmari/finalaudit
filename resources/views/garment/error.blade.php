@@ -8,8 +8,7 @@
 				<div class="panel-heading">Error</div>
 				<h3 style="color:red;">Error!</h3>
 				<p style="color:red;">{{ $msg }}</p>
-				<p style="color:red;">{{-- $msg  Sorry you made mistake, try again.--}}</p>
-
+				
 				<div class="panel-body">
 					<div class="">
 						<a href="{{url('/garment')}}" class="btn btn-default center-block">Back</a>

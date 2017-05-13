@@ -8,7 +8,12 @@
                 <div class="row">
                     <div class="col-md-10">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Batch Table</div>
+                            <div class="panel-heading">Batch Table 
+                            @if (Auth::check() && (Auth::user()->level() == 3 OR Auth::user()->level() == 1))
+                            (Last 30 days)
+                            @endif
+
+                            </div>
                             <div class="input-group"> <span class="input-group-addon">Filter</span>
                                 <input id="filter" type="text" class="form-control" placeholder="Type here...">
                             </div>
@@ -41,8 +46,9 @@
                                     <tr>
                                         <!-- <td>Id</td> -->
                                         <td><b>Batch Name</b></td>
-                                        <td>SKU</td>
-                                        <td>Module</td>
+                                        <td>Cartonbox</td>
+                                        <td data-sortable="true">SKU</td>
+                                        <td data-sortable="true">Module</td>
                                         <td>Batch qty</td>
                                         <td>Rejected Garments</td>
                                         <td>Final Status</td>
@@ -55,6 +61,7 @@
                                     <tr>
                                         {{-- <td>{{ $req->id }}</td> --}}
                                         <td>{{ $req->batch_name }}</td>
+                                        <td>{{ $req->cartonbox }}</td>
                                         <td>{{ $req->sku }}</td>
                                         <td>{{ $req->module_name }}</td>
                                         <td>{{ $req->batch_qty }}</td>
@@ -70,11 +77,24 @@
                                            <td><span><b>{{ $req->batch_status }}</b></span></td>
                                           @endif 
                                         <td>
-                                        @if( $req->batch_status == "Pending" || $req->batch_status == "Suspend")
-                                            <a href="{{ url('/garment/by_batch/'.$req->batch_name) }}" class="btn btn-info btn-xs center-block">Edit</a>
+
+                                        @if(Auth::check() && Auth::user()->level() == 2)
+                                            @if( $req->batch_status == "Pending" || $req->batch_status == "Suspend")
+                                                @if( $activity == 0)                                                    
+                                                    <a href="{{ url('/garment/by_batch/'.$req->batch_name) }}" class="btn btn-info btn-xs center-block">Edit</a>
+                                                @else
+                                                    <a href="{{ url('/garment/by_batch/'.$req->batch_name) }}" class="btn btn-info btn-xs center-block" disabled>Edit</a>
+                                                @endif
+                                            @endif
                                         @endif
+
+                                        @if(Auth::check() && Auth::user()->level() == 1)
+                                            <a href="{{ url('/batch/edit_status/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit Status</a>
+                                        @endif
+
                                         </td>
-                                        {{-- <td><a href="{{ url('/batch/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td> --}}
+
+                                        
                                     </tr>
                                 @endforeach
                                 
@@ -88,14 +108,21 @@
                       
 
                         @if(Auth::check() && Auth::user()->level() == 2)
-                        <div class="panel panel-default">
-                        <div class="panel-heading">Options</div>
-                            <div class="panel-body">
-                                <div class="">
-                                    <a href="{{url('/searchinteos')}}" class="btn btn-default btn-info side-button"><br>New Batch</a>
+                                <div class="panel panel-default">
+                                <div class="panel-heading">Options</div>
+                                    <div class="panel-body">
+                                        @if( $activity == 0)
+                                        <div class="">
+                                            <a href="{{url('/searchinteos')}}" class="btn btn-default btn-info side-button"><br>New Batch</a>
+                                        </div>
+                                        @else
+                                            <p style="color:red;"><b>Extra activity is active</b></p>
+                                            <div class="">
+                                                <a href="{{url('/searchinteos')}}" class="btn btn-default btn-info side-button" disabled><br>New Batch</a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
                         @endif
 
 

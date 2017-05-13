@@ -12,7 +12,13 @@
 
 				<div class="panel-body">
 					<div class="">
-						<a href="{{url('/batch')}}" class="btn btn-default center-block">Back</a>
+						
+						@if (Auth::check() && Auth::user()->level() == 4)
+    						<a href="{{url('/')}}" class="btn btn-default center-block">Continue</a>
+						@else
+    						<a href="{{url('/batch')}}" class="btn btn-default center-block">Continue</a>
+						@endif
+
 					</div>
 				</div>
 			</div>

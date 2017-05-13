@@ -24,7 +24,7 @@ class CreateDefectTable extends Migration {
 
 			$table->string('defect_type_id');
 			$table->string('defect_type_name');
-			$table->string('defect_level_id'); 
+			$table->string('defect_level_id');
 			$table->string('defect_level_name');
 			$table->string('defect_level_rejected', 3);
 

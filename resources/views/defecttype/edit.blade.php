@@ -58,6 +58,11 @@
 							{!! Form::select('defect_applay_to_all', array(''=>'','NO'=>'NO','YES'=>'YES'), null, array('class' => 'form-control')); !!} 
 						</div>
 
+						<div class="panel-body">
+						<p><b>Visible: </b></p>
+							{!! Form::select('visible', array('YES'=>'YES','NO'=>'NO'), null, array('class' => 'form-control')); !!} 
+						</div>
+
 					<div class="panel-body">
 						{!! Form::submit('Save', ['class' => 'btn btn-success center-block']) !!}
 					</div>

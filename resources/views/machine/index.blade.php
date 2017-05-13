@@ -6,12 +6,14 @@
         <div class="text-center">
             <div class="panel panel-default">
 				<div class="panel-heading">Machine Table</div>
-				
+
+				@if (Auth::check() && Auth::user()->level() != 3)
 				<div class="panel-body">
 					<div class="">
 						<a href="{{url('/machine_new')}}" class="btn btn-default btn-info">Add new Machine</a>
 					</div>
 				</div>
+                @endif
 
 				<div class="input-group"> <span class="input-group-addon">Filter</span>
                     <input id="filter" type="text" class="form-control" placeholder="Type here...">
@@ -43,7 +45,7 @@
                 -->
                     <thead>
                     	<tr>
-	                        <td>Id</td>
+	                        <!-- <td>Id</td> -->
 	                        <td><b>Machine Id</b></td>
 	                        <td><b>Machine Type</b></td>
 	                        <td>Machine Description</td>
@@ -53,11 +55,13 @@
                     <tbody class="searchable">
 			        @foreach ($machines as $req)
                         <tr>
-                            <td>{{ $req->id }}</td>
+                            {{--<td>{{ $req->id }}</td>--}}
                             <td>{{ $req->machine_id }}</td>
                             <td>{{ $req->machine_type }}</td>
                             <td>{{ $req->machine_description }}</td>
-                            <td><a href="{{ url('/machine/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
+                            @if (Auth::check() && Auth::user()->level() != 3)
+                                <td><a href="{{ url('/machine/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
+                            @endif
                         </tr>
                     @endforeach
                     

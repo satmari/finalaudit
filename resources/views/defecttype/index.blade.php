@@ -7,11 +7,13 @@
             <div class="panel panel-default">
 				<div class="panel-heading">Defect Type Table</div>
 				
+                @if (Auth::check() && Auth::user()->level() != 3)
 				<div class="panel-body">
 					<div class="">
 						<a href="{{url('/defecttype_new')}}" class="btn btn-default btn-info">Add new Defect Type</a>
 					</div>
 				</div>
+                @endif
 
 				<div class="input-group"> <span class="input-group-addon">Filter</span>
                     <input id="filter" type="text" class="form-control" placeholder="Type here...">
@@ -43,7 +45,7 @@
                 -->
                     <thead>
                     	<tr>
-	                        <td>Id</td>
+	                        <!-- <td>Id</td> -->
 	                        <td><b>Defect Type Id</b></td>
 	                        <td><b>Defect Type Name</b></td>
                             <td>Defect Type Name 1</td>
@@ -54,13 +56,14 @@
                             <td style="color:green;">Defect Level Name</td>
                             <td style="color:green;">Pcs Rejected</td>
                             <td style="color:palevioletred;">Defect Applay to all</td>
+                            <td style="color:blueviolet;">Visible</td>
                             <td></td>
                         </tr>
                     </thead>
                     <tbody class="searchable">
 			        @foreach ($defect_types as $req)
                         <tr>
-                            <td>{{ $req->id }}</td>
+                            {{--<td>{{ $req->id }}</td>--}}
                             <td>{{ $req->defect_type_id }}</td>
                             <td>{{ $req->defect_type_name }}</td>
                             <td>{{ $req->defect_type_name_1 }}</td>
@@ -71,7 +74,12 @@
                             <td>{{ $req->defect_level_name }}</td>
                             <td>{{ $req->defect_level_rejected }}</td>
                             <td>{{ $req->defect_applay_to_all }}</td>
-                            <td><a href="{{ url('/defecttype/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
+                            <td>{{ $req->visible }}</td>
+
+                            @if (Auth::check() && Auth::user()->level() != 3)
+                                <td><a href="{{ url('/defecttype/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
+                            @endif
+                            
                         </tr>
                     @endforeach
                     

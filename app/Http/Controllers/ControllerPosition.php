@@ -42,8 +42,6 @@ class ControllerPosition extends Controller {
 		
 		$position_applay_to_all = $input['position_applay_to_all'];
 
-		$link_type = "AUTOMATIC";
-
 		try {
 			$position = new Position;
 
@@ -64,6 +62,8 @@ class ControllerPosition extends Controller {
 			return view('position.error');			
 		}
 
+		$link_type = "AUTOMATIC";
+
 		if ($position_applay_to_all == "YES") {
 			
 			$categories = DB::connection('sqlsrv')->select(DB::raw("SELECT DISTINCT category_id,category_name FROM categories"));
@@ -76,6 +76,7 @@ class ControllerPosition extends Controller {
 			                    ->where('category_id', '=', $category->category_id)
 			                    ->where('position_id', '=', $position_id)
 			                    ->count();
+			                    
 				if ($exist == 0) {
 					try {
 						$categoryposition = new CategoryPosition;

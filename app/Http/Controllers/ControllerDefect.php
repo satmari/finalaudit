@@ -84,7 +84,7 @@ class ControllerDefect extends Controller {
 			INNER JOIN categories as c ON c.category_id = cdt.category_id
 			INNER JOIN garment as g ON g.category_id = c.category_id
 
-			WHERE g.garment_name = '".$garment_name."'
+			WHERE dt.visible = 'YES' and g.garment_name = '".$garment_name."'
 
 			GROUP BY
 			g.id,

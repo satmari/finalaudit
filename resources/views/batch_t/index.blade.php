@@ -5,13 +5,15 @@
     <div class="row vertical-center-row">
         <div class="text-center">
             <div class="panel panel-default">
-                <div class="panel-heading">Batch Tezenis Table</div>
+                <div class="panel-heading">Batch <b>Tezenis</b> Table</div>
                 
+                @if (Auth::check() && Auth::user()->level() != 3)
                 <div class="panel-body">
                     <div class="">
                         <a href="{{url('/batch_t_new')}}" class="btn btn-default btn-info">Add Batch</a>
                     </div>
                 </div>
+                @endif
 
                 <div class="input-group"> <span class="input-group-addon">Filter</span>
                     <input id="filter" type="text" class="form-control" placeholder="Type here...">
@@ -43,7 +45,7 @@
                 -->
                     <thead>
                         <tr>
-                            <td>Id</td>
+                            <!-- <td>Id</td> -->
                             <td><b>Batch Id</b></td>
                             <td><b>Pcs Box MIN</b></td>
                             <td><b>Pcs Box MAX</b></td>
@@ -55,13 +57,15 @@
                     <tbody class="searchable">
                     @foreach ($batch_t as $req)
                         <tr>
-                            <td>{{ $req->id }}</td>
+                            {{--<td>{{ $req->id }}</td>--}}
                             <td>{{ $req->batch_id }}</td>
                             <td>{{ $req->batch_min }}</td>
                             <td>{{ $req->batch_max }}</td>
                             <td>{{ $req->batch_check }}</td>
                             <td>{{ $req->batch_reject }}</td>
-                            <td><a href="{{ url('/batch_t/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
+                            @if (Auth::check() && Auth::user()->level() != 3)
+                                <td><a href="{{ url('/batch_t/edit/'.$req->id) }}" class="btn btn-info btn-xs center-block">Edit</a></td>
+                            @endif
                         </tr>
                     @endforeach
                     

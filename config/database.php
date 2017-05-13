@@ -93,6 +93,24 @@ return [
 			'prefix'   => '',
 		],
 
+		'sqlsrv3' => [
+			'driver'   => 'sqlsrv',
+			'host'     => env('DB_HOST3', 'localhost'),
+			'database' => env('DB_DATABASE3', 'forge'),
+			'username' => env('DB_USERNAME3', 'forge'),
+			'password' => env('DB_PASSWORD3', ''),
+			'prefix'   => '',
+		],
+
+		'sqlsrv4' => [
+			'driver'   => 'sqlsrv',
+			'host'     => env('DB_HOST4', 'localhost'),
+			'database' => env('DB_DATABASE4', 'forge'),
+			'username' => env('DB_USERNAME4', 'forge'),
+			'password' => env('DB_PASSWORD4', ''),
+			'prefix'   => '',
+		],
+
 	],
 
 	/*

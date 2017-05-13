@@ -33,14 +33,14 @@ class CreateBatchTable extends Migration {
 
 			$table->string('module_name');
 			
-			$table->string('cartonbox');
-			$table->integer('cartonbox_qty');
-			$table->integer('cartonbox_produced');
-			$table->string('cartonbox_status');
-			$table->dateTime('cartonbox_start_date');
-			$table->dateTime('cartonbox_finish_date');
+			$table->string('cartonbox');						// must be nullable for bulk
+			$table->integer('cartonbox_qty')->nullable();
+			$table->integer('cartonbox_produced');					
+			$table->string('cartonbox_status')->nullable();
+			$table->dateTime('cartonbox_start_date')->nullable();
+			$table->dateTime('cartonbox_finish_date')->nullable();
 
-			$table->string('bluebox');
+			$table->string('bluebox')->nullable();
 			
 			$table->integer('batch_qty');
 			$table->string('batch_brand_id');
@@ -50,8 +50,8 @@ class CreateBatchTable extends Migration {
 
 			$table->string('checked_by_id');
 			$table->string('checked_by_name');
-						
-			$table->integer('rejected'); //exist but ?
+		
+			$table->integer('rejected')->nullable(); // exist but ?
 			$table->string('batch_status');
 			$table->string('batch_barcode_match')->nullable();
 			$table->string('batch_barcode')->nullable();
@@ -59,6 +59,17 @@ class CreateBatchTable extends Migration {
 			$table->boolean('deleted')->nullable();
 			
 			$table->timestamps();
+
+			// $table->string('repaired')->nullable();
+   			// $table->string('repaired_by_id')->nullable();
+			// $table->string('repaired_by_name')->nullable();
+			// $table->dateTime('repaired_date')->nullable();
+			// $table->dateTime('date_of_sending_to_repair')->nullable();
+
+			// $table->string('repaired_comment')->nullable();
+
+			// $table->string('flash')->nullable();
+
 		});
 	}
 

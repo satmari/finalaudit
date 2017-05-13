@@ -6,6 +6,12 @@ use Bican\Roles\Models\Permission;
 use Illuminate\Support\Facades\Redirect;
 use Auth;
 
+use App\Sizeset;
+use App\Ecommerce;
+use DB;
+
+use Session;
+
 class HomeController extends Controller {
 
 	/*
@@ -54,6 +60,40 @@ class HomeController extends Controller {
 
 		// return redirect('/batch');
 		
+		if ($user->is('operator')) { 
+
+			$ecommerce = DB::table('ecommerce')
+			                    ->where('scanned', '=', 'YES')
+			                    ->where('collected', '=', 'NO')
+			                    ->count();
+
+			$sizeset = DB::table('sizeset')
+			                    ->where('scanned', '=', 'YES')
+			                    ->where('collected', '=', 'NO')
+			                    ->count();
+
+		} else if ($user->is('planer')) { 
+			
+			$ecommerce = DB::table('ecommerce')
+			                    ->where('collected', '=', 'YES')
+			                    ->where('shipped', '=', 'NO')
+			                    ->count();
+
+			$sizeset = DB::table('sizeset')
+			                    ->where('collected', '=', 'YES')
+			                    ->where('shipped', '=', 'NO')
+			                    ->count();
+
+		} else {
+
+			$sizeset = NULL;
+			$ecommerce = NULL;
+
+		}
+		
+
+		// dd($sizeset);
+		
 		if ($user->is('admin')) { 
 		    // if user has at least one role
 		    $msg = "Hi admin";
@@ -61,14 +101,27 @@ class HomeController extends Controller {
 		if ($user->is('operator')) { 
 		    // if user has at least one role
 		    $msg = "Hi statistica operator";
-		    return redirect('/batch');
+		    //Get from session-----------------
+
+		    return redirect('/batch')/*->with(compact('sizeset','ecommerce'))*/;
+		}
+		if ($user->is('notcheck')) { 
+		    // if user has at least one role
+		    $msg = "Hi Not check operator";
+		    return redirect('/notcheck')/*->with(compact('sizeset','ecommerce'))*/;
+		}
+		if ($user->is('planer')) { 
+		    // if user has at least one role
+		    $msg = "Hi Planer";
+		    //return redirect('/');
 		}
 		if ($user->is('guest')) { 
 		    // if user has at least one role
 		    $msg = "Hi Guest";
 		    //return redirect('/');
 		}
-		
+	
+		// return redirect('/home')->with(compact('msg'/*,'sizeset','ecommerce'*/));
 		return view('home', compact('msg'));
 	}
 
