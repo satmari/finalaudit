@@ -143,8 +143,9 @@ Route::get('/batch/delete/{id}', 'ControllerBatch@delete');
 Route::post('/batch/delete/{id}', 'ControllerBatch@delete');
 Route::get('/searchinteos', 'ControllerBatch@searchinteos');
 Route::post('/searchinteos_store', 'ControllerBatch@searchinteos_store');
-Route::get('/batch/checkbarcode/{name}', 'ControllerBatch@batch_checkbarcode');
+Route::get('/batch/checkbarcode/{name}/{module}', 'ControllerBatch@batch_checkbarcode'); //updated 2017.07.13
 Route::post('/batch/checkbarcode_store', 'ControllerBatch@batch_checkbarcode_store');
+Route::post('/batch/count_box_store', 'ControllerBatch@count_box_store');
 Route::get('/batch/confirm/{id}', 'ControllerBatch@confirm');
 Route::get('/batch/accept/{id}', 'ControllerBatch@accept');
 Route::get('/batch/acceptwithreservetion/{id}', 'ControllerBatch@acceptwithreservetion');
@@ -265,7 +266,6 @@ Route::post('/activity_type/update/{id}', 'ControllerActivity@activity_type_upda
 Route::post('/activity_type/delete/{id}', 'ControllerActivity@activity_type_delete');
 
 // Producer
-
 Route::get('/producer', 'ControllerProducer@index');
 Route::get('/producer_new', 'ControllerProducer@create');
 Route::post('/producer_insert', 'ControllerProducer@insert');
@@ -273,6 +273,15 @@ Route::get('/producer/edit/{id}', 'ControllerProducer@edit');
 Route::post('/producer/{id}', 'ControllerProducer@update');
 Route::get('/producer/delete/{id}', 'ControllerProducer@delete');
 Route::post('/producer/delete/{id}', 'ControllerProducer@delete');
+
+//Modules
+Route::get('/module', 'ControllerModule@index');
+Route::get('/module_new', 'ControllerModule@create');
+Route::post('/module_insert', 'ControllerModule@insert');
+Route::get('/module/edit/{id}', 'ControllerModule@edit');
+Route::post('/module/{id}', 'ControllerModule@update');
+Route::get('/module/delete/{id}', 'ControllerModule@delete');
+Route::post('/module/delete/{id}', 'ControllerModule@delete');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

@@ -11,6 +11,7 @@
                 <input type="hidden" name="_token" id="_token" value="<?php echo csrf_token(); ?>">
 
                 {!! Form::hidden('batch_name', $name, ['class' => 'form-control']) !!}
+                {!! Form::hidden('module', $module, ['class' => 'form-control']) !!}
 
                 <div class="panel-body">
                     {!! Form::input('barcode', 'barcode', null, ['class' => 'form-control', 'autofocus' => 'autofocus']) !!}

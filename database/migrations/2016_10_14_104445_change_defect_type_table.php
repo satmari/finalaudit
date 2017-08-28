@@ -19,7 +19,7 @@ class ChangeDefectTypeTable extends Migration {
 		Schema::table('defect_types', function ($table) {
 
 			
-			$table->string('visible')->nullable(); //add
+			// $table->string('visible')->nullable(); //add
 			//$table->dropColumn('defect_type_status'); //drop
 			// $table->string('name', 50)->nullable()->change(); //change
    			//$table->renameColumn('defect_type_status', 'visible'); //rename

@@ -23,6 +23,8 @@ class ChangeBatchTable extends Migration {
 			// $table->string('name', 50)->nullable()->change(); //change
    			// $table->renameColumn('from', 'to'); //rename
 
+   			// $table->integer('count_qty')->nullable(); //add
+
 
 		});
 	}

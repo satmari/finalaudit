@@ -79,6 +79,9 @@
 
 						    <li role="separator" class="divider"></li>
 							<li><a href="{{ url('/activity_type') }}">Activity Types</a></li>
+
+							<li role="separator" class="divider"></li>
+							<li><a href="{{ url('/module') }}">Modules</a></li>
 						  </ul>
 						</div>
 					</li>

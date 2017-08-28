@@ -30,15 +30,17 @@
 								<!-- <label>Select operator</label> -->
 					            <select id = "email" class="form-control" name="email">
 					            	<option name="email" value=""></option>
-					               	{{--<option name="email" value="audit1">Audit1 - Zeljka Majoros</option>--}}
+					               	{{--<option name="email" value="audit1">Audit1 - Zeljka MAjoros</option>--}}
 					               	<option name="email" value="audit2">Audit2 - Biljana Zivanovic</option>
 					               	<option name="email" value="audit3">Audit3 - Klementina Nikolajevic</option>
-					               	<option name="email" value="audit4">Audit4 - Jelena Seritovic</option>
+					               	<option name="email" value="audit4">Audit4 - Sandra Petrekanic</option>
 					               	<option name="email" value="audit5">Audit5 - Dragana Zivanovic</option>
-					               	<option name="email" value="audit6">Audit6 - Dajana Ivankovic</option>
+					               	{{-- <option name="email" value="audit6">Audit6 - Dajana Ivankovic</option> --}}
 					               	<option name="email" value="audit7">Audit7 - Dijana Matkovic</option>
 					               	<option name="email" value="audit8">Audit8 - Silvana Bajic</option>
-					               	<option name="email" value="audit10">Audit - Not check user</option>
+					               	<option name="email" value="audit11">Audit9 - Sladjana Marinkovic</option>
+					               	{{-- <option name="email" value="audit12">Audit10 - Svetlana Lukic</option> --}}
+					               	<option name="email" value="audit10">AuditX - Not check user</option>
 					               	<option name="email" value="audit9">Planer</option>
 					               	<option name="email" value="admin">Admin</option>
 					               	<option name="email" value="guest">Guest</option>

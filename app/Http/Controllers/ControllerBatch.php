@@ -378,7 +378,7 @@ class ControllerBatch extends Controller {
 	        	return view('batch.error', compact('msg'));
 	    	}
 
-	    	/* If User NotCheck */
+	    	/* If User in NotCheck */
 	    	if ($mandatory_to_check == "YES" AND $name_id == '10') {
 	    		$msg = 'This Style '.$style.' is MANDATORY to check, OVAJ MODEL SE MORA PREGLEDATI!!! ';
 	        	return view('batch.error', compact('msg'));
@@ -609,10 +609,10 @@ class ControllerBatch extends Controller {
 			//return Redirect::to('/garment/by_batch/'.$batch_name);
 
 			if ($msg1 != ''){
-				return view('batch.sample', compact('msg1','batch_name'));
+				return view('batch.sample', compact('msg1','batch_name','module_name'));
 			}
 			
-			return Redirect::to('/batch/checkbarcode/'.$batch_name);
+			return Redirect::to('/batch/checkbarcode/'.$batch_name.'/'.$module_name);
 
 		// }
 		// catch (\Illuminate\Database\QueryException $e) {
@@ -622,13 +622,13 @@ class ControllerBatch extends Controller {
 		// }	
 	}
 
-	public function batch_checkbarcode ($name)
+	public function batch_checkbarcode ($name, $module)
 	{
 		try {
-			return view('batch.checkbarcode',compact('name'));
+			return view('batch.checkbarcode',compact('name','module'));
 		}
 		catch (\Illuminate\Database\QueryException $e) {
-			return view('batch.checkbarcode',compact('name'));
+			return view('batch.checkbarcode',compact('name','module'));
 		}
 	}
 
@@ -641,7 +641,10 @@ class ControllerBatch extends Controller {
 		// dd($input);
 
 		$batch_name = $input['batch_name'];
+		$module = $input['module'];
 		$barcode_insert = $input['barcode'];
+
+		$msg1 = '';
 
 		try {
 
@@ -687,7 +690,6 @@ class ControllerBatch extends Controller {
 			$b->batch_barcode_match = $barcode_match;
 			$b->batch_barcode = $barcode_indb;
 			$b->save();
-
 		}
 		catch (\Illuminate\Database\QueryException $e) {
 			$msg = "Barcode not found in cartiglio database, PROIZVOD NE POSTOJI U Cartiglio BAZI!!! (Javi IT sektoru)";
@@ -695,16 +697,67 @@ class ControllerBatch extends Controller {
 		}
 
 		if ($barcode_insert != $barcode_indb) {
-			$msg = "Barcode not match with barcode from cartiglio database, BARKODOVI SE NE SLAZU! ";
-			return view('batch.error_continue',compact('msg','batch_name'));
+			$msg1 = "Barcode not match with barcode from cartiglio database, BARKODOVI SE NE SLAZU! ";
+			// return view('batch.error_continue',compact('msg','batch_name'));
 		}
+
+		// Check if mandatory to check box quantity
+		
+		$count_box = DB::connection('sqlsrv')->select(DB::raw("SELECT count_box FROM modules WHERE module = '".$module."'"));
+		//dd($count_box[0]->count_box);
+
 
 		// user NotCheck
 		if ($batch_user == '10') {
+
 			return Redirect::to('/notcheck/'.$batch_name);
+
 		} else {
-			return Redirect::to('/garment/by_batch/'.$batch_name);	
+
+			if ($count_box[0]->count_box == "YES") {
+				
+				return view('batch.count_box',compact('batch_name','msg1'));
+				
+			} else {
+
+				if ($msg1 == "") {
+					return Redirect::to('/garment/by_batch/'.$batch_name);
+
+				} else {
+					return view('batch.error_continue',compact('msg1','batch_name'));			
+				}
+			}
 		}
+
+	}
+
+	public function count_box_store(Request $request) {
+		//
+		$this->validate($request, ['batch_name' => 'required', 'count_box' => 'required']);
+
+		$input = $request->all(); 
+		// dd($input);
+
+		$batch_name = $input['batch_name'];
+		$count_box = $input['count_box'];
+
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT id FROM batch WHERE batch_name = '".$batch_name."'"));
+		// dd($batch[0]->id);
+
+		try {
+
+			$b = Batch::findOrFail($batch[0]->id);
+			$b->count_qty = $count_box;
+			
+			$b->save();
+
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			$msg = "Problem to find batch and save count_box";
+			return view('batch.error',compact('msg'));
+		}
+
+		return Redirect::to('/garment/by_batch/'.$batch_name);	
 	}
 
 	public function inside()
