@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Size-set table</div>
+                            <div class="panel-heading">Size-set table - filtered by user credentials</div>
                             <div class="input-group"> <span class="input-group-addon">Filter</span>
                                 <input id="filter" type="text" class="form-control" placeholder="Type here...">
                             </div>

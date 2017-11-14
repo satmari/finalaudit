@@ -230,6 +230,10 @@ $(function() {
         }).show();
 	});
 
+	$('#sort').bootstrapTable({
+    
+	});
+
 
 	$('#myTabs a').click(function (e) {
   		e.preventDefault()
@@ -242,9 +246,7 @@ $(function() {
   	});
 
   	
-	$('#sort').bootstrapTable({
-    
-	});
+
 
 	//$('.table tr').each(function(){
   		

@@ -8,12 +8,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Size-set table</div>
+                            <div class="panel-heading">Size-set table - Full table</div>
                             <div class="input-group"> <span class="input-group-addon">Filter</span>
                                 <input id="filter" type="text" class="form-control" placeholder="Type here...">
                             </div>
 
                             <table class="table table-striped table-bordered" id="sort" 
+                            data-show-export="true"
+                            data-export-types="['excel']"
                             >
                             <!--
                             data-show-export="true"
@@ -39,27 +41,27 @@
                             -->
                                 <thead>
                                     <tr>
-                                        <!-- <td>Id</td> -->
-                                        <!-- <td>SKU</td> -->
-                                        <td>Style</td>
-                                        <td>Color</td>
-                                        <td>Size</td>
-                                        <!-- <td>Color Desc</td> -->
+                                        <!-- <th>Id</th> -->
+                                        <!-- <th>SKU</th> -->
+                                        <th>Style</th>
+                                        <th>Color</th>
+                                        <th>Size</th>
+                                        <!-- <th>Color Desc</th> -->
 
-                                        <td style="background-color: aliceblue;">Scanned</td>
-                                        <td style="background-color: aliceblue;">Date</td>
-                                        <td style="background-color: aliceblue;">User</td>
+                                        <th style="background-color: aliceblue;">Scanned</th>
+                                        <th style="background-color: aliceblue;">Date</th>
+                                        <th style="background-color: aliceblue;">User</th>
 
-                                        <td style="background-color: antiquewhite;">Collected</td>
-                                        <td style="background-color: antiquewhite;">Date</td>
-                                        <td style="background-color: antiquewhite;">User</td>
+                                        <th style="background-color: antiquewhite;">Collected</th>
+                                        <th style="background-color: antiquewhite;">Date</th>
+                                        <th style="background-color: antiquewhite;">User</th>
 
-                                        <td style="background-color: floralwhite;">Shipped</td>
-                                        <td style="background-color: floralwhite;">Date</td>
-                                        <td style="background-color: floralwhite;">User</td>
-                                        <td>Comment</td>
-                                        <td></td>
-                                        <!-- <td></td> -->
+                                        <th style="background-color: floralwhite;">Shipped</th>
+                                        <th style="background-color: floralwhite;">Date</th>
+                                        <th style="background-color: floralwhite;">User</th>
+                                        <th>Comment</th>
+                                        <th></th>
+                                        <!-- <th></th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="searchable">
