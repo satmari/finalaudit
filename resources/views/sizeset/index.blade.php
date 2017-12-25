@@ -47,11 +47,11 @@
                                         <!-- <td>Color Desc</td> -->
 
                                         <td style="background-color: aliceblue;">Scanned</td>
-                                        <!-- <td style="background-color: aliceblue;">Date</td> -->
+                                        <td style="background-color: aliceblue;">Date</td>
                                         <!-- <td style="background-color: aliceblue;">User</td> -->
 
                                         <td style="background-color: antiquewhite;">Collected</td>
-                                        <!-- <td style="background-color: antiquewhite;">Date</td> -->
+                                        <td style="background-color: antiquewhite;">Date</td>
                                         <!-- <td style="background-color: antiquewhite;">User</td> -->
 
                                         <td style="background-color: floralwhite;">Shipped</td>
@@ -74,11 +74,11 @@
                                         <!-- <td>{{-- {{ $req->color_desc }} --}}</td> -->
 
                                         <td style="background-color: aliceblue;">{{ $req->scanned }}</td>
-                                        <!-- <td style="background-color: aliceblue;">{{-- {{ $req->scanned_date }} --}}</td> -->
+                                        <td style="background-color: aliceblue;">{{ $req->scanned_date }}</td>
                                         <!-- <td style="background-color: aliceblue;">{{-- {{ $req->scanned_user }} --}}</td> -->
 
                                         <td style="background-color: antiquewhite;">{{ $req->collected }}</td>
-                                        <!-- <td style="background-color: antiquewhite;">{{-- {{ $req->collected_date }} --}}</td> -->
+                                        <td style="background-color: antiquewhite;">{{ $req->collected_date }}</td>
                                         <!-- <td style="background-color: antiquewhite;">{{-- {{ $req->collected_user }} --}}</td> -->
 
                                         <td style="background-color: floralwhite;">{{ $req->shipped }}</td>
