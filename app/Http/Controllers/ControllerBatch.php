@@ -210,7 +210,7 @@ class ControllerBatch extends Controller {
 		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT *,
 																(SELECT COUNT(garment.batch_name) FROM garment WHERE garment.batch_name = batch.batch_name AND garment.garment_status = 'Rejected') as RejectedCount
 																FROM batch 
-																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-7,GETDATE())
+																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-20,GETDATE())
 																ORDER BY batch.id desc"));
 		return view('batch.indexhistory', compact('batch'));
 	}
@@ -439,7 +439,7 @@ class ControllerBatch extends Controller {
 			//$batch_status = "Pending"; // new batch // no Pending anymore
 			$batch_status = "Suspend"; // new batch have Suspend status
 
-			// Samples Ecommerce
+			///////// Samples Ecommerce ///////////
 			$ecommerce_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM ecommerce WHERE style = '".$style."' AND size = '".$size."' AND color = '".$color."' "));
 			
 			if ($ecommerce_sample) {
@@ -469,7 +469,7 @@ class ControllerBatch extends Controller {
 			}
 			
 
-			// Samples Setsize
+			///////// Samples Sizeset ///////////
 			$sizeset_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' "));
 			
 			if ($sizeset_sample) {
@@ -508,17 +508,17 @@ class ControllerBatch extends Controller {
 						//$msg2 = '';
 					}
 					catch (\Illuminate\Database\QueryException $e) {
-						// $msg = "Problem to save in sizeset table";
-						// return view('batch.error',compact('msg'));
+						$msg = "Problem to save in sizeset table";
+						return view('batch.error',compact('msg'));
 					}
 				}
 			} else {
-				$msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
+				// $msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
 		 	 	// return view('batch.error', compact('msg'));
 			}
 			
 			// Record Batch
-			// try {
+			try {
 				$table = new Batch;
 
 				$table->checked_by_name = $checked_by_name;
@@ -565,11 +565,11 @@ class ControllerBatch extends Controller {
 				$table->flash = $flash;
 						
 				$table->save();
-			// }
-			// catch (\Illuminate\Database\QueryException $e) {
-			// 	$msg = "Problem to save batch in table";
-			// 	return view('batch.error',compact('msg'));
-			// }
+			}
+			catch (\Illuminate\Database\QueryException $e) {
+				$msg = "Problem to save batch in table";
+				return view('batch.error',compact('msg'));
+			}
 
 			// Record Garmets
 			$batch_qty;

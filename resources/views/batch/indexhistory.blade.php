@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Batch Table (Last 7 days)
+                            <div class="panel-heading">Batch Table (Last 20 days)
                             
                             </div>
                             <div class="input-group"> <span class="input-group-addon">Filter</span>
