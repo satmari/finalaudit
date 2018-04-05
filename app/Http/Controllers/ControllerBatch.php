@@ -53,6 +53,20 @@ class ControllerBatch extends Controller {
 			                    ->where('batch_status', '!=', 'Not checked')
 			                    ->count();
 				// dd($total_checked_batch);
+			    $total_checked_batch_tezenis = DB::table('batch')
+			                    ->where('batch_date', '=', $batch_date)
+			                    ->where('deleted', '=', 0)
+			                    ->where('brand', '=', 'TEZENIS')
+			                    ->where('batch_status', '!=', 'Not checked')
+			                    ->count();
+				// dd($total_checked_batch_tezenis);
+			    $total_checked_batch_inti = DB::table('batch')
+			                    ->where('batch_date', '=', $batch_date)
+			                    ->where('deleted', '=', 0)
+			                    ->where('brand', '=', 'INTIMISSIMI')
+			                    ->where('batch_status', '!=', 'Not checked')
+			                    ->count();
+				// dd($total_checked_batch_inti);
 
 			    $total_accept_batch = DB::table('batch')
 			                    ->where('batch_date', '=', $batch_date)
@@ -96,7 +110,7 @@ class ControllerBatch extends Controller {
 			                    ->sum('batch_qty');
 				// dd($total_garments_not_today);	                    
 
-				return view('batch.index', compact('batch','total_checked_batch','total_accept_batch','total_reject_batch','total_suspend_batch', 'total_not_checked_batch', 'total_garments_today','total_garments_not_today'));
+				return view('batch.index', compact('batch','total_checked_batch','total_accept_batch','total_reject_batch','total_suspend_batch', 'total_not_checked_batch', 'total_garments_today','total_garments_not_today','total_checked_batch_tezenis','total_checked_batch_inti'));
 			}
 			if ($user->is('operator')) { 
 			    
@@ -140,6 +154,23 @@ class ControllerBatch extends Controller {
 			                    ->where('deleted', '=', 0)
 			                    ->count();
 				// dd($total_checked_batch);
+
+			    $total_checked_batch_tezenis = DB::table('batch')
+			                    ->where('batch_date', '=', $batch_date)
+			                    ->where('batch_user', '=', $batch_user)
+			                    ->where('deleted', '=', 0)
+			                    ->where('brand', '=', 'TEZENIS')
+			                    ->where('batch_status', '!=', 'Not checked')
+			                    ->count();
+				// dd($total_checked_batch_tezenis);
+			    $total_checked_batch_inti = DB::table('batch')
+			                    ->where('batch_date', '=', $batch_date)
+			                    ->where('batch_user', '=', $batch_user)
+			                    ->where('deleted', '=', 0)
+			                    ->where('brand', '=', 'INTIMISSIMI')
+			                    ->where('batch_status', '!=', 'Not checked')
+			                    ->count();
+				// dd($total_checked_batch_inti);
 
 			    $total_accept_batch = DB::table('batch')
 			                    ->where('batch_date', '=', $batch_date)
@@ -195,7 +226,7 @@ class ControllerBatch extends Controller {
 			                    ->count();
 			    //dd($activity);
 
-				return view('batch.index', compact('batch','total_checked_batch','total_accept_batch','total_reject_batch','total_suspend_batch', 'total_not_checked_batch', 'total_garments_today','total_garments_not_today','activity'));
+				return view('batch.index', compact('batch','total_checked_batch','total_accept_batch','total_reject_batch','total_suspend_batch', 'total_not_checked_batch', 'total_garments_today','total_garments_not_today','activity','total_checked_batch_tezenis','total_checked_batch_inti'));
 			}
 			
 			
@@ -479,6 +510,7 @@ class ControllerBatch extends Controller {
 
 				//if color in table is not set
 				if ($scanned_color == '' OR $scanned_color == NULL) {
+					
 					$sizeset_sample_style = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' "));	
 
 					//set color for each style
@@ -494,7 +526,7 @@ class ControllerBatch extends Controller {
 						}
 					}
 				}
-				//if sytle + size scanned
+				//if sytle + size already scanned
 				if ($scanned == 'NO') {
 
 					try {
@@ -512,12 +544,13 @@ class ControllerBatch extends Controller {
 						return view('batch.error',compact('msg'));
 					}
 				}
+
 			} else {
 				// $msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
 		 	 	// return view('batch.error', compact('msg'));
 			}
 			
-			// Record Batch
+			///////// Record Batch ////////////
 			try {
 				$table = new Batch;
 

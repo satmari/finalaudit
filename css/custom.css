@@ -1,8 +1,8 @@
 body {
 	font-size: 12px !important;
 
-    background-image: url("images/8.png");
-    background-repeat: repeat;
+    /*background-image: url("images/8.png");
+    background-repeat: repeat;*/
     /*background: url("images/subtle_white_feathers.png") repeat;*/
     /*background: url("images/12.png") repeat;*/
     /*background: url("images/cr/bug.jpg") no-repeat center center fixed !important;
@@ -11,11 +11,11 @@ body {
     -o-background-size: cover;      
     background-size: cover !important; */ 
 
-    /*background: url("images/8m-1.jpg") no-repeat center center fixed;
+    background: url("images/2.jpg") no-repeat center center fixed;
     -webkit-background-size: cover; 
     -moz-background-size: cover;    
     -o-background-size: cover;      
-    background-size: cover; */
+    background-size: cover; 
 
 }
 .nav/*bar {

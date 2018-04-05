@@ -134,6 +134,14 @@
                                         <td>Total checked <b>today</b></td>
                                         <td>{{ $total_checked_batch }}</td>
                                    </tr>
+                                   <tr style="border-bottom:2px solid #555; !important">
+                                        <td>Total checked <b>today</b> TEZENIS</td>
+                                        <td>{{ $total_checked_batch_tezenis }}</td>
+                                   </tr>
+                                   <tr style="border-bottom:2px solid #555; !important">
+                                        <td>Total checked <b>today</b> INTIMISSIMI</td>
+                                        <td>{{ $total_checked_batch_inti }}</td>
+                                   </tr>
                                     <tr>
                                         <td>Accepted</td>
                                         <td>{{ $total_accept_batch }}</td>
