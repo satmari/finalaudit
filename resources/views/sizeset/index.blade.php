@@ -56,7 +56,8 @@
 
                                         <td style="background-color: floralwhite;">Shipped</td>
                                         <td style="background-color: floralwhite;">Date</td>
-                                        <!-- <td style="background-color: floralwhite;">User</td> -->
+
+                                        <td>Style scanned</td>
 
                                         <td>Comment</td>
                                         <td></td>
@@ -83,7 +84,8 @@
 
                                         <td style="background-color: floralwhite;">{{ $req->shipped }}</td>
                                         <td style="background-color: floralwhite;">{{ substr($req->shipped_date, 0, 19) }}</td>
-                                        <!-- <td style="background-color: floralwhite;">{{-- {{ $req->shipped_user }} --}}</td> -->
+
+                                        <td> {{ $req->style_scanned }} </td>
 
                                         <td>{{ $req->temp_coloumn }}</td>
                                         

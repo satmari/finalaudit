@@ -101,6 +101,7 @@ return array(
     'Carbon\\CarbonInterval' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
     'ChangeBatchTable' => $baseDir . '/database/migrations/2016_09_07_214316_change_batch_table.php',
     'ChangeDefectTypeTable' => $baseDir . '/database/migrations/2016_10_14_104445_change_defect_type_table.php',
+    'ChangeSizesetTable' => $baseDir . '/database/migrations/2018_04_24_124025_change_sizeset_table.php',
     'ClassPreloader\\Application' => $vendorDir . '/classpreloader/classpreloader/src/Application.php',
     'ClassPreloader\\ClassList' => $vendorDir . '/classpreloader/classpreloader/src/ClassList.php',
     'ClassPreloader\\ClassLoader' => $vendorDir . '/classpreloader/classpreloader/src/ClassLoader.php',

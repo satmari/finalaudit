@@ -501,56 +501,153 @@ class ControllerBatch extends Controller {
 			
 
 			///////// Samples Sizeset ///////////
-			$sizeset_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' "));
 			
-			if ($sizeset_sample) {
+			if ($brand == "TEZENIS") {
 
-				$scanned_color = $sizeset_sample[0]->color;
-				$scanned = $sizeset_sample[0]->scanned;
+				$sizeset_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' "));
 
-				//if color in table is not set
-				if ($scanned_color == '' OR $scanned_color == NULL) {
-					
-					$sizeset_sample_style = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' "));	
+				if ($sizeset_sample) {
 
-					//set color for each style
-					foreach ($sizeset_sample_style as $size_line) {
+					$scanned_color = $sizeset_sample[0]->color;
+					$scanned = $sizeset_sample[0]->scanned;
+
+					//if color in table is not set
+					if ($scanned_color == '' OR $scanned_color == NULL) {
+						
+						$sizeset_sample_style = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' "));	
+
+						//set color for each style
+						foreach ($sizeset_sample_style as $size_line) {
+							try {
+								$sizeset = Sizeset::findOrFail($size_line->id);
+								$sizeset->color = $color;
+								$sizeset->save();
+							}
+							catch (\Illuminate\Database\QueryException $e) {
+								// $msg = "Problem to save in sizeset table";
+								// return view('batch.error',compact('msg'));
+							}
+						}
+					}
+					//if sytle + size already scanned
+					if ($scanned == 'NO') {
+
 						try {
-							$sizeset = Sizeset::findOrFail($size_line->id);
-							$sizeset->color = $color;
+							$sizeset = Sizeset::findOrFail($sizeset_sample[0]->id);
+							$sizeset->scanned = 'YES';
+							$sizeset->scanned_date = date("Y-m-d H:i:s");
+							$sizeset->scanned_user = Auth::user()->username;
 							$sizeset->save();
+							
+							$msg1 = $msg1.' This Style scanned first time, should be taken for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
+							//$msg2 = '';
 						}
 						catch (\Illuminate\Database\QueryException $e) {
-							// $msg = "Problem to save in sizeset table";
-							// return view('batch.error',compact('msg'));
+							$msg = "Problem to save in sizeset table";
+							return view('batch.error',compact('msg'));
 						}
 					}
-				}
-				//if sytle + size already scanned
-				if ($scanned == 'NO') {
 
-					try {
-						$sizeset = Sizeset::findOrFail($sizeset_sample[0]->id);
-						$sizeset->scanned = 'YES';
-						$sizeset->scanned_date = date("Y-m-d H:i:s");
-						$sizeset->scanned_user = Auth::user()->username;
-						$sizeset->save();
-						
-						$msg1 = $msg1.' This Item scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
-						//$msg2 = '';
-					}
-					catch (\Illuminate\Database\QueryException $e) {
-						$msg = "Problem to save in sizeset table";
-						return view('batch.error',compact('msg'));
-					}
-				}
-
-			} else {
+				} else {
 				// $msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
 		 	 	// return view('batch.error', compact('msg'));
+				}
+
+			} elseif (($brand == "INTIMISSIMI") OR ($brand == "CALZEDONIA")) {
+
+				$sizeset_sample_one = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' AND color = '".$color."' "));
+				// dd($sizeset_sample_one);
+
+				//if sytle + size already scanned
+				if ($sizeset_sample_one) {
+
+					if ($sizeset_sample_one[0]->scanned == 'NO') {
+						// dd("NO");
+
+						try {
+							$sizeset = Sizeset::findOrFail($sizeset_sample_one[0]->id);
+							$sizeset->scanned = 'YES';
+							$sizeset->scanned_date = date("Y-m-d H:i:s");
+							$sizeset->scanned_user = Auth::user()->username;
+							// $sizeset->style_scanned = $style_scanned;
+							$sizeset->save();
+							
+							// $msg1 = $msg1.' This Item scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
+							//$msg2 = '';
+						}
+						catch (\Illuminate\Database\QueryException $e) {
+							$msg = "Problem to save in sizeset table";
+							return view('batch.error',compact('msg'));
+						}
+						// dd("test");
+
+
+						// dd($sizeset_sample_one[0]->style_scanned);
+
+						if (is_null($sizeset_sample_one[0]->style_scanned)) {
+
+							// dd("is null");
+							
+							$style_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' "));
+
+							// dd($style_sample);
+
+							$new = 0;
+							foreach ($style_sample as $line) {
+								if ($line->style_scanned == 'NEW'){
+									$new = $new + 1;
+								}
+							}
+
+							// dd($new);
+
+							if ($new > 0) {
+
+								$style_color_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND color = '".$color."' "));
+
+								foreach ($style_color_sample as $line) {
+									$sizeset = Sizeset::findOrFail($line->id);
+									$sizeset->style_scanned = 'OLD';
+									$sizeset->save();
+								}
+
+								// $msg1 = $msg1.' This Item + color scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
+
+							} else {
+
+								$style_color_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND color = '".$color."' "));
+
+
+
+								foreach ($style_color_sample as $line) {
+									$sizeset = Sizeset::findOrFail($line->id);
+									$sizeset->style_scanned = 'NEW';
+									$sizeset->save();
+								}
+
+								// $msg1 = $msg1.' This Item + color scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
+							}
+						}
+					}
+
+				} else {
+				// $msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
+		 	 	// return view('batch.error', compact('msg'));
+				}
+			
+				// if ($style_scanned == 'NEW') {
+				// 	$msg1 = $msg1.' This Style scanned very first time for all colors (NEW), should be taken for sizeset! PROIZVOD PRVI PUT SKENIRAN U SVIM VARIJANTAMA (NEW) I ODABRAN ZA UZORAK SIZESET!';
+				// } else {
+				// 	$msg1 = $msg1.' This Style + Color scanned first time (OLD), should be taken for sizeset! PROIZVOD PRVI PUT SKENIRAN, ALI JE VEC SKENIRAN U DRUGOJ VARIJANTI (OLD) I ODABRAN ZA UZORAK SIZESET!';
+				// }
+				
 			}
+
+
+			// dd("record");
 			
 			///////// Record Batch ////////////
+
 			try {
 				$table = new Batch;
 
@@ -603,6 +700,7 @@ class ControllerBatch extends Controller {
 				$msg = "Problem to save batch in table";
 				return view('batch.error',compact('msg'));
 			}
+			
 
 			// Record Garmets
 			$batch_qty;
