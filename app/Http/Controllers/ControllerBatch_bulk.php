@@ -358,6 +358,19 @@ class ControllerBatch_bulk extends Controller {
     	$variant = $inteos_array[0]['Variant Code'];
     	$sku = $style." ".$variant;
     	//list($color, $size) = explode('-', $variant);
+		
+		$brlinija = substr_count($variant,"-");
+		// echo $brlinija." ";
+
+		if ($brlinija == 2)
+		{
+			list($color, $size1, $size2) = explode('-', $variant);
+			$size = $size1."-".$size2;
+			// echo $color." ".$size;	
+		} else {
+			list($color, $size) = explode('-', $variant);
+			// echo $color." ".$size;
+		}
 
     	$cartonbox = $cbcode;
 	    // $cartonbox_qty = $inteos_array[0]['BoxQuant'];
@@ -448,7 +461,21 @@ class ControllerBatch_bulk extends Controller {
     	$style = $inteos_array[0]['StyCod'];
     	$variant = $inteos_array[0]['Variant'];
     	$sku = $style." ".$variant;
-    	list($color, $size) = explode('-', $variant);
+
+    	$brlinija = substr_count($variant,"-");
+		// echo $brlinija." ";
+
+		if ($brlinija == 2)
+		{
+			list($color, $size1, $size2) = explode('-', $variant);
+			$size = $size1."-".$size2;
+			// echo $color." ".$size;	
+		} else {
+			list($color, $size) = explode('-', $variant);
+			// echo $color." ".$size;
+		}
+
+    	// list($color, $size) = explode('-', $variant);
 
     	$cartonbox = $cbcode;
 	    // $cartonbox_qty = $inteos_array[0]['BoxQuant'];

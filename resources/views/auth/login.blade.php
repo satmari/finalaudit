@@ -43,6 +43,8 @@
 					               	<option name="email" value="audit13">Audit10 - Bernadet Tot</option>
 					               	<option name="email" value="audit14">Audit11 - Cila Curnovic</option>
 					               	<option name="email" value="audit15">Audit12 - Sanja Mujovic</option>
+					               	<option name="email" value="audit16">Audit13 - Stanka Juric</option>
+					               	<option name="email" value="audit17">Audit14 - Marina Madzarevic</option>
 					               	<option name="email" value="audit10">AuditX - Not check user</option>
 					               	<option name="email" value="audit9">Planer</option>
 					               	<option name="email" value="admin">Admin</option>

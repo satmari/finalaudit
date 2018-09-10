@@ -52,8 +52,12 @@
                                         <td>Batch qty</td>
                                         <td>Rejected Garments</td>
                                         <td>Final Status</td>
+
+                                        @if(Auth::check() && Auth::user()->level() == 1)
+                                            <td>Checked by</td>
+                                        @endif
+                                        
                                         <td></td>
-                                        <!-- <td></td> -->
                                     </tr>
                                 </thead>
                                 <tbody class="searchable">
@@ -76,6 +80,10 @@
                                           @else 
                                            <td><span><b>{{ $req->batch_status }}</b></span></td>
                                           @endif 
+
+                                        @if(Auth::check() && Auth::user()->level() == 1)
+                                            <td>{{ $req->checked_by_name }}</td>
+                                        @endif
                                         <td>
 
                                         @if(Auth::check() && Auth::user()->level() == 2)
@@ -93,6 +101,7 @@
                                         @endif
 
                                         </td>
+
 
                                         
                                     </tr>

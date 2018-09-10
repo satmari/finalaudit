@@ -113,7 +113,7 @@
 						<li><a href="{{ url('/activity') }}">Activities <span class="badge"></span></a></li>
 					</ul>
 					<ul class="nav navbar-nav">
-						<li><a href="https://outlook.office365.com" target="_blank"><b>WebMail</b> <span class="badge"></span></a></li>
+						<li><a href="https://portal.office.com" target="_blank"><b>WebMail</b> <span class="badge"></span></a></li>
 					</ul>
 					
 				@endif

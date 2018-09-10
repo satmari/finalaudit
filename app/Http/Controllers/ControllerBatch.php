@@ -375,8 +375,21 @@ class ControllerBatch extends Controller {
 	    	$style = $inteos_array[0]['StyCod'];
 	    	$variant = $inteos_array[0]['Variant'];
 	    	$sku = $style." ".$variant;
-	    	list($color, $size) = explode('-', $variant);
 
+	    	$brlinija = substr_count($variant,"-");
+			// echo $brlinija." ";
+
+			if ($brlinija == 2)
+			{
+				list($color, $size1, $size2) = explode('-', $variant);
+				$size = $size1."-".$size2;
+				// echo $color." ".$size;	
+			} else {
+				list($color, $size) = explode('-', $variant);
+				// echo $color." ".$size;
+			}
+
+	    	// list($color, $size) = explode('-', $variant);
 	    	$po = $inteos_array[0]['POnum'];
 
 	  		//$brand = substr($po, 2, 1); // T;I;C
@@ -495,8 +508,8 @@ class ControllerBatch extends Controller {
 				}
 				
 			} else {
-				$msg = 'This SKU not exist in Ecommerce table, OVAJ SKU NE POSTOJI U E-commerce TABELI !!!';
-		      	//return view('batch.error', compact('msg'));
+				$msg = 'This SKU not exist in Ecommerce table, OVAJ SKU NE POSTOJI U E-commerce TABELI !!! Zovi Marijanu.';
+		      	// return view('batch.error', compact('msg'));
 			}
 			
 
@@ -631,8 +644,8 @@ class ControllerBatch extends Controller {
 					}
 
 				} else {
-				// $msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
-		 	 	// return view('batch.error', compact('msg'));
+					$msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!! Zovi Marijanu.';
+			 	 	return view('batch.error', compact('msg'));
 				}
 			
 				// if ($style_scanned == 'NEW') {
@@ -859,7 +872,6 @@ class ControllerBatch extends Controller {
 				}
 			}
 		}
-
 	}
 
 	public function count_box_store(Request $request) {
@@ -1038,27 +1050,34 @@ class ControllerBatch extends Controller {
 
 	public function not_checked($id) 
 	{
-		try {
+		// try {
 			// Add status to batch
 			$batch = Batch::findOrFail($id);
 			$batch->batch_status = "Not checked";
 			$batch->save();
 
+			// $batch = DB::connection('sqlsrv')->select(DB::raw("UPDATE batch SET batch_status = 'Not checked' WHERE id = '".$id."' "));
+
 			// Add status to garments inside batch
-			
-			$garments = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM garment WHERE batch_name = '".$batch->batch_name."'"));
+			$garments = DB::connection('sqlsrv')->select(DB::raw("SELECT id FROM garment WHERE batch_name = '".$batch->batch_name."'"));
 			foreach ($garments as $garment) {
 				$gar = Garment::findOrFail($garment->id);
 				$gar->garment_status = "Not checked";
 				$gar->save();
 			}
+			
 
-			$defects = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM defect WHERE batch_name = '".$batch->batch_name."'"));
+			//$garments = DB::connection('sqlsrv')->select(DB::raw("UPDATE garment SET garment_status = 'Not checked'	WHERE batch_name = '".$batch->batch_name."' "));
+
+			$defects = DB::connection('sqlsrv')->select(DB::raw("SELECT id FROM defect WHERE batch_name = '".$batch->batch_name."'"));
 			foreach ($defects as $defect) {
 				$def = Defect::findOrFail($defect->id);
 				$def->deleted = TRUE;
 				$def->save();
 			}
+
+			//$defects = DB::connection('sqlsrv')->select(DB::raw("UPDATE defect SET deleted = 'TRUE'	WHERE batch_name = '".$batch->batch_name."'"));
+
 			
 			// user NotCheck
 			$name_id = Auth::user()->name_id;
@@ -1068,10 +1087,11 @@ class ControllerBatch extends Controller {
 			} else {
 				return Redirect::to('/batch/');
 			}
-		}
-		catch (\Illuminate\Database\QueryException $e) {
-			return Redirect::to('/batch/not_checked/'.$id);
-		}
+
+		// }
+		// catch (\Illuminate\Database\QueryException $e) {
+			// return Redirect::to('/batch/not_checked/'.$id);
+		// }
 	}
 
 	public function delete($id) 
