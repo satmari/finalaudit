@@ -568,7 +568,7 @@ class ControllerBatch extends Controller {
 
 			} elseif (($brand == "INTIMISSIMI") OR ($brand == "CALZEDONIA")) {
 
-				$sizeset_sample_one = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' AND color = '".$color."' "));
+				$sizeset_sample_one = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' AND color = '".$color."' order by ID asc"));
 				// dd($sizeset_sample_one);
 
 				//if sytle + size already scanned

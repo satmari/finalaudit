@@ -92,14 +92,35 @@ class ControllerGarment extends Controller {
 
 			//if you check barcode from cartiglio database
 			$garment = DB::connection('sqlsrv')->select(DB::raw("SELECT id,sku FROM garment WHERE garment_name = '".$garment_name."'"));		
-			$sku = $garment[0]->sku; //1MC875 019-M
+			$sku = $garment[0]->sku; 
+
+			//1MC875 019-M
+			//1MC875 019-S/M
+			//1MC875 019-11-12
 
 			$a = explode(' ', $sku);
 			$style = $a[0];
-			$b = explode('-', $a[1]);
-			$color = $b[0];
-			$size = $b[1];
+
+			$brlinija = substr_count($a[1],"-");
+			
+			if ($brlinija == 2)
+			{
+				list($color, $size1, $size2) = explode('-', $a[1]);
+				$size = $size1."-".$size2;
+				// echo $color." ".$size;	
+			} else {
+				list($color, $size) = explode('-', $a[1]);
+				// echo $color." ".$size;
+			}
+
+			// $b = explode('-', $a[1]);
+
+			// $color = $b[0];
+			// $size = $b[1];
+			
 			$size_to_search = str_replace("/","-",$size);
+			
+			// var_dump($size_to_search);
 
 			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND Tgl_ITA = '".$size_to_search."'"));
 			$barcode_indb = $barcode[0]->Cod_Bar;
