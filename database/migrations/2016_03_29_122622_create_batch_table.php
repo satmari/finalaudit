@@ -69,6 +69,8 @@ class CreateBatchTable extends Migration {
 			// $table->string('flash')->nullable();
 
 			// $table->integer('count_qty')->nullable(); //added 2017.07.12
+			// $table->string('audit')->nullable(); //added 2019.06.06 
+			// $table->string('bonus_relevant')->nullable(); //added 2019.06.07
 
 			$table->timestamps();
 

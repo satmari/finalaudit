@@ -80,7 +80,8 @@
                             <div class="row">
                                 <br><br>
                               <div class="col-md-6">
-                                <a href="{{url('/batch/accept/'.$batchid->id)}}" class="btn btn-success final-button"><br>Accept</a>
+                                <a href="{{url('/batch/zamena/'.$batchid->id)}}" class="btn btn-info final-button"><br>Zamena</a>
+                                <span>Budite sigurni da imate komada za zamenu</span>
                               </div>
                               <!-- <div class="col-md-4">
                                 <a href="{{url('/batch/acceptwithreservetion/'.$batchid->id)}}" class="btn btn-info btn-lg">Accept with reservation</a>

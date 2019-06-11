@@ -429,6 +429,15 @@ class ControllerBatch extends Controller {
 	    	}
 
 	    	$module_name = $inteos_array[0]['ModNam'];
+
+	    	// Bonus relevant
+	    	// if ( (substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K')) {
+	    	if (substr($module_name, 0, 1) == 'S') {
+	    		$bonus_relevant = NULL;	
+	    	} else {
+	    		$bonus_relevant = 'IGNORE';
+	    	}
+	    	
 			
 	    	$cartonbox = $cbcode;	//$inteos_array[0]['BoxNum'];
 	    	$cartonbox_qty = $inteos_array[0]['BoxQuant'];
@@ -455,7 +464,11 @@ class ControllerBatch extends Controller {
 	    	$timestamp_f = strtotime($cartonbox_finish_date_tmp);
 			$cartonbox_finish_date = date('Y-m-d H:i:s', $timestamp_f);
 
-	    	$bluebox = $inteos_array[0]['BlueBoxNum']; 	
+			if (isset($inteos_array[0]['BlueBoxNum']) OR $inteos_array[0]['BlueBoxNum'] != NULL) {
+				$bluebox = $inteos_array[0]['BlueBoxNum'];
+			}	else {
+				$bluebox = 'NULL';
+			}
 	    	
 	    	if ($brand == "TEZENIS") {
 				$batch_brand = "batch_ts";
@@ -661,7 +674,7 @@ class ControllerBatch extends Controller {
 			
 			///////// Record Batch ////////////
 
-			try {
+			// try {
 				$table = new Batch;
 
 				$table->checked_by_name = $checked_by_name;
@@ -706,13 +719,14 @@ class ControllerBatch extends Controller {
 				$table->deleted = FALSE;
 
 				$table->flash = $flash;
+				$table->bonus_relevant = $bonus_relevant;
 						
 				$table->save();
-			}
-			catch (\Illuminate\Database\QueryException $e) {
-				$msg = "Problem to save batch in table";
-				return view('batch.error',compact('msg'));
-			}
+			// }
+			// catch (\Illuminate\Database\QueryException $e) {
+			// 	$msg = "Problem to save batch in table";
+			// 	return view('batch.error',compact('msg'));
+			// }
 			
 
 			// Record Garmets
@@ -756,7 +770,8 @@ class ControllerBatch extends Controller {
 				return view('batch.sample', compact('msg1','batch_name','module_name'));
 			}
 			
-			return Redirect::to('/batch/checkbarcode/'.$batch_name.'/'.$module_name);
+			return Redirect::to('/scan_cont/'.$batch_name.'/'.$module_name); // New scan QC operator
+			// return Redirect::to('/batch/checkbarcode/'.$batch_name.'/'.$module_name); //Old
 
 		// }
 		// catch (\Illuminate\Database\QueryException $e) {
@@ -764,6 +779,70 @@ class ControllerBatch extends Controller {
 		// 	$msg = "Problem to save batch in table. try agan.";
 		// 	return view('batch.error',compact('msg'));
 		// }	
+	}
+
+	public function scan_cont($name, $module) {
+
+		try {
+			return view('batch.scan_cont',compact('name','module'));
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return view('batch.scan_cont',compact('name','module'));
+		}
+	
+	}
+
+	public function scan_cont_post(Request $request) {
+
+		$this->validate($request, ['batch_name' => 'required', 'audit' => 'required']);
+
+		$input = $request->all(); 
+		// dd($input);
+
+		$batch_name = $input['batch_name'];
+		$module_name = $input['module'];
+		$audit = $input['audit'];
+
+		$msg1 = '';
+
+		$audit_check = strpos($audit,"R");
+		if ($audit_check == 0) {
+			// dd("First");
+		} else {
+			// dd("not first");
+			$msg = "Barcode of audit or RS label is not correct!";
+			return view('batch.error',compact('msg'));
+		}
+
+		// $audit_check = explode("R", $audit);
+		// dd($audit_check);
+		// dd(strlen($audit_check[1]));
+		// if (strlen($audit_check[1]) == 5) {
+			
+		// 	// continue
+		// } else {
+		// 	$msg = "Barcode of audit is not correct!";
+		// 	return view('batch.error',compact('msg'));
+		// }
+		// // dd($audit);
+
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT id FROM batch WHERE batch_name = '".$batch_name."'"));
+		// dd($batch[0]->id);
+
+		try {
+
+			$b = Batch::findOrFail($batch[0]->id);
+			$b->audit = $audit;
+			$b->save();
+
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			$msg = "Problem to save audit in batch";
+			return view('batch.error',compact('msg'));
+		}
+
+		return Redirect::to('/batch/checkbarcode/'.$batch_name.'/'.$module_name);
+	
 	}
 
 	public function batch_checkbarcode ($name, $module)
@@ -858,10 +937,21 @@ class ControllerBatch extends Controller {
 
 		} else {
 
-			if ($count_box[0]->count_box == "YES") {
-				
-				return view('batch.count_box',compact('batch_name','msg1'));
-				
+			if (isset($count_box[0])) {
+
+				if ($count_box[0]->count_box == "YES") {
+					
+					return view('batch.count_box',compact('batch_name','msg1'));
+					
+				} else {
+
+					if ($msg1 == "") {
+						return Redirect::to('/garment/by_batch/'.$batch_name);
+
+					} else {
+						return view('batch.error_continue',compact('msg1','batch_name'));			
+					}
+				}
 			} else {
 
 				if ($msg1 == "") {
@@ -946,6 +1036,7 @@ class ControllerBatch extends Controller {
 				$batch_brand_max_reject = $b->batch_brand_max_reject;
 			}
 
+			/*
 			if ($batch_brand_max_reject < $total_rejected_garments) {
 				$suggestion = "Reject";
 				return view('batch.confirm',compact('batch','batchid','garments','defects','total_defects','total_rejected_defects','total_rejected_garments','suggestion'));
@@ -953,6 +1044,29 @@ class ControllerBatch extends Controller {
 				$suggestion = "Accept";
 				return Redirect::to('/batch/accept/'.$batchid->id);
 			}
+			*/
+
+			
+			if ($total_rejected_garments == 0) {
+
+				// dd("Accept");
+				$suggestion = "Accept";
+				return Redirect::to('/batch/accept/'.$batchid->id);
+
+			} else if ($batch_brand_max_reject >= $total_rejected_garments) {
+
+				// dd("Zamena");
+				$suggestion = "Zamena";
+				return Redirect::to('/batch/zamena/'.$batchid->id);
+
+			} else {
+
+				// dd("Reject");
+				$suggestion = "Reject";
+				return view('batch.confirm',compact('batch','batchid','garments','defects','total_defects','total_rejected_defects','total_rejected_garments','suggestion'));
+
+			}
+			
 		}
 		catch (\Illuminate\Database\QueryException $e) {
 			return Redirect::to('/batch/');
@@ -964,11 +1078,26 @@ class ControllerBatch extends Controller {
 		try {
 			$batch = Batch::findOrFail($id);
 			$batch->batch_status = "Accept";
+			$batch->bonus_relevant = "IGNORE";
 			$batch->save();
 			return Redirect::to('/batch/');
 		}
 		catch (\Illuminate\Database\QueryException $e) {
 			return Redirect::to('/batch/accept/'.$id);
+		}
+	}
+
+	public function zamena($id) 
+	{
+		try {
+			$batch = Batch::findOrFail($id);
+			$batch->batch_status = "Zamena";
+			
+			$batch->save();
+			return Redirect::to('/batch/');
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return Redirect::to('/batch/zamena/'.$id);
 		}
 	}
 
@@ -1027,6 +1156,7 @@ class ControllerBatch extends Controller {
 			$batch = Batch::findOrFail($id);
 			$batch->batch_status = "Reject";
 			$batch->repaired = "NO";
+			// $batch->bonus_relevant = NULL;
 			$batch->save();
 			return Redirect::to('/batch/');
 		}
@@ -1226,4 +1356,107 @@ class ControllerBatch extends Controller {
 			return Redirect::to('/cb_to_repair');
 		}
 	}
+
+	
+	public function bonus_relevant_page()
+	{	
+		return view('batch.bonus_relevant_page');
+	}
+
+	public function bonus_relevant_page_access(Request $request)
+	{	
+		$input = $request->all();
+		$pass = $input['pass'];
+
+		// dd($pass);
+		if ($pass == '1234') {
+			return Redirect::to('bonus_relevant');
+		} 
+	}
+	
+
+	public function bonus_relevant_table()
+	{	
+		// dd("test");
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT [id]
+															      ,[batch_name]
+															      ,[sku]
+															      ,[po]
+															      ,[module_name]
+															      ,[cartonbox]
+															      ,[batch_status]
+															      ,[flash]
+															      ,[batch_status]
+															      ,[bonus_relevant]
+
+															  FROM [finalaudit].[dbo].[batch]
+															  WHERE batch_status = 'Reject' AND ([bonus_relevant] IS NULL) 
+															  ORDER BY [created_at] asc
+															  "));
+		
+		return view('batch.bonus_relevant', compact('batch'));
+	}
+
+	public function bonus_relevant_edit($id)
+	{
+		$batch = Batch::findOrFail($id);
+		return view('batch.bonus_relevant_update', compact('batch'));
+	}
+
+	public function bonus_relevant_post($id, Request $request)
+	{	
+		
+		$input = $request->all();
+
+		try {
+			$batch = Batch::findOrFail($id);
+			$batch->bonus_relevant = $input['bonus'];
+						
+			$batch->save();
+			return Redirect::to('/bonus_relevant');
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return Redirect::to('/bonus_relevant');
+		}
+	}
+
+	public function zamena_table()
+	{	
+		// dd("test");
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT [id]
+															      ,[batch_name]
+															      ,[sku]
+															      ,[po]
+															      ,[module_name]
+															      ,[cartonbox]
+															      ,[batch_status]
+															      ,[flash]
+															      ,[batch_status]
+															      
+
+															  FROM [finalaudit].[dbo].[batch]
+															  WHERE batch_status = 'Zamena'
+															  ORDER BY [created_at] asc
+															  "));
+		
+		return view('batch.zamena_table', compact('batch'));
+	}
+
+	public function zamena_post($id, Request $request)
+	{	
+		
+		$input = $request->all();
+
+		try {
+			$batch = Batch::findOrFail($id);
+			$batch->bonus_relevant = $input['bonus'];
+						
+			$batch->save();
+			return Redirect::to('/bonus_relevant');
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return Redirect::to('/bonus_relevant');
+		}
+	}
+
 }

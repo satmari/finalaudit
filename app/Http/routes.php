@@ -143,16 +143,20 @@ Route::get('/batch/delete/{id}', 'ControllerBatch@delete');
 Route::post('/batch/delete/{id}', 'ControllerBatch@delete');
 Route::get('/searchinteos', 'ControllerBatch@searchinteos');
 Route::post('/searchinteos_store', 'ControllerBatch@searchinteos_store');
+Route::get('/scan_cont/{name}/{module}', 'ControllerBatch@scan_cont'); //updated 2019.06.06
+Route::post('/batch/scan_cont_post', 'ControllerBatch@scan_cont_post'); //updated 2019.06.06
 Route::get('/batch/checkbarcode/{name}/{module}', 'ControllerBatch@batch_checkbarcode'); //updated 2017.07.13
 Route::post('/batch/checkbarcode_store', 'ControllerBatch@batch_checkbarcode_store');
 Route::post('/batch/count_box_store', 'ControllerBatch@count_box_store');
 Route::get('/batch/confirm/{id}', 'ControllerBatch@confirm');
 Route::get('/batch/accept/{id}', 'ControllerBatch@accept');
+Route::get('/batch/zamena/{id}', 'ControllerBatch@zamena');
 Route::get('/batch/acceptwithreservetion/{id}', 'ControllerBatch@acceptwithreservetion');
 Route::get('/batch/reject/{id}', 'ControllerBatch@reject');
 Route::get('/batch/suspend/{id}', 'ControllerBatch@suspend');
 Route::get('/batch/not_checked/{id}', 'ControllerBatch@not_checked');
 Route::get('/history', 'ControllerBatch@history');
+Route::get('/zamena_table', 'ControllerBatch@zamena_table');
 
 // Batch BULK
 Route::get('/batch_bulk', 'ControllerBatch_bulk@index');
@@ -188,7 +192,15 @@ Route::get('/cb_to_repair_bulk', 'ControllerBatch_bulk@cb_to_repair_bulk');
 Route::get('/cb_to_repair_bulk/edit/{id}', 'ControllerBatch_bulk@cb_to_repair_bulk_edit');
 Route::post('/cb_to_repair_bulk/reparied/{id}', 'ControllerBatch_bulk@cb_to_repair_bulk_repair');
 
+// Bonus relevant
+Route::get('/bonus_relevant_page', 'ControllerBatch@bonus_relevant_page');
+Route::post('/bonus_relevant_page_access', 'ControllerBatch@bonus_relevant_page_access');
+Route::get('/bonus_relevant', 'ControllerBatch@bonus_relevant_table');
+Route::get('/bonus_relevant/edit/{id}', 'ControllerBatch@bonus_relevant_edit');
+Route::post('/bonus_relevant/{id}', 'ControllerBatch@bonus_relevant_post');
 
+
+//Garment
 Route::get('/garment', 'ControllerGarment@index');
 //Route::get('/garment_new', 'ControllerGarment@create');
 //Route::post('/garment_insert', 'ControllerGarment@insert');

@@ -37,7 +37,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ url('/') }}"><b>Final Audit Application</b></a>
+				<a class="navbar-brand" href="{{ url('/') }}"><b>Final Audit</b></a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -98,6 +98,12 @@
 						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
 					</ul>
 					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/bonus_relevant_page') }}">Bonus relevant</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/zamena_table') }}">Zamena</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
 					</ul>
 					<ul class="nav navbar-nav">
@@ -112,15 +118,21 @@
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/activity') }}">Activities <span class="badge"></span></a></li>
 					</ul>
-					<ul class="nav navbar-nav">
+					{{-- <ul class="nav navbar-nav">
 						<li><a href="https://portal.office.com" target="_blank"><b>WebMail</b> <span class="badge"></span></a></li>
-					</ul>
+					</ul>--}}
 					
 				@endif
 
 				@if(Auth::check() && (Auth::user()->level() == 5))
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/bonus_relevant_page') }}">Bonus relevant</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/zamena_table') }}">Zamena</a></li>
 					</ul>
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
@@ -145,6 +157,12 @@
 					</ul>
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/bonus_relevant_page') }}">Bonus relevant</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/zamena_table') }}">Zamena</a></li>
 					</ul>
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
