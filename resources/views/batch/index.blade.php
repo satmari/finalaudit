@@ -19,6 +19,8 @@
                             </div>
 
                             <table class="table table-striped table-bordered" id="sort" 
+                            data-show-export="true"
+                            data-export-types="['excel']"
                             >
                             <!--
                             data-show-export="true"
@@ -44,20 +46,21 @@
                             -->
                                 <thead>
                                     <tr>
-                                        <!-- <td>Id</td> -->
-                                        <td><b>Batch Name</b></td>
-                                        <td>Cartonbox</td>
-                                        <td data-sortable="true">SKU</td>
-                                        <td data-sortable="true">Module</td>
-                                        <td>Batch qty</td>
-                                        <td>Rejected Garments</td>
-                                        <td>Final Status</td>
+                                        <!-- <th>Id</th> -->
+                                        <th data-sortable="true"><b>Batch Name</b></th>
+                                        <th>Cartonbox</th>
+                                        <th data-sortable="true">SKU</th>
+                                        <th data-sortable="true">Module</th>
+                                        <th>Batch qty</th>
+                                        <th>Rejected Garments</th>
+                                        <th>Audit</th>
+                                        <th>Final Status</th>
 
                                         @if(Auth::check() && Auth::user()->level() == 1)
-                                            <td>Checked by</td>
+                                            <th>Checked by</th>
                                         @endif
                                         
-                                        <td></td>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody class="searchable">
@@ -70,6 +73,7 @@
                                         <td>{{ $req->module_name }}</td>
                                         <td>{{ $req->batch_qty }}</td>
                                         <td>{{ $req->RejectedCount }}</td>
+                                        <td>{{ $req->audit }}</td>
                                         {{-- <td><b>{{ $req->batch_status }}</b></td> --}}
                                         @if ($req->batch_status == "Reject")
                                           <td><span style="color:red;"><b>{{ $req->batch_status }}</b></span></td>

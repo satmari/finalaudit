@@ -242,6 +242,11 @@ $(function() {
 	// 	autoFocus: true,
 	// 	source: '{{ URL('getmoduledata')}}'
 	// });
+
+	$('#sort').bootstrapTable({
+	    
+	});
+
 	$('#filter').keyup(function () {
 
         var rex = new RegExp($(this).val(), 'i');
@@ -251,23 +256,16 @@ $(function() {
         }).show();
 	});
 
-	$('#sort').bootstrapTable({
-    
-	});
-
-
 	$('#myTabs a').click(function (e) {
   		e.preventDefault()
   		$(this).tab('show')
 	});
+
 	$('#myTabs a:first').tab('show') // Select first tab
 
 	$(function() {
     	$( "#datepicker" ).datepicker();
   	});
-
-  	
-
 
 	//$('.table tr').each(function(){
   		

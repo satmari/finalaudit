@@ -17,7 +17,8 @@
 						@if (Auth::check() && Auth::user()->level() == 4)
     						<a href="{{url('/')}}" class="btn btn-default center-block">Continue</a>
 						@else
-    						<a href="{{url('/batch/checkbarcode/'.$batch_name.'/'.$module_name)}}" class="btn btn-default center-block">Continue</a>
+    						{{-- <a href="{{url('/batch/checkbarcode/'.$batch_name.'/'.$module_name)}}" class="btn btn-default center-block">Continue</a> --}}
+    						<a href="{{url('/scan_cont/'.$batch_name.'/'.$module_name)}}" class="btn btn-default center-block">Continue</a>
 						@endif
 
 						<!-- '/batch/checkbarcode/'.$batch_name -->

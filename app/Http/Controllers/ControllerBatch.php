@@ -241,7 +241,7 @@ class ControllerBatch extends Controller {
 		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT *,
 																(SELECT COUNT(garment.batch_name) FROM garment WHERE garment.batch_name = batch.batch_name AND garment.garment_status = 'Rejected') as RejectedCount
 																FROM batch 
-																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-20,GETDATE())
+																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-30,GETDATE())
 																ORDER BY batch.id desc"));
 		return view('batch.indexhistory', compact('batch'));
 	}
@@ -1269,6 +1269,7 @@ class ControllerBatch extends Controller {
 															      ,[date_of_sending_to_repair]
 															      ,[repaired_comment]
 															      ,[flash]
+															      ,[audit]
 															  FROM [finalaudit].[dbo].[batch]
 															  WHERE batch_status = 'Reject' AND [repaired] = 'NO'
 															  ORDER BY [created_at] asc
