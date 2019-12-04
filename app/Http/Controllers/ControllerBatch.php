@@ -42,7 +42,7 @@ class ControllerBatch extends Controller {
 																*,
 																(SELECT COUNT(garment.batch_name) FROM garment WHERE garment.batch_name = batch.batch_name AND garment.garment_status = 'Rejected') as RejectedCount
 																FROM batch 
-																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-30,GETDATE())
+																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-45,GETDATE())
 																ORDER BY batch.id desc"));
 
 			    $batch_date = date("Ymd");
@@ -241,7 +241,7 @@ class ControllerBatch extends Controller {
 		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT *,
 																(SELECT COUNT(garment.batch_name) FROM garment WHERE garment.batch_name = batch.batch_name AND garment.garment_status = 'Rejected') as RejectedCount
 																FROM batch 
-																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-30,GETDATE())
+																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-45,GETDATE())
 																ORDER BY batch.id desc"));
 		return view('batch.indexhistory', compact('batch'));
 	}
@@ -308,7 +308,8 @@ class ControllerBatch extends Controller {
 			
 			[CNF_STYLE].StyCod,
 			
-			[CNF_Modules].ModNam
+			[CNF_Modules].ModNam,
+			[CNF_WareHouse].BoxQuant as wh_qty
 			
 			FROM [BdkCLZG].[dbo].[CNF_CartonBox]
 
@@ -317,8 +318,9 @@ class ControllerBatch extends Controller {
 			FULL outer join [BdkCLZG].[dbo].[CNF_Modules] on [CNF_Modules].Module = [CNF_CartonBox].Module
 			FULL outer join [BdkCLZG].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY
 			FULL outer join [BdkCLZG].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY
+			FULL outer join [BdkCLZG].[dbo].[CNF_WareHouse] on [CNF_WareHouse].BoxNum = [CNF_CartonBox].BoxNum
 			
-			where BoxNum = :somevariable"), array(
+			where [CNF_CartonBox].BoxNum = :somevariable"), array(
 			'somevariable' => $cbcode,
 			));
 
@@ -408,8 +410,6 @@ class ControllerBatch extends Controller {
 				$flash = '';
 			}
 			
-
-			
 			$models = DB::connection('sqlsrv')->select(DB::raw("SELECT category_name,category_id,model_brand,mandatory_to_check FROM models WHERE model_name = '".$style."'"));
 			
 	    	if ($models) {
@@ -429,6 +429,10 @@ class ControllerBatch extends Controller {
 	    	}
 
 	    	$module_name = $inteos_array[0]['ModNam'];
+	    	// dd($module_name);
+	    	if ($module_name == NULL) {
+	    		$module_name = "EXTERNAL";
+	    	}
 
 	    	// Bonus relevant
 	    	// if ( (substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K')) {
@@ -442,19 +446,34 @@ class ControllerBatch extends Controller {
 	    	$cartonbox = $cbcode;	//$inteos_array[0]['BoxNum'];
 	    	$cartonbox_qty = $inteos_array[0]['BoxQuant'];
 	    	$cartonbox_produced = $inteos_array[0]['Produced'];
+
 	    	if ($cartonbox_produced > 0) {
 				//continue
 			} else {
-				$msg = 'Carton box have 0 quantity inside, KUTIJA IMA 0 KOMADA! ';
-	        	return view('batch.error', compact('msg'));
+
+				if ($inteos_array[0]['wh_qty'] != NULL) {
+					// dd('ima wh qty');
+					$cartonbox_produced = intval($inteos_array[0]['wh_qty']);
+					$inteos_array[0]['Produced'] = intval($inteos_array[0]['wh_qty']);
+					// dd($cartonbox_produced);
+				} else {
+
+					$msg = 'Carton box have 0 quantity inside, KUTIJA IMA 0 KOMADA! ';
+		        	return view('batch.error', compact('msg'));	
+				}
 			}
 
 	    	$cartonbox_status = $inteos_array[0]['CB_Status'];
+	    	
 	    	if ($cartonbox_status == "Completed") {
 				//continue
 			} else {
-				$msg = 'Carton box is NOT completed in Inteos (on Module), KUTIJA NIJE ZAVRSENA U MODULU! ';
-	        	return view('batch.error', compact('msg'));
+				if (($inteos_array[0]['wh_qty']) > 0) {
+					$cartonbox_status = "Completed";
+				} else {
+					$msg = 'Carton box is NOT completed in Inteos (on Module), KUTIJA NIJE ZAVRSENA U MODULU! ';
+		        	return view('batch.error', compact('msg'));
+				 }
 			}
 
 	    	$cartonbox_start_date_tmp = $inteos_array[0]['CREATEDATE'];
@@ -464,12 +483,17 @@ class ControllerBatch extends Controller {
 	    	$timestamp_f = strtotime($cartonbox_finish_date_tmp);
 			$cartonbox_finish_date = date('Y-m-d H:i:s', $timestamp_f);
 
-			if (isset($inteos_array[0]['BlueBoxNum']) OR $inteos_array[0]['BlueBoxNum'] != NULL) {
-				$bluebox = $inteos_array[0]['BlueBoxNum'];
-			}	else {
+			if (isset($inteos_array[0]['BlueBoxNum'])) {
+				if ($inteos_array[0]['BlueBoxNum'] != NULL) {
+					$bluebox = 'NULL';	
+				} else {
+					$bluebox = $inteos_array[0]['BlueBoxNum'];
+				}	 
+			} else {
 				$bluebox = 'NULL';
 			}
-	    	
+
+			// dd($bluebox);
 	    	if ($brand == "TEZENIS") {
 				$batch_brand = "batch_ts";
 			} elseif ($brand == "INTIMISSIMI") {
@@ -496,6 +520,8 @@ class ControllerBatch extends Controller {
 			//$batch_status = "Pending"; // new batch // no Pending anymore
 			$batch_status = "Suspend"; // new batch have Suspend status
 
+			// dd("Sample");
+
 			///////// Samples Ecommerce ///////////
 			$ecommerce_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM ecommerce WHERE style = '".$style."' AND size = '".$size."' AND color = '".$color."' "));
 			
@@ -503,6 +529,7 @@ class ControllerBatch extends Controller {
 				$scanned = $ecommerce_sample[0]->scanned;
 				
 				if ($scanned == 'NO') {
+
 					try {
 						$ecommerce = Ecommerce::findOrFail($ecommerce_sample[0]->id);
 						$ecommerce->scanned = 'YES';
@@ -521,7 +548,7 @@ class ControllerBatch extends Controller {
 				}
 				
 			} else {
-				$msg = 'This SKU not exist in Ecommerce table, OVAJ SKU NE POSTOJI U E-commerce TABELI !!! Zovi Marijanu.';
+				$msg = 'This SKU not exist in Ecommerce table, OVAJ SKU NE POSTOJI U E-commerce TABELI !!! Zovi Zlatka.';
 		      	// return view('batch.error', compact('msg'));
 			}
 			
@@ -544,6 +571,7 @@ class ControllerBatch extends Controller {
 
 						//set color for each style
 						foreach ($sizeset_sample_style as $size_line) {
+
 							try {
 								$sizeset = Sizeset::findOrFail($size_line->id);
 								$sizeset->color = $color;
@@ -590,7 +618,7 @@ class ControllerBatch extends Controller {
 					if ($sizeset_sample_one[0]->scanned == 'NO') {
 						// dd("NO");
 
-						try {
+						// try {
 							$sizeset = Sizeset::findOrFail($sizeset_sample_one[0]->id);
 							$sizeset->scanned = 'YES';
 							$sizeset->scanned_date = date("Y-m-d H:i:s");
@@ -600,11 +628,11 @@ class ControllerBatch extends Controller {
 							
 							// $msg1 = $msg1.' This Item scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
 							//$msg2 = '';
-						}
-						catch (\Illuminate\Database\QueryException $e) {
-							$msg = "Problem to save in sizeset table";
-							return view('batch.error',compact('msg'));
-						}
+						// }
+						// catch (\Illuminate\Database\QueryException $e) {
+						// 	$msg = "Problem to save in sizeset table";
+						// 	return view('batch.error',compact('msg'));
+						// }
 						// dd("test");
 
 
@@ -657,7 +685,7 @@ class ControllerBatch extends Controller {
 					}
 
 				} else {
-					$msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!! Zovi Marijanu.';
+					$msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!! Zovi Zlatka.';
 			 	 	return view('batch.error', compact('msg'));
 				}
 			
@@ -674,7 +702,7 @@ class ControllerBatch extends Controller {
 			
 			///////// Record Batch ////////////
 
-			// try {
+			try {
 				$table = new Batch;
 
 				$table->checked_by_name = $checked_by_name;
@@ -684,21 +712,20 @@ class ControllerBatch extends Controller {
 				$table->batch_date = $batch_date;
 				$table->batch_user = $batch_user;
 				$table->batch_order = $batch_order;
-
 				$table->sku = $sku;
 				$table->style = $style;
 				$table->color = $color;
 				$table->size = $size;
-
 				$table->po = $po;
 				$table->brand = $brand;
 				$table->category_name = $category_name;
 				$table->category_id = $category_id;
-
 				$table->module_name = $module_name;
-				
+				// dd($module_name);
 				$table->cartonbox = $cartonbox;
+				// dd($cartonbox);
 				$table->cartonbox_qty = $cartonbox_qty;
+				// dd($cartonbox_produced);
 				$table->cartonbox_produced = $cartonbox_produced;
 				$table->cartonbox_status = $cartonbox_status;
 				$table->cartonbox_start_date = $cartonbox_start_date;
@@ -722,11 +749,11 @@ class ControllerBatch extends Controller {
 				$table->bonus_relevant = $bonus_relevant;
 						
 				$table->save();
-			// }
-			// catch (\Illuminate\Database\QueryException $e) {
-			// 	$msg = "Problem to save batch in table";
-			// 	return view('batch.error',compact('msg'));
-			// }
+			}
+			catch (\Illuminate\Database\QueryException $e) {
+				$msg = "Problem to save batch in table";
+				return view('batch.error',compact('msg'));
+			}
 			
 
 			// Record Garmets

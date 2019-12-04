@@ -170,11 +170,12 @@ class ControllerImport extends Controller {
 							$bulk->collected = 'NO';
 							$bulk->shipped = 'NO';
 
+							var_dump($bulk);
 							$bulk->save();
 						
 						// } catch (\Illuminate\Database\QueryException $e) {
 	                			
-	     //            	}
+	     				// }
 
 	                }
 	            });
@@ -204,7 +205,7 @@ class ControllerImport extends Controller {
 	                foreach($readerarray as $row)
 	                {
 
-	                	try {
+	                	// try {
 
 	                	$bulk = new Sizeset;
 
@@ -225,9 +226,9 @@ class ControllerImport extends Controller {
 
 						$bulk->save();
 
-						} catch (\Illuminate\Database\QueryException $e) {
+						// } catch (\Illuminate\Database\QueryException $e) {
 	                			
-	                	}
+	     //            	}
 	                	
 	                }
 	            });

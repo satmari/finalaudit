@@ -10,7 +10,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">Batch Table 
                             @if (Auth::check() && (Auth::user()->level() == 3 OR Auth::user()->level() == 1))
-                            (Last 30 days)
+                            (Last 45 days)
                             @endif
 
                             </div>
@@ -55,6 +55,7 @@
                                         <th>Rejected Garments</th>
                                         <th>Audit</th>
                                         <th>Final Status</th>
+                                        <th>Bonus relevent</th>
 
                                         @if(Auth::check() && Auth::user()->level() == 1)
                                             <th>Checked by</th>
@@ -83,8 +84,8 @@
                                           <td><span style="color:blue;"><b>{{ $req->batch_status }}</b></span></td>
                                           @else 
                                            <td><span><b>{{ $req->batch_status }}</b></span></td>
-                                          @endif 
-
+                                        @endif 
+                                        <td>{{ $req->bonus_relevant }}</td>
                                         @if(Auth::check() && Auth::user()->level() == 1)
                                             <td>{{ $req->checked_by_name }}</td>
                                         @endif
