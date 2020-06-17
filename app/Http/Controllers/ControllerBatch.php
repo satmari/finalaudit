@@ -272,66 +272,129 @@ class ControllerBatch extends Controller {
 		$msg1 = '';
 		//$msg2 = '';
 
-		// Test database
-		// $inteos = DB::connection('sqlsrv2')->select(DB::raw("SELECT [CNF_BlueBox].INTKEY,[CNF_BlueBox].IntKeyPO,[CNF_BlueBox].BlueBoxNum,[CNF_BlueBox].BoxQuant, [CNF_PO].POnum,[CNF_SKU].Variant,[CNF_SKU].ClrDesc,[CNF_STYLE].StyCod FROM [BdkCLZGtest].[dbo].[CNF_BlueBox] FULL outer join [BdkCLZGtest].[dbo].CNF_PO on [CNF_PO].INTKEY = [CNF_BlueBox].IntKeyPO FULL outer join [BdkCLZGtest].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY FULL outer join [BdkCLZGtest].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY WHERE [CNF_BlueBox].INTKEY =  :somevariable"), array(
-		// 	'somevariable' => $inteosbbcode,
-		// ));
-
 		// Live database
 		// try {
-			
-			$inteos = DB::connection('sqlsrv2')->select(DB::raw("SELECT 	
-			/*[CNF_CartonBox].IntKeyPO, */
-			[CNF_CartonBox].BoxNum,
-			[CNF_CartonBox].BoxQuant,
-			[CNF_CartonBox].Produced,
-			(CASE	WHEN [CNF_CartonBox].Status = '0' THEN 'New' 
-					WHEN [CNF_CartonBox].Status = '20' THEN 'On Module' 
-					WHEN [CNF_CartonBox].Status = '99' THEN 'Completed'
-			END) AS CB_Status,
-			/*[CNF_CartonBox].Module, */
-			/*[CNF_CartonBox].BBcreated, */
-			/*[CNF_CartonBox].BBalternativ,*/
-			[CNF_CartonBox].CREATEDATE,
-			[CNF_CartonBox].EDITDATE,
+			if (substr($cbcode, 0, 2) == '70') {
 
-			[CNF_BlueBox].BlueBoxNum,
-			
-			/*[CNF_PO].BoxComplete,*/
-			/*[CNF_PO].BoxQuant,*/
-			/*[CNF_PO].Line,*/
-			[CNF_PO].POnum,
+				$inteos = DB::connection('sqlsrv2')->select(DB::raw("SELECT 	
+				/*[CNF_CartonBox].IntKeyPO, */
+				[CNF_CartonBox].BoxNum,
+				[CNF_CartonBox].BoxQuant,
+				[CNF_CartonBox].Produced,
+				(CASE	WHEN [CNF_CartonBox].Status = '0' THEN 'New' 
+						WHEN [CNF_CartonBox].Status = '20' THEN 'On Module' 
+						WHEN [CNF_CartonBox].Status = '99' THEN 'Completed'
+				END) AS CB_Status,
+				/*[CNF_CartonBox].Module, */
+				/*[CNF_CartonBox].BBcreated, */
+				/*[CNF_CartonBox].BBalternativ,*/
+				[CNF_CartonBox].CREATEDATE,
+				[CNF_CartonBox].EDITDATE,
 
-			/*[CNF_SKU].StyDesc,*/
-			[CNF_SKU].Variant,
-			/*[CNF_SKU].ClrDesc,*/
-			
-			[CNF_STYLE].StyCod,
-			
-			[CNF_Modules].ModNam,
-			[CNF_WareHouse].BoxQuant as wh_qty
-			
-			FROM [BdkCLZG].[dbo].[CNF_CartonBox]
+				[CNF_BlueBox].BlueBoxNum,
+				
+				/*[CNF_PO].BoxComplete,*/
+				/*[CNF_PO].BoxQuant,*/
+				/*[CNF_PO].Line,*/
+				[CNF_PO].POnum,
 
-			FULL outer join [BdkCLZG].[dbo].[CNF_PO] on [CNF_PO].INTKEY = [CNF_CartonBox].IntKeyPO
-			FULL outer join [BdkCLZG].[dbo].[CNF_BlueBox] on [CNF_BlueBox].INTKEY = [CNF_CartonBox].BBalternativ
-			FULL outer join [BdkCLZG].[dbo].[CNF_Modules] on [CNF_Modules].Module = [CNF_CartonBox].Module
-			FULL outer join [BdkCLZG].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY
-			FULL outer join [BdkCLZG].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY
-			FULL outer join [BdkCLZG].[dbo].[CNF_WareHouse] on [CNF_WareHouse].BoxNum = [CNF_CartonBox].BoxNum
-			
-			where [CNF_CartonBox].BoxNum = :somevariable"), array(
-			'somevariable' => $cbcode,
-			));
+				/*[CNF_SKU].StyDesc,*/
+				[CNF_SKU].Variant,
+				/*[CNF_SKU].ClrDesc,*/
+				
+				[CNF_STYLE].StyCod,
+				
+				[CNF_Modules].ModNam,
+				[CNF_WareHouse].BoxQuant as wh_qty
+				
+				FROM [BdkCLZG].[dbo].[CNF_CartonBox]
 
-			// dd($inteos);
-			
-			if ($inteos) {
-				//continue
-			} else {
-	        	$msg = 'Cannot find CB in Inteos, NE POSTOJI KARTONSKA KUTIJA U INTEOSU !';
-	        	return view('batch.error', compact('msg'));
-	    	}
+				FULL outer join [BdkCLZG].[dbo].[CNF_PO] on [CNF_PO].INTKEY = [CNF_CartonBox].IntKeyPO
+				FULL outer join [BdkCLZG].[dbo].[CNF_BlueBox] on [CNF_BlueBox].INTKEY = [CNF_CartonBox].BBalternativ
+				FULL outer join [BdkCLZG].[dbo].[CNF_Modules] on [CNF_Modules].Module = [CNF_CartonBox].Module
+				FULL outer join [BdkCLZG].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY
+				FULL outer join [BdkCLZG].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY
+				FULL outer join [BdkCLZG].[dbo].[CNF_WareHouse] on [CNF_WareHouse].BoxNum = [CNF_CartonBox].BoxNum
+				
+				where [CNF_CartonBox].BoxNum = :somevariable"), array(
+				'somevariable' => $cbcode,
+				));
+
+				// dd($inteos);
+				
+				if ($inteos) {
+					//continue
+				} else {
+		        	$msg = 'Cannot find CB in Subotica Inteos, NE POSTOJI KARTONSKA KUTIJA U Subotica INTEOSU !';
+		        	return view('batch.error', compact('msg'));
+		    	}
+
+		    } elseif (substr($cbcode, 0, 2) == '71') {
+
+		    	$inteos = DB::connection('sqlsrv5')->select(DB::raw("SELECT 	
+				/*[CNF_CartonBox].IntKeyPO, */
+				[CNF_CartonBox].BoxNum,
+				[CNF_CartonBox].BoxQuant,
+				[CNF_CartonBox].Produced,
+				(CASE	WHEN [CNF_CartonBox].Status = '0' THEN 'New' 
+						WHEN [CNF_CartonBox].Status = '20' THEN 'On Module' 
+						WHEN [CNF_CartonBox].Status = '99' THEN 'Completed'
+				END) AS CB_Status,
+				/*[CNF_CartonBox].Module, */
+				/*[CNF_CartonBox].BBcreated, */
+				/*[CNF_CartonBox].BBalternativ,*/
+				[CNF_CartonBox].CREATEDATE,
+				[CNF_CartonBox].EDITDATE,
+
+				[CNF_BlueBox].BlueBoxNum,
+				
+				/*[CNF_PO].BoxComplete,*/
+				/*[CNF_PO].BoxQuant,*/
+				/*[CNF_PO].Line,*/
+				[CNF_PO].POnum,
+
+				/*[CNF_SKU].StyDesc,*/
+				[CNF_SKU].Variant,
+				/*[CNF_SKU].ClrDesc,*/
+				
+				[CNF_STYLE].StyCod,
+				
+				[CNF_Modules].ModNam,
+				[CNF_WareHouse].BoxQuant as wh_qty
+				
+				FROM [BdkCLZKKA].[dbo].[CNF_CartonBox]
+
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_PO] on [CNF_PO].INTKEY = [CNF_CartonBox].IntKeyPO
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_BlueBox] on [CNF_BlueBox].INTKEY = [CNF_CartonBox].BBalternativ
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_Modules] on [CNF_Modules].Module = [CNF_CartonBox].Module
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_WareHouse] on [CNF_WareHouse].BoxNum = [CNF_CartonBox].BoxNum
+				
+				where [CNF_CartonBox].BoxNum = :somevariable"), array(
+				'somevariable' => $cbcode,
+				));
+
+				// dd($inteos);
+				
+				if ($inteos) {
+					//continue
+					// dd($inteos);
+					
+				} else {
+		        	$msg = 'Cannot find CB in Kikinda Inteos, NE POSTOJI KARTONSKA KUTIJA U Kikinda INTEOSU !';
+		        	return view('batch.error', compact('msg'));
+		    	}
+
+
+		    } else {
+
+		    	$msg = 'Cannot find CB in ANY Inteos, NE POSTOJI KARTONSKA KUTIJA U NIJEDNOM INTEOSU !';
+		        return view('batch.error', compact('msg'));
+
+		    }
+
+
 
 			function object_to_array($data)
 			{

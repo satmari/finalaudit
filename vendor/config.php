@@ -225,6 +225,15 @@
         'password' => 'gordon2013',
         'prefix' => '',
       ),
+      'sqlsrv5' => 
+      array (
+        'driver' => 'sqlsrv',
+        'host' => '172.27.161.221\\INTEOSKKA',
+        'database' => 'BdkCLZKKA',
+        'username' => 'gordon',
+        'password' => 'gordon',
+        'prefix' => '',
+      ),
     ),
     'migrations' => 'migrations',
     'redis' => 
