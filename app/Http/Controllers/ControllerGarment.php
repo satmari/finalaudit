@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -23,19 +24,21 @@ class ControllerGarment extends Controller {
 	public function index()
 	{
 		//
-		try {
+		// dd("stop");
+		// try {
 			$garments = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM garment ORDER BY id asc"));
 			return view('garment.index_all', compact('garments'));
-		}
-		catch (\Illuminate\Database\QueryException $e) {
-			return Redirect::to('/garment');
-		}
+		// }
+		// catch (\Illuminate\Database\QueryException $e) {
+		// 	return Redirect::to('/garment');
+		// }
 	}
 
 	public function by_batch($batch_name)
 	{
 		//
-		try {
+		// dd($batch_name);
+		// try {
 			//$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM batch WHERE batch_name = '".$batch_name."'"));
 
 			// with mandatory to check
@@ -44,7 +47,7 @@ class ControllerGarment extends Controller {
 																(SELECT mandatory_to_check FROM models WHERE models.model_name = batch.style) as to_check
 																FROM batch 
 																WHERE batch_name = '".$batch_name."'"));
-			
+			// dd($batch);
 			//$garments = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM garment WHERE batch_name = '".$batch_name."' ORDER BY id asc"));
 
 			$garments = DB::connection('sqlsrv')->select(DB::raw("SELECT *,
@@ -55,14 +58,15 @@ class ControllerGarment extends Controller {
 				ORDER BY garment.id asc "));
 
 			return view('garment.index', compact('garments','batch'));
-		}
-		catch (\Illuminate\Database\QueryException $e) {
-			return Redirect::to('/garment/by_batch/'.$batch_name);
-		}
+		// }
+		// catch (\Illuminate\Database\QueryException $e) {
+		// 	return Redirect::to('/garment/by_batch/'.$batch_name);
+		// }
 	}
 
 	public function garment_checkbarcode ($name) 
 	{
+		// dd("Test1");
 		$garment = DB::connection('sqlsrv')->select(DB::raw("SELECT garment_barcode_match FROM garment WHERE garment_name = '".$name."'"));
 
 		if ($garment[0]->garment_barcode_match == NULL ) {
@@ -74,13 +78,15 @@ class ControllerGarment extends Controller {
 
 	public function garment_checkbarcode_store (Request $request) 
 	{
+		// dd("Test2");
 		$this->validate($request, ['garment_name' => 'required', 'barcode' => 'required']);
 		$input = $request->all(); 
+		// dd($input);
 
 		$garment_name = $input['garment_name'];
 		$barcode_insert = $input['barcode'];
 
-		try {
+		// try {
 
 			// if you check barcode form batch barcode
 			/*
@@ -117,12 +123,16 @@ class ControllerGarment extends Controller {
 
 			// $color = $b[0];
 			// $size = $b[1];
-			
-			$size_to_search = str_replace("/","-",$size);
+			// dd($style);
+			if ($style == 'MODC1708') {
+					$size_to_search = $size;	
+			} else {
+					$size_to_search = str_replace("/","-",$size);
+			}
 			
 			// var_dump($size_to_search);
 
-			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND Tgl_ITA = '".$size_to_search."'"));
+			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND tagliaCod = '".$size_to_search."'"));
 			$barcode_indb = $barcode[0]->Cod_Bar;
 
 			if ($barcode_insert == $barcode_indb) {
@@ -138,11 +148,11 @@ class ControllerGarment extends Controller {
 			$b->garment_barcode = $barcode_indb;
 			$b->save();
 
-		}
-		catch (\Illuminate\Database\QueryException $e) {
-			$msg = "Barcode not found in cartiglio database";
-			return view('garment.error',compact('msg'));
-		}		
+		// }
+		// catch (\Illuminate\Database\QueryException $e) {
+		// 	$msg = "Barcode not found in cartiglio database";
+		// 	return view('garment.error',compact('msg'));
+		// }		
 
 		if ($barcode_insert != $barcode_indb) {
 			$msg = "Barcode not match with barcode from cartiglio database";

@@ -274,7 +274,7 @@ class ControllerBatch extends Controller {
 
 		// Live database
 		// try {
-			if (substr($cbcode, 0, 2) == '70') {
+			if ((substr($cbcode, 0, 2) == '70') OR (substr($cbcode, 0, 2) == '84')) {
 
 				$inteos = DB::connection('sqlsrv2')->select(DB::raw("SELECT 	
 				/*[CNF_CartonBox].IntKeyPO, */
@@ -329,7 +329,7 @@ class ControllerBatch extends Controller {
 		        	return view('batch.error', compact('msg'));
 		    	}
 
-		    } elseif (substr($cbcode, 0, 2) == '71') {
+		    } elseif ((substr($cbcode, 0, 2) == '71')  OR (substr($cbcode, 0, 2) == '85')) {
 
 		    	$inteos = DB::connection('sqlsrv5')->select(DB::raw("SELECT 	
 				/*[CNF_CartonBox].IntKeyPO, */
@@ -460,18 +460,20 @@ class ControllerBatch extends Controller {
 	  		//$brand = substr($po, 2, 1); // T;I;C
 
 	  		// NAV - PO information
-			$nav = DB::connection('sqlsrv4')->select(DB::raw("SELECT [Cutting Prod_ Line] as Flash
-				  FROM [Gordon_LIVE].[dbo].[GORDON\$Production Order]
-				  WHERE [No_] = :po"
-				), array(
-					'po' => $po
-			));
+			// $nav = DB::connection('sqlsrv4')->select(DB::raw("SELECT [Cutting Prod_ Line] as Flash
+			// 	  FROM [Gordon_LIVE].[dbo].[GORDON\$Production Order]
+			// 	  WHERE [No_] = :po"
+			// 	), array(
+			// 		'po' => $po
+			// ));
 
-			if (isset($nav[0]->Flash)) {
-				$flash = $nav[0]->Flash;
-			} else {
-				$flash = '';
-			}
+			// if (isset($nav[0]->Flash)) {
+			// 	$flash = $nav[0]->Flash;
+			// } else {
+			// 	$flash = '';
+			// }
+
+			$flash = 'no info';
 			
 			$models = DB::connection('sqlsrv')->select(DB::raw("SELECT category_name,category_id,model_brand,mandatory_to_check FROM models WHERE model_name = '".$style."'"));
 			
@@ -611,7 +613,7 @@ class ControllerBatch extends Controller {
 				}
 				
 			} else {
-				$msg = 'This SKU not exist in Ecommerce table, OVAJ SKU NE POSTOJI U E-commerce TABELI !!! Zovi Zlatka.';
+				// $msg = 'This SKU not exist in Ecommerce table, OVAJ SKU NE POSTOJI U E-commerce TABELI !!! Zovi Zlatka.';
 		      	// return view('batch.error', compact('msg'));
 			}
 			
@@ -666,8 +668,28 @@ class ControllerBatch extends Controller {
 					}
 
 				} else {
-				// $msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
-		 	 	// return view('batch.error', compact('msg'));
+					//$msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
+		 	 		//return view('batch.error', compact('msg'));
+
+					// Import in size set.
+					$bulk = new Sizeset;
+
+                	$sku = $style.'-'.$size.'-'.$color;
+					$bulk->sku = $sku;
+
+					$bulk->style = $style;
+					$bulk->color = $color; 
+					$bulk->size = $size;
+					
+					$bulk->scanned = 'NO';
+					$bulk->collected = 'NO';
+					$bulk->shipped = 'NO';
+
+					$bulk->save();
+
+					$msg = $msg.'OVAJ SKU Nije POSTOJAO U Sizeset TABELI, SAD JE DODAT, SKENIRAJ PONOVO KUTIJU! ';
+			 	 	return view('batch.error', compact('msg'));
+			 	 	
 				}
 
 			} elseif (($brand == "INTIMISSIMI") OR ($brand == "CALZEDONIA")) {
@@ -748,8 +770,28 @@ class ControllerBatch extends Controller {
 					}
 
 				} else {
-					$msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!! Zovi Zlatka.';
+					// $msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!! Zovi Zlatka.';
+			 	 	// return view('batch.error', compact('msg'));
+
+			 	 	// Import in size set.
+					$bulk = new Sizeset;
+
+                	$sku = $style.'-'.$size.'-'.$color;
+					$bulk->sku = $sku;
+
+					$bulk->style = $style;
+					$bulk->color = $color; 
+					$bulk->size = $size;
+					
+					$bulk->scanned = 'NO';
+					$bulk->collected = 'NO';
+					$bulk->shipped = 'NO';
+
+					$bulk->save();
+
+					$msg = $msg.'OVAJ SKU Nije POSTOJAO U Sizeset TABELI, SAD JE DODAT, SKENIRAJ PONOVO KUTIJU! ';
 			 	 	return view('batch.error', compact('msg'));
+
 				}
 			
 				// if ($style_scanned == 'NEW') {
@@ -970,9 +1012,10 @@ class ControllerBatch extends Controller {
 			$size_to_search = str_replace("/","-",$size);
 					
 			//$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM cartiglio WHERE Cod_Bar = '".$barcode."'"));
-			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND Tgl_ITA = '".$size_to_search."'"));
+			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND tagliaCod = '".$size_to_search."'"));
 			
 			try {
+				
 				if(isset($barcode[0])) {
 					if ($barcode[0]->Cod_Bar) {
 					$barcode_indb = $barcode[0]->Cod_Bar;
@@ -1003,8 +1046,8 @@ class ControllerBatch extends Controller {
 			$b->batch_barcode_match = $barcode_match;
 			$b->batch_barcode = $barcode_indb;
 			$b->save();
-		}
-		catch (\Illuminate\Database\QueryException $e) {
+
+		} catch (\Illuminate\Database\QueryException $e) {
 			$msg = "Barcode not found in cartiglio database, PROIZVOD NE POSTOJI U Cartiglio BAZI!!! (Javi IT sektoru)";
 			return view('batch.error',compact('msg'));
 		}

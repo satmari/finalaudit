@@ -51,6 +51,7 @@
 					               	<option name="email" value="audit10">AuditX - Not check user</option>
 					               	<option name="email" value="audit9">Planer</option>
 					               	<option name="email" value="admin">Admin</option>
+					               	<option name="email" value="magacin">Magacin</option>
 					               	<option name="email" value="guest">Guest</option>
 					            </select>
 							</div>

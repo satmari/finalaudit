@@ -35,6 +35,7 @@ class ControllerGarment_bulk extends Controller {
 	public function by_batch($batch_name)
 	{
 		//
+		dd("testsss");
 		try {
 			$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT *,
 																(SELECT mandatory_to_check FROM models WHERE models.model_name = batch_bulk.style) as to_check
@@ -89,7 +90,7 @@ class ControllerGarment_bulk extends Controller {
 			$size = $b[1];
 			$size_to_search = str_replace("/","-",$size);
 
-			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND Tgl_ITA = '".$size_to_search."'"));
+			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND tagliaCod = '".$size_to_search."'"));
 			$barcode_indb = $barcode[0]->Cod_Bar;
 
 			if ($barcode_insert == $barcode_indb) {
