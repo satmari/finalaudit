@@ -501,12 +501,11 @@ class ControllerBatch extends Controller {
 
 	    	// Bonus relevant
 	    	// if ( (substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K')) {
-	    	if (substr($module_name, 0, 1) == 'S') {
+	    	if ((substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K')) {
 	    		$bonus_relevant = NULL;	
 	    	} else {
 	    		$bonus_relevant = 'IGNORE';
 	    	}
-	    	
 			
 	    	$cartonbox = $cbcode;	//$inteos_array[0]['BoxNum'];
 	    	$cartonbox_qty = $inteos_array[0]['BoxQuant'];
@@ -586,7 +585,7 @@ class ControllerBatch extends Controller {
 			$batch_status = "Suspend"; // new batch have Suspend status
 
 			// dd("Sample");
-
+/*
 			///////// Samples Ecommerce ///////////
 			$ecommerce_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM ecommerce WHERE style = '".$style."' AND size = '".$size."' AND color = '".$color."' "));
 			
@@ -802,7 +801,7 @@ class ControllerBatch extends Controller {
 				
 			}
 
-
+*/
 			// dd("record");
 			
 			///////// Record Batch ////////////
@@ -915,12 +914,23 @@ class ControllerBatch extends Controller {
 
 	public function scan_cont($name, $module) {
 
-		try {
+		if (substr($module, 0, 1) == "K" ) {
+			try {
+				return view('batch.scan_cont_k',compact('name','module'));
+			}
+			catch (\Illuminate\Database\QueryException $e) {
+				return view('batch.scan_cont_k',compact('name','module'));
+			}
+		} else {
+
+			try {
 			return view('batch.scan_cont',compact('name','module'));
+			}
+			catch (\Illuminate\Database\QueryException $e) {
+				return view('batch.scan_cont',compact('name','module'));
+			}
 		}
-		catch (\Illuminate\Database\QueryException $e) {
-			return view('batch.scan_cont',compact('name','module'));
-		}
+		
 	
 	}
 
@@ -934,6 +944,13 @@ class ControllerBatch extends Controller {
 		$batch_name = $input['batch_name'];
 		$module_name = $input['module'];
 		$audit = $input['audit'];
+
+		if (isset($input['shift'])) {
+			$shift = $input['shift'];
+		} else {
+			$shift = NULL;
+		}
+		// dd($shift);
 
 		$msg1 = '';
 
@@ -965,6 +982,7 @@ class ControllerBatch extends Controller {
 
 			$b = Batch::findOrFail($batch[0]->id);
 			$b->audit = $audit;
+			$b->shift = $shift;
 			$b->save();
 
 		}
@@ -1012,7 +1030,8 @@ class ControllerBatch extends Controller {
 			$size_to_search = str_replace("/","-",$size);
 					
 			//$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM cartiglio WHERE Cod_Bar = '".$barcode."'"));
-			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND tagliaCod = '".$size_to_search."'"));
+			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND ((tagliaCod = '".$size_to_search."') OR (tagliaCod = '".$size."')) "));
+			// dd($barcode);
 			
 			try {
 				
@@ -1397,6 +1416,7 @@ class ControllerBatch extends Controller {
 															      ,[module_name]
 															      ,[cartonbox]
 															      ,[batch_status]
+															      ,[cartonbox_produced]
 															      ,[repaired]
 															      ,[repaired_by_name]
 															      ,[date_of_sending_to_repair]

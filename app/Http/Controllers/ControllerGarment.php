@@ -124,15 +124,17 @@ class ControllerGarment extends Controller {
 			// $color = $b[0];
 			// $size = $b[1];
 			// dd($style);
-			if ($style == 'MODC1708') {
-					$size_to_search = $size;	
-			} else {
-					$size_to_search = str_replace("/","-",$size);
-			}
+			// if ($style == 'MODC1708') {
+			// 		$size_to_search = $size;	
+			// } else {
+					
+			// }
+			
+			$size_to_search = str_replace("/","-",$size);
 			
 			// var_dump($size_to_search);
-
-			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND tagliaCod = '".$size_to_search."'"));
+			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND ((tagliaCod = '".$size_to_search."') OR (tagliaCod = '".$size."')) "));
+			// $barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND tagliaCod = '".$size_to_search."'"));
 			$barcode_indb = $barcode[0]->Cod_Bar;
 
 			if ($barcode_insert == $barcode_indb) {

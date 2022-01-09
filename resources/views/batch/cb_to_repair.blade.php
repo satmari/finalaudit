@@ -51,6 +51,7 @@
                                         <th data-sortable="true">Flash</th>
                                         <th data-sortable="true">Module</th>
                                         <th>CB barcode</th>
+                                        <th>Produced</th>
                                         <th>Audit</th>
                                         <th>CB repaired</th>
                                         <th>Repairing Date</th>
@@ -70,6 +71,7 @@
                                         <td >{{ $req->flash  }}</td>
                                         <td >{{ $req->module_name }}</td>
                                         <td>{{ $req->cartonbox }}</td>
+                                        <td>{{ $req->cartonbox_produced }}</td>
                                         <td>{{ $req->audit }}</td>
                                         <td>{{ $req->repaired }}</td>
                                         {{-- <td>{{ date_format(strtotime($req->date_of_sending_to_repair),"d.m.Y ") }}</td> --}}

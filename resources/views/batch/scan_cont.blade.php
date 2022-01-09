@@ -10,9 +10,9 @@
                 <div class="alert alert-primary" role="alert">
 
                   <big><b>
-                    <p>Ako je kutija iz LINIJE: Ovde skenirate barkod od operatera koji je pregledao kutiju.</p>
+                    <p>Ovde skenirate barkod od operatera koji je pregledao kutiju.</p>
                     <p>ili</p>
-                    <p>Ako je kutija iz MODULA: Ovde skenirate RS barkod.</p>
+                    <p>Ako name barkod operatera: Skenirate RS barkod.</p>
                     </b>
                 </big>
 

@@ -54,6 +54,7 @@
                                         <th>Batch qty</th>
                                         <th>Rejected Garments</th>
                                         <th>Audit</th>
+                                        <th>Shift</th>
                                         <th>Final Status</th>
                                         <th>Bonus relevent</th>
 
@@ -75,6 +76,7 @@
                                         <td>{{ $req->batch_qty }}</td>
                                         <td>{{ $req->RejectedCount }}</td>
                                         <td>{{ $req->audit }}</td>
+                                        <td>{{ $req->shift }}</td>
                                         {{-- <td><b>{{ $req->batch_status }}</b></td> --}}
                                         @if ($req->batch_status == "Reject")
                                           <td><span style="color:red;"><b>{{ $req->batch_status }}</b></span></td>

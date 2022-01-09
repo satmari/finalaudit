@@ -18,12 +18,13 @@ class ChangeBatchTable extends Migration {
 
 		Schema::table('batch', function ($table) {
 
-			$table->string('bonus_relevant')->nullable(); //add
+			// $table->string('bonus_relevant')->nullable(); //add
 			// $table->dropColumn('votes'); //drop
 			// $table->string('name', 50)->nullable()->change(); //change
    			// $table->renameColumn('from', 'to'); //rename
 
    			// $table->integer('count_qty')->nullable(); //add
+   			// $table->string('shift')->nullable(); //add
 
 
 		});

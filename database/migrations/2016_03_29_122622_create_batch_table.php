@@ -72,6 +72,8 @@ class CreateBatchTable extends Migration {
 			// $table->string('audit')->nullable(); //added 2019.06.06 
 			// $table->string('bonus_relevant')->nullable(); //added 2019.06.07
 
+			// $table->string('shift')->nullable(); //add
+
 			$table->timestamps();
 
 		});
