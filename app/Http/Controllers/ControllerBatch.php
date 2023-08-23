@@ -501,7 +501,7 @@ class ControllerBatch extends Controller {
 
 	    	// Bonus relevant
 	    	// if ( (substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K')) {
-	    	if ((substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K')) {
+	    	if ((substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K') OR (substr($module_name, 0, 1) == 'Z')) {
 	    		$bonus_relevant = NULL;	
 	    	} else {
 	    		$bonus_relevant = 'IGNORE';
@@ -810,7 +810,8 @@ class ControllerBatch extends Controller {
 				$table = new Batch;
 
 				$table->checked_by_name = $checked_by_name;
-				$table->checked_by_id = $checked_by_id;
+				// dd($checked_by_name);
+				$table->checked_by_id = (int)$checked_by_id;
 				
 				$table->batch_name = $batch_name;
 				$table->batch_date = $batch_date;
@@ -828,16 +829,16 @@ class ControllerBatch extends Controller {
 				// dd($module_name);
 				$table->cartonbox = $cartonbox;
 				// dd($cartonbox);
-				$table->cartonbox_qty = $cartonbox_qty;
+				$table->cartonbox_qty = (int)$cartonbox_qty;
 				// dd($cartonbox_produced);
-				$table->cartonbox_produced = $cartonbox_produced;
+				$table->cartonbox_produced = (int)$cartonbox_produced;
 				$table->cartonbox_status = $cartonbox_status;
 				$table->cartonbox_start_date = $cartonbox_start_date;
 				$table->cartonbox_finish_date = $cartonbox_finish_date;
 
 				$table->bluebox = $bluebox;
 				
-				$table->batch_qty = $batch_qty;
+				$table->batch_qty = (int)$batch_qty;
 				$table->batch_brand_id = $batch_brand_id;
 				$table->batch_brand_min = $batch_brand_min;
 				$table->batch_brand_max =  $batch_brand_max;
@@ -851,10 +852,12 @@ class ControllerBatch extends Controller {
 
 				$table->flash = $flash;
 				$table->bonus_relevant = $bonus_relevant;
-						
+			 	// dd($table);
+
 				$table->save();
 			}
 			catch (\Illuminate\Database\QueryException $e) {
+				dd($e);
 				$msg = "Problem to save batch in table";
 				return view('batch.error',compact('msg'));
 			}
@@ -890,6 +893,7 @@ class ControllerBatch extends Controller {
 					$table->save();
 				}
 				catch (\Illuminate\Database\QueryException $e) {
+					dd($e);
 					$msg = "Problem to save garment in table";
 					return view('batch.error',compact('msg'));
 				}
