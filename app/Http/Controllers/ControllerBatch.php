@@ -513,6 +513,7 @@ class ControllerBatch extends Controller {
 
 	    	if ($cartonbox_produced > 0) {
 				//continue
+				
 			} else {
 
 				if ($inteos_array[0]['wh_qty'] != NULL) {
