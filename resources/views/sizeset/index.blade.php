@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Size-set table</div>
+                            <div class="panel-heading">Size-set table - filtered by user credentials</div>
                             <div class="input-group"> <span class="input-group-addon">Filter</span>
                                 <input id="filter" type="text" class="form-control" placeholder="Type here...">
                             </div>
@@ -39,28 +39,29 @@
                             -->
                                 <thead>
                                     <tr>
-                                        <!-- <td>Id</td> -->
-                                        <!-- <td>SKU</td> -->
-                                        <td>Style</td>
-                                        <td>Color</td>
-                                        <td>Size</td>
-                                        <!-- <td>Color Desc</td> -->
+                                        <!-- <th>Id</th> -->
+                                        <!-- <th>SKU</th> -->
+                                        <th>Style</th>
+                                        <th>Color</th>
+                                        <th>Size</th>
+                                        <!-- <th>Color Desc</th> -->
 
-                                        <td style="background-color: aliceblue;">Scanned</td>
-                                        <!-- <td style="background-color: aliceblue;">Date</td> -->
-                                        <!-- <td style="background-color: aliceblue;">User</td> -->
+                                        <th style="background-color: aliceblue;">Scanned</th>
+                                        <th style="background-color: aliceblue;">Date</th>
+                                        <!-- <th style="background-color: aliceblue;">User</th> -->
 
-                                        <td style="background-color: antiquewhite;">Collected</td>
-                                        <!-- <td style="background-color: antiquewhite;">Date</td> -->
-                                        <!-- <td style="background-color: antiquewhite;">User</td> -->
+                                        <th style="background-color: antiquewhite;">Collected</th>
+                                        <th style="background-color: antiquewhite;">Date</th>
+                                        <!-- <th style="background-color: antiquewhite;">User</th> -->
 
-                                        <td style="background-color: floralwhite;">Shipped</td>
-                                        <td style="background-color: floralwhite;">Date</td>
-                                        <!-- <td style="background-color: floralwhite;">User</td> -->
+                                        <th style="background-color: floralwhite;">Shipped</th>
+                                        <th style="background-color: floralwhite;">Date</th>
 
-                                        <td>Comment</td>
-                                        <td></td>
-                                        <!-- <td></td> -->
+                                        <th>Style scanned</th>
+
+                                        <th>Comment</th>
+                                        <th></th>
+                                        <!-- <th></th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="searchable">
@@ -74,16 +75,17 @@
                                         <!-- <td>{{-- {{ $req->color_desc }} --}}</td> -->
 
                                         <td style="background-color: aliceblue;">{{ $req->scanned }}</td>
-                                        <!-- <td style="background-color: aliceblue;">{{-- {{ $req->scanned_date }} --}}</td> -->
+                                        <td style="background-color: aliceblue;">{{ $req->scanned_date }}</td>
                                         <!-- <td style="background-color: aliceblue;">{{-- {{ $req->scanned_user }} --}}</td> -->
 
                                         <td style="background-color: antiquewhite;">{{ $req->collected }}</td>
-                                        <!-- <td style="background-color: antiquewhite;">{{-- {{ $req->collected_date }} --}}</td> -->
+                                        <td style="background-color: antiquewhite;">{{ $req->collected_date }}</td>
                                         <!-- <td style="background-color: antiquewhite;">{{-- {{ $req->collected_user }} --}}</td> -->
 
                                         <td style="background-color: floralwhite;">{{ $req->shipped }}</td>
                                         <td style="background-color: floralwhite;">{{ substr($req->shipped_date, 0, 19) }}</td>
-                                        <!-- <td style="background-color: floralwhite;">{{-- {{ $req->shipped_user }} --}}</td> -->
+
+                                        <td> {{ $req->style_scanned }} </td>
 
                                         <td>{{ $req->temp_coloumn }}</td>
                                         

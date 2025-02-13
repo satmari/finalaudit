@@ -1948,7 +1948,7 @@ class DetectEnvironment
         } catch (InvalidArgumentException $e) {
         }
         $app->detectEnvironment(function () {
-            return env('APP_ENV', 'production');
+            return env('APP_ENV', 'local');
         });
     }
 }

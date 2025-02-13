@@ -10,7 +10,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">Batch Table 
                             @if (Auth::check() && (Auth::user()->level() == 3 OR Auth::user()->level() == 1))
-                            (Last 30 days)
+                            (Last 45 days)
                             @endif
 
                             </div>
@@ -19,6 +19,8 @@
                             </div>
 
                             <table class="table table-striped table-bordered" id="sort" 
+                            data-show-export="true"
+                            data-export-types="['excel']"
                             >
                             <!--
                             data-show-export="true"
@@ -44,16 +46,23 @@
                             -->
                                 <thead>
                                     <tr>
-                                        <!-- <td>Id</td> -->
-                                        <td><b>Batch Name</b></td>
-                                        <td>Cartonbox</td>
-                                        <td data-sortable="true">SKU</td>
-                                        <td data-sortable="true">Module</td>
-                                        <td>Batch qty</td>
-                                        <td>Rejected Garments</td>
-                                        <td>Final Status</td>
-                                        <td></td>
-                                        <!-- <td></td> -->
+                                        <!-- <th>Id</th> -->
+                                        <th data-sortable="true"><b>Batch Name</b></th>
+                                        <th>Cartonbox</th>
+                                        <th data-sortable="true">SKU</th>
+                                        <th data-sortable="true">Module</th>
+                                        <th>Batch qty</th>
+                                        <th>Rejected Garments</th>
+                                        <th>Audit</th>
+                                        <th>Shift</th>
+                                        <th>Final Status</th>
+                                        <th>Bonus relevent</th>
+
+                                        @if(Auth::check() && Auth::user()->level() == 1)
+                                            <th>Checked by</th>
+                                        @endif
+                                        
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody class="searchable">
@@ -66,6 +75,8 @@
                                         <td>{{ $req->module_name }}</td>
                                         <td>{{ $req->batch_qty }}</td>
                                         <td>{{ $req->RejectedCount }}</td>
+                                        <td>{{ $req->audit }}</td>
+                                        <td>{{ $req->shift }}</td>
                                         {{-- <td><b>{{ $req->batch_status }}</b></td> --}}
                                         @if ($req->batch_status == "Reject")
                                           <td><span style="color:red;"><b>{{ $req->batch_status }}</b></span></td>
@@ -75,7 +86,11 @@
                                           <td><span style="color:blue;"><b>{{ $req->batch_status }}</b></span></td>
                                           @else 
                                            <td><span><b>{{ $req->batch_status }}</b></span></td>
-                                          @endif 
+                                        @endif 
+                                        <td>{{ $req->bonus_relevant }}</td>
+                                        @if(Auth::check() && Auth::user()->level() == 1)
+                                            <td>{{ $req->checked_by_name }}</td>
+                                        @endif
                                         <td>
 
                                         @if(Auth::check() && Auth::user()->level() == 2)
@@ -93,6 +108,7 @@
                                         @endif
 
                                         </td>
+
 
                                         
                                     </tr>
@@ -133,6 +149,14 @@
                                     <tr style="border:2px solid #555; !important">
                                         <td>Total checked <b>today</b></td>
                                         <td>{{ $total_checked_batch }}</td>
+                                   </tr>
+                                   <tr style="border-bottom:2px solid #555; !important">
+                                        <td>Total checked <b>today</b> TEZENIS</td>
+                                        <td>{{ $total_checked_batch_tezenis }}</td>
+                                   </tr>
+                                   <tr style="border-bottom:2px solid #555; !important">
+                                        <td>Total checked <b>today</b> INTIMISSIMI</td>
+                                        <td>{{ $total_checked_batch_inti }}</td>
                                    </tr>
                                     <tr>
                                         <td>Accepted</td>

@@ -30,17 +30,33 @@
 								<!-- <label>Select operator</label> -->
 					            <select id = "email" class="form-control" name="email">
 					            	<option name="email" value=""></option>
-					               	{{--<option name="email" value="audit1">Audit1 - Zeljka Majoros</option>--}}
+					               	{{--<option name="email" value="audit1">Audit1 - Zeljka MAjoros</option>--}}
 					               	<option name="email" value="audit2">Audit2 - Biljana Zivanovic</option>
 					               	<option name="email" value="audit3">Audit3 - Klementina Nikolajevic</option>
-					               	<option name="email" value="audit4">Audit4 - Jelena Seritovic</option>
+					               	<option name="email" value="audit4">Audit4 - Sandra Petrekanic</option>
 					               	<option name="email" value="audit5">Audit5 - Dragana Zivanovic</option>
-					               	<option name="email" value="audit6">Audit6 - Dajana Ivankovic</option>
+					               	{{-- <option name="email" value="audit6">Audit6 - Dajana Ivankovic</option> --}}
 					               	<option name="email" value="audit7">Audit7 - Dijana Matkovic</option>
 					               	<option name="email" value="audit8">Audit8 - Silvana Bajic</option>
-					               	<option name="email" value="audit10">Audit - Not check user</option>
+					               	<option name="email" value="audit11">Audit9 - Sladjana Marinkovic</option>
+					               	{{-- <option name="email" value="audit12">Audit10 - Svetlana Lukic</option> --}}
+					               	{{-- <option name="email" value="audit13">Audit10 - Bernadet Tot</option> --}}
+					               	{{-- <option name="email" value="audit14">Audit11 - Cila Curnovic</option> --}}
+					               	<option name="email" value="audit15">Audit12 - Sanja Mujovic</option>
+					               	{{-- <option name="email" value="audit16">Audit13 - Stanka Juric</option> --}}
+					               	{{-- <option name="email" value="audit17">Audit14 - Marina Madzarevic</option> --}}
+					               	<option name="email" value="audit18">Audit15 - Snezana Diklic</option>
+					               	<option name="email" value="audit19">Audit16 - Anabela Puszti</option>
+					               	<option name="email" value="audit20">Audit17 - Olja Lancuski</option>
+					               	<option name="email" value="audit21">Audit18 - Jovana Perović</option>
+					               	<option name="email" value="audit22">Audit19 - Jasmina Pavlov</option>
+					               	<option name="email" value="audit23">Audit20 - Vidosava Golusin</option>
+					               	<option name="email" value="audit24">Audit21 - Tamara Milosevic</option>
+					               	<option name="email" value="audit25">Audit22 - Biljana Sivcev</option>
+					               	<option name="email" value="audit10">AuditX - Not check user</option>
 					               	<option name="email" value="audit9">Planer</option>
 					               	<option name="email" value="admin">Admin</option>
+					               	<option name="email" value="magacin">Magacin</option>
 					               	<option name="email" value="guest">Guest</option>
 					            </select>
 							</div>

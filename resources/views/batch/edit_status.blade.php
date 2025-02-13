@@ -14,7 +14,7 @@
 
 					<div class="panel-body">
 						<span>Status: <span style="color:red;">*</span></span>
-						{!! Form::select('batch_status', array('Accept'=>'Accept','Reject'=>'Reject','Suspend'=>'Suspend','Not checked'=>'Not checked'), null, array('class' => 'form-control')); !!} 
+						{!! Form::select('batch_status', array(/*'Accept'=>'Accept','Reject'=>'Reject','Suspend'=>'Suspend',*/'Not checked'=>'Not checked'), null, array('class' => 'form-control')); !!} 
 					</div>
 										
 					<div class="panel-body">

@@ -42,7 +42,7 @@ class ControllerBatch extends Controller {
 																*,
 																(SELECT COUNT(garment.batch_name) FROM garment WHERE garment.batch_name = batch.batch_name AND garment.garment_status = 'Rejected') as RejectedCount
 																FROM batch 
-																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-30,GETDATE())
+																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-45,GETDATE())
 																ORDER BY batch.id desc"));
 
 			    $batch_date = date("Ymd");
@@ -53,6 +53,20 @@ class ControllerBatch extends Controller {
 			                    ->where('batch_status', '!=', 'Not checked')
 			                    ->count();
 				// dd($total_checked_batch);
+			    $total_checked_batch_tezenis = DB::table('batch')
+			                    ->where('batch_date', '=', $batch_date)
+			                    ->where('deleted', '=', 0)
+			                    ->where('brand', '=', 'TEZENIS')
+			                    ->where('batch_status', '!=', 'Not checked')
+			                    ->count();
+				// dd($total_checked_batch_tezenis);
+			    $total_checked_batch_inti = DB::table('batch')
+			                    ->where('batch_date', '=', $batch_date)
+			                    ->where('deleted', '=', 0)
+			                    ->where('brand', '=', 'INTIMISSIMI')
+			                    ->where('batch_status', '!=', 'Not checked')
+			                    ->count();
+				// dd($total_checked_batch_inti);
 
 			    $total_accept_batch = DB::table('batch')
 			                    ->where('batch_date', '=', $batch_date)
@@ -96,7 +110,7 @@ class ControllerBatch extends Controller {
 			                    ->sum('batch_qty');
 				// dd($total_garments_not_today);	                    
 
-				return view('batch.index', compact('batch','total_checked_batch','total_accept_batch','total_reject_batch','total_suspend_batch', 'total_not_checked_batch', 'total_garments_today','total_garments_not_today'));
+				return view('batch.index', compact('batch','total_checked_batch','total_accept_batch','total_reject_batch','total_suspend_batch', 'total_not_checked_batch', 'total_garments_today','total_garments_not_today','total_checked_batch_tezenis','total_checked_batch_inti'));
 			}
 			if ($user->is('operator')) { 
 			    
@@ -140,6 +154,23 @@ class ControllerBatch extends Controller {
 			                    ->where('deleted', '=', 0)
 			                    ->count();
 				// dd($total_checked_batch);
+
+			    $total_checked_batch_tezenis = DB::table('batch')
+			                    ->where('batch_date', '=', $batch_date)
+			                    ->where('batch_user', '=', $batch_user)
+			                    ->where('deleted', '=', 0)
+			                    ->where('brand', '=', 'TEZENIS')
+			                    ->where('batch_status', '!=', 'Not checked')
+			                    ->count();
+				// dd($total_checked_batch_tezenis);
+			    $total_checked_batch_inti = DB::table('batch')
+			                    ->where('batch_date', '=', $batch_date)
+			                    ->where('batch_user', '=', $batch_user)
+			                    ->where('deleted', '=', 0)
+			                    ->where('brand', '=', 'INTIMISSIMI')
+			                    ->where('batch_status', '!=', 'Not checked')
+			                    ->count();
+				// dd($total_checked_batch_inti);
 
 			    $total_accept_batch = DB::table('batch')
 			                    ->where('batch_date', '=', $batch_date)
@@ -195,7 +226,7 @@ class ControllerBatch extends Controller {
 			                    ->count();
 			    //dd($activity);
 
-				return view('batch.index', compact('batch','total_checked_batch','total_accept_batch','total_reject_batch','total_suspend_batch', 'total_not_checked_batch', 'total_garments_today','total_garments_not_today','activity'));
+				return view('batch.index', compact('batch','total_checked_batch','total_accept_batch','total_reject_batch','total_suspend_batch', 'total_not_checked_batch', 'total_garments_today','total_garments_not_today','activity','total_checked_batch_tezenis','total_checked_batch_inti'));
 			}
 			
 			
@@ -210,7 +241,7 @@ class ControllerBatch extends Controller {
 		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT *,
 																(SELECT COUNT(garment.batch_name) FROM garment WHERE garment.batch_name = batch.batch_name AND garment.garment_status = 'Rejected') as RejectedCount
 																FROM batch 
-																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-7,GETDATE())
+																WHERE (batch.deleted = 0) AND created_at >= DATEADD(day,-45,GETDATE())
 																ORDER BY batch.id desc"));
 		return view('batch.indexhistory', compact('batch'));
 	}
@@ -241,64 +272,129 @@ class ControllerBatch extends Controller {
 		$msg1 = '';
 		//$msg2 = '';
 
-		// Test database
-		// $inteos = DB::connection('sqlsrv2')->select(DB::raw("SELECT [CNF_BlueBox].INTKEY,[CNF_BlueBox].IntKeyPO,[CNF_BlueBox].BlueBoxNum,[CNF_BlueBox].BoxQuant, [CNF_PO].POnum,[CNF_SKU].Variant,[CNF_SKU].ClrDesc,[CNF_STYLE].StyCod FROM [BdkCLZGtest].[dbo].[CNF_BlueBox] FULL outer join [BdkCLZGtest].[dbo].CNF_PO on [CNF_PO].INTKEY = [CNF_BlueBox].IntKeyPO FULL outer join [BdkCLZGtest].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY FULL outer join [BdkCLZGtest].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY WHERE [CNF_BlueBox].INTKEY =  :somevariable"), array(
-		// 	'somevariable' => $inteosbbcode,
-		// ));
-
 		// Live database
 		// try {
-			
-			$inteos = DB::connection('sqlsrv2')->select(DB::raw("SELECT 	
-			/*[CNF_CartonBox].IntKeyPO, */
-			[CNF_CartonBox].BoxNum,
-			[CNF_CartonBox].BoxQuant,
-			[CNF_CartonBox].Produced,
-			(CASE	WHEN [CNF_CartonBox].Status = '0' THEN 'New' 
-					WHEN [CNF_CartonBox].Status = '20' THEN 'On Module' 
-					WHEN [CNF_CartonBox].Status = '99' THEN 'Completed'
-			END) AS CB_Status,
-			/*[CNF_CartonBox].Module, */
-			/*[CNF_CartonBox].BBcreated, */
-			/*[CNF_CartonBox].BBalternativ,*/
-			[CNF_CartonBox].CREATEDATE,
-			[CNF_CartonBox].EDITDATE,
+			if ((substr($cbcode, 0, 2) == '70') OR (substr($cbcode, 0, 2) == '84')) {
 
-			[CNF_BlueBox].BlueBoxNum,
-			
-			/*[CNF_PO].BoxComplete,*/
-			/*[CNF_PO].BoxQuant,*/
-			/*[CNF_PO].Line,*/
-			[CNF_PO].POnum,
+				$inteos = DB::connection('sqlsrv2')->select(DB::raw("SELECT 	
+				/*[CNF_CartonBox].IntKeyPO, */
+				[CNF_CartonBox].BoxNum,
+				[CNF_CartonBox].BoxQuant,
+				[CNF_CartonBox].Produced,
+				(CASE	WHEN [CNF_CartonBox].Status = '0' THEN 'New' 
+						WHEN [CNF_CartonBox].Status = '20' THEN 'On Module' 
+						WHEN [CNF_CartonBox].Status = '99' THEN 'Completed'
+				END) AS CB_Status,
+				/*[CNF_CartonBox].Module, */
+				/*[CNF_CartonBox].BBcreated, */
+				/*[CNF_CartonBox].BBalternativ,*/
+				[CNF_CartonBox].CREATEDATE,
+				[CNF_CartonBox].EDITDATE,
 
-			/*[CNF_SKU].StyDesc,*/
-			[CNF_SKU].Variant,
-			/*[CNF_SKU].ClrDesc,*/
-			
-			[CNF_STYLE].StyCod,
-			
-			[CNF_Modules].ModNam
-			
-			FROM [BdkCLZG].[dbo].[CNF_CartonBox]
+				[CNF_BlueBox].BlueBoxNum,
+				
+				/*[CNF_PO].BoxComplete,*/
+				/*[CNF_PO].BoxQuant,*/
+				/*[CNF_PO].Line,*/
+				[CNF_PO].POnum,
 
-			FULL outer join [BdkCLZG].[dbo].[CNF_PO] on [CNF_PO].INTKEY = [CNF_CartonBox].IntKeyPO
-			FULL outer join [BdkCLZG].[dbo].[CNF_BlueBox] on [CNF_BlueBox].INTKEY = [CNF_CartonBox].BBalternativ
-			FULL outer join [BdkCLZG].[dbo].[CNF_Modules] on [CNF_Modules].Module = [CNF_CartonBox].Module
-			FULL outer join [BdkCLZG].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY
-			FULL outer join [BdkCLZG].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY
-			
-			where BoxNum = :somevariable"), array(
-			'somevariable' => $cbcode,
-			));
+				/*[CNF_SKU].StyDesc,*/
+				[CNF_SKU].Variant,
+				/*[CNF_SKU].ClrDesc,*/
+				
+				[CNF_STYLE].StyCod,
+				
+				[CNF_Modules].ModNam,
+				[CNF_WareHouse].BoxQuant as wh_qty
+				
+				FROM [BdkCLZG].[dbo].[CNF_CartonBox]
 
-			// dd($inteos);
-			
-			if ($inteos) {
-				//continue
-			} else {
-	        	$msg = 'Cannot find CB in Inteos, NE POSTOJI KARTONSKA KUTIJA U INTEOSU !';
-	        	return view('batch.error', compact('msg'));
-	    	}
+				FULL outer join [BdkCLZG].[dbo].[CNF_PO] on [CNF_PO].INTKEY = [CNF_CartonBox].IntKeyPO
+				FULL outer join [BdkCLZG].[dbo].[CNF_BlueBox] on [CNF_BlueBox].INTKEY = [CNF_CartonBox].BBalternativ
+				FULL outer join [BdkCLZG].[dbo].[CNF_Modules] on [CNF_Modules].Module = [CNF_CartonBox].Module
+				FULL outer join [BdkCLZG].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY
+				FULL outer join [BdkCLZG].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY
+				FULL outer join [BdkCLZG].[dbo].[CNF_WareHouse] on [CNF_WareHouse].BoxNum = [CNF_CartonBox].BoxNum
+				
+				where [CNF_CartonBox].BoxNum = :somevariable"), array(
+				'somevariable' => $cbcode,
+				));
+
+				// dd($inteos);
+				
+				if ($inteos) {
+					//continue
+				} else {
+		        	$msg = 'Cannot find CB in Subotica Inteos, NE POSTOJI KARTONSKA KUTIJA U Subotica INTEOSU !';
+		        	return view('batch.error', compact('msg'));
+		    	}
+
+		    } elseif ((substr($cbcode, 0, 2) == '71')  OR (substr($cbcode, 0, 2) == '85')) {
+
+		    	$inteos = DB::connection('sqlsrv5')->select(DB::raw("SELECT 	
+				/*[CNF_CartonBox].IntKeyPO, */
+				[CNF_CartonBox].BoxNum,
+				[CNF_CartonBox].BoxQuant,
+				[CNF_CartonBox].Produced,
+				(CASE	WHEN [CNF_CartonBox].Status = '0' THEN 'New' 
+						WHEN [CNF_CartonBox].Status = '20' THEN 'On Module' 
+						WHEN [CNF_CartonBox].Status = '99' THEN 'Completed'
+				END) AS CB_Status,
+				/*[CNF_CartonBox].Module, */
+				/*[CNF_CartonBox].BBcreated, */
+				/*[CNF_CartonBox].BBalternativ,*/
+				[CNF_CartonBox].CREATEDATE,
+				[CNF_CartonBox].EDITDATE,
+
+				[CNF_BlueBox].BlueBoxNum,
+				
+				/*[CNF_PO].BoxComplete,*/
+				/*[CNF_PO].BoxQuant,*/
+				/*[CNF_PO].Line,*/
+				[CNF_PO].POnum,
+
+				/*[CNF_SKU].StyDesc,*/
+				[CNF_SKU].Variant,
+				/*[CNF_SKU].ClrDesc,*/
+				
+				[CNF_STYLE].StyCod,
+				
+				[CNF_Modules].ModNam,
+				[CNF_WareHouse].BoxQuant as wh_qty
+				
+				FROM [BdkCLZKKA].[dbo].[CNF_CartonBox]
+
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_PO] on [CNF_PO].INTKEY = [CNF_CartonBox].IntKeyPO
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_BlueBox] on [CNF_BlueBox].INTKEY = [CNF_CartonBox].BBalternativ
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_Modules] on [CNF_Modules].Module = [CNF_CartonBox].Module
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_SKU] on [CNF_SKU].INTKEY = [CNF_PO].SKUKEY
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_STYLE] on [CNF_STYLE].INTKEY = [CNF_SKU].STYKEY
+				FULL outer join [BdkCLZKKA].[dbo].[CNF_WareHouse] on [CNF_WareHouse].BoxNum = [CNF_CartonBox].BoxNum
+				
+				where [CNF_CartonBox].BoxNum = :somevariable"), array(
+				'somevariable' => $cbcode,
+				));
+
+				// dd($inteos);
+				
+				if ($inteos) {
+					//continue
+					// dd($inteos);
+					
+				} else {
+		        	$msg = 'Cannot find CB in Kikinda Inteos, NE POSTOJI KARTONSKA KUTIJA U Kikinda INTEOSU !';
+		        	return view('batch.error', compact('msg'));
+		    	}
+
+
+		    } else {
+
+		    	$msg = 'Cannot find CB in ANY Inteos, NE POSTOJI KARTONSKA KUTIJA U NIJEDNOM INTEOSU !';
+		        return view('batch.error', compact('msg'));
+
+		    }
+
+
 
 			function object_to_array($data)
 			{
@@ -344,27 +440,40 @@ class ControllerBatch extends Controller {
 	    	$style = $inteos_array[0]['StyCod'];
 	    	$variant = $inteos_array[0]['Variant'];
 	    	$sku = $style." ".$variant;
-	    	list($color, $size) = explode('-', $variant);
 
+	    	$brlinija = substr_count($variant,"-");
+			// echo $brlinija." ";
+
+			if ($brlinija == 2)
+			{
+				list($color, $size1, $size2) = explode('-', $variant);
+				$size = $size1."-".$size2;
+				// echo $color." ".$size;	
+			} else {
+				list($color, $size) = explode('-', $variant);
+				// echo $color." ".$size;
+			}
+
+	    	// list($color, $size) = explode('-', $variant);
 	    	$po = $inteos_array[0]['POnum'];
 
 	  		//$brand = substr($po, 2, 1); // T;I;C
 
 	  		// NAV - PO information
-			$nav = DB::connection('sqlsrv4')->select(DB::raw("SELECT [Cutting Prod_ Line] as Flash
-				  FROM [Gordon_LIVE].[dbo].[GORDON\$Production Order]
-				  WHERE [No_] = :po"
-				), array(
-					'po' => $po
-			));
+			// $nav = DB::connection('sqlsrv4')->select(DB::raw("SELECT [Cutting Prod_ Line] as Flash
+			// 	  FROM [Gordon_LIVE].[dbo].[GORDON\$Production Order]
+			// 	  WHERE [No_] = :po"
+			// 	), array(
+			// 		'po' => $po
+			// ));
 
-			if (isset($nav[0]->Flash)) {
-				$flash = $nav[0]->Flash;
-			} else {
-				$flash = '';
-			}
-			
+			// if (isset($nav[0]->Flash)) {
+			// 	$flash = $nav[0]->Flash;
+			// } else {
+			// 	$flash = '';
+			// }
 
+			$flash = 'no info';
 			
 			$models = DB::connection('sqlsrv')->select(DB::raw("SELECT category_name,category_id,model_brand,mandatory_to_check FROM models WHERE model_name = '".$style."'"));
 			
@@ -378,30 +487,58 @@ class ControllerBatch extends Controller {
 	        	return view('batch.error', compact('msg'));
 	    	}
 
-	    	/* If User NotCheck */
+	    	/* If User in NotCheck */
 	    	if ($mandatory_to_check == "YES" AND $name_id == '10') {
 	    		$msg = 'This Style '.$style.' is MANDATORY to check, OVAJ MODEL SE MORA PREGLEDATI!!! ';
 	        	return view('batch.error', compact('msg'));
 	    	}
 
 	    	$module_name = $inteos_array[0]['ModNam'];
+	    	// dd($module_name);
+	    	if ($module_name == NULL) {
+	    		$module_name = "EXTERNAL";
+	    	}
+
+	    	// Bonus relevant
+	    	// if ( (substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K')) {
+	    	if ((substr($module_name, 0, 1) == 'S') OR (substr($module_name, 0, 1) == 'K') OR (substr($module_name, 0, 1) == 'Z')) {
+	    		$bonus_relevant = NULL;	
+	    	} else {
+	    		$bonus_relevant = 'IGNORE';
+	    	}
 			
 	    	$cartonbox = $cbcode;	//$inteos_array[0]['BoxNum'];
 	    	$cartonbox_qty = $inteos_array[0]['BoxQuant'];
 	    	$cartonbox_produced = $inteos_array[0]['Produced'];
+
 	    	if ($cartonbox_produced > 0) {
 				//continue
+				
 			} else {
-				$msg = 'Carton box have 0 quantity inside, KUTIJA IMA 0 KOMADA! ';
-	        	return view('batch.error', compact('msg'));
+
+				if ($inteos_array[0]['wh_qty'] != NULL) {
+					// dd('ima wh qty');
+					$cartonbox_produced = intval($inteos_array[0]['wh_qty']);
+					$inteos_array[0]['Produced'] = intval($inteos_array[0]['wh_qty']);
+					// dd($cartonbox_produced);
+				} else {
+
+					$msg = 'Carton box have 0 quantity inside, KUTIJA IMA 0 KOMADA! ';
+		        	return view('batch.error', compact('msg'));	
+				}
 			}
 
 	    	$cartonbox_status = $inteos_array[0]['CB_Status'];
+	    	
 	    	if ($cartonbox_status == "Completed") {
 				//continue
 			} else {
-				$msg = 'Carton box is NOT completed in Inteos (on Module), KUTIJA NIJE ZAVRSENA U MODULU! ';
-	        	return view('batch.error', compact('msg'));
+				if (($inteos_array[0]['wh_qty']) > 0) {
+					$cartonbox_status = "Completed";
+				} else {
+					$msg = 'Carton box is NOT completed in Inteos (on Module), KUTIJA NIJE ZAVRSENA U MODULU! ';
+		        	return view('batch.error', compact('msg'));
+				 }
 			}
 
 	    	$cartonbox_start_date_tmp = $inteos_array[0]['CREATEDATE'];
@@ -411,8 +548,17 @@ class ControllerBatch extends Controller {
 	    	$timestamp_f = strtotime($cartonbox_finish_date_tmp);
 			$cartonbox_finish_date = date('Y-m-d H:i:s', $timestamp_f);
 
-	    	$bluebox = $inteos_array[0]['BlueBoxNum']; 	
-	    	
+			if (isset($inteos_array[0]['BlueBoxNum'])) {
+				if ($inteos_array[0]['BlueBoxNum'] != NULL) {
+					$bluebox = 'NULL';	
+				} else {
+					$bluebox = $inteos_array[0]['BlueBoxNum'];
+				}	 
+			} else {
+				$bluebox = 'NULL';
+			}
+
+			// dd($bluebox);
 	    	if ($brand == "TEZENIS") {
 				$batch_brand = "batch_ts";
 			} elseif ($brand == "INTIMISSIMI") {
@@ -439,13 +585,16 @@ class ControllerBatch extends Controller {
 			//$batch_status = "Pending"; // new batch // no Pending anymore
 			$batch_status = "Suspend"; // new batch have Suspend status
 
-			// Samples Ecommerce
+			// dd("Sample");
+/*
+			///////// Samples Ecommerce ///////////
 			$ecommerce_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM ecommerce WHERE style = '".$style."' AND size = '".$size."' AND color = '".$color."' "));
 			
 			if ($ecommerce_sample) {
 				$scanned = $ecommerce_sample[0]->scanned;
 				
 				if ($scanned == 'NO') {
+
 					try {
 						$ecommerce = Ecommerce::findOrFail($ecommerce_sample[0]->id);
 						$ecommerce->scanned = 'YES';
@@ -464,93 +613,233 @@ class ControllerBatch extends Controller {
 				}
 				
 			} else {
-				$msg = 'This SKU not exist in Ecommerce table, OVAJ SKU NE POSTOJI U E-commerce TABELI !!!';
-		      	//return view('batch.error', compact('msg'));
+				// $msg = 'This SKU not exist in Ecommerce table, OVAJ SKU NE POSTOJI U E-commerce TABELI !!! Zovi Zlatka.';
+		      	// return view('batch.error', compact('msg'));
 			}
 			
 
-			// Samples Setsize
-			$sizeset_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' "));
+			///////// Samples Sizeset ///////////
 			
-			if ($sizeset_sample) {
+			if ($brand == "TEZENIS") {
 
-				$scanned_color = $sizeset_sample[0]->color;
-				$scanned = $sizeset_sample[0]->scanned;
+				$sizeset_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' "));
 
-				//if color in table is not set
-				if ($scanned_color == '' OR $scanned_color == NULL) {
-					$sizeset_sample_style = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' "));	
+				if ($sizeset_sample) {
 
-					//set color for each style
-					foreach ($sizeset_sample_style as $size_line) {
+					$scanned_color = $sizeset_sample[0]->color;
+					$scanned = $sizeset_sample[0]->scanned;
+
+					//if color in table is not set
+					if ($scanned_color == '' OR $scanned_color == NULL) {
+						
+						$sizeset_sample_style = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' "));	
+
+						//set color for each style
+						foreach ($sizeset_sample_style as $size_line) {
+
+							try {
+								$sizeset = Sizeset::findOrFail($size_line->id);
+								$sizeset->color = $color;
+								$sizeset->save();
+							}
+							catch (\Illuminate\Database\QueryException $e) {
+								// $msg = "Problem to save in sizeset table";
+								// return view('batch.error',compact('msg'));
+							}
+						}
+					}
+					//if sytle + size already scanned
+					if ($scanned == 'NO') {
+
 						try {
-							$sizeset = Sizeset::findOrFail($size_line->id);
-							$sizeset->color = $color;
+							$sizeset = Sizeset::findOrFail($sizeset_sample[0]->id);
+							$sizeset->scanned = 'YES';
+							$sizeset->scanned_date = date("Y-m-d H:i:s");
+							$sizeset->scanned_user = Auth::user()->username;
 							$sizeset->save();
+							
+							$msg1 = $msg1.' This Style scanned first time, should be taken for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
+							//$msg2 = '';
 						}
 						catch (\Illuminate\Database\QueryException $e) {
-							// $msg = "Problem to save in sizeset table";
-							// return view('batch.error',compact('msg'));
+							$msg = "Problem to save in sizeset table";
+							return view('batch.error',compact('msg'));
 						}
 					}
-				}
-				//if sytle + size scanned
-				if ($scanned == 'NO') {
 
-					try {
-						$sizeset = Sizeset::findOrFail($sizeset_sample[0]->id);
-						$sizeset->scanned = 'YES';
-						$sizeset->scanned_date = date("Y-m-d H:i:s");
-						$sizeset->scanned_user = Auth::user()->username;
-						$sizeset->save();
-						
-						$msg1 = $msg1.' This Item scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
-						//$msg2 = '';
-					}
-					catch (\Illuminate\Database\QueryException $e) {
-						// $msg = "Problem to save in sizeset table";
-						// return view('batch.error',compact('msg'));
-					}
+				} else {
+					//$msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
+		 	 		//return view('batch.error', compact('msg'));
+
+					// Import in size set.
+					$bulk = new Sizeset;
+
+                	$sku = $style.'-'.$size.'-'.$color;
+					$bulk->sku = $sku;
+
+					$bulk->style = $style;
+					$bulk->color = $color; 
+					$bulk->size = $size;
+					
+					$bulk->scanned = 'NO';
+					$bulk->collected = 'NO';
+					$bulk->shipped = 'NO';
+
+					$bulk->save();
+
+					$msg = $msg.'OVAJ SKU Nije POSTOJAO U Sizeset TABELI, SAD JE DODAT, SKENIRAJ PONOVO KUTIJU! ';
+			 	 	return view('batch.error', compact('msg'));
+			 	 	
 				}
-			} else {
-				$msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!!';
-		 	 	// return view('batch.error', compact('msg'));
-			}
+
+			} elseif (($brand == "INTIMISSIMI") OR ($brand == "CALZEDONIA")) {
+
+				$sizeset_sample_one = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND size = '".$size."' AND color = '".$color."' order by ID asc"));
+				// dd($sizeset_sample_one);
+
+				//if sytle + size already scanned
+				if ($sizeset_sample_one) {
+
+					if ($sizeset_sample_one[0]->scanned == 'NO') {
+						// dd("NO");
+
+						// try {
+							$sizeset = Sizeset::findOrFail($sizeset_sample_one[0]->id);
+							$sizeset->scanned = 'YES';
+							$sizeset->scanned_date = date("Y-m-d H:i:s");
+							$sizeset->scanned_user = Auth::user()->username;
+							// $sizeset->style_scanned = $style_scanned;
+							$sizeset->save();
+							
+							// $msg1 = $msg1.' This Item scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
+							//$msg2 = '';
+						// }
+						// catch (\Illuminate\Database\QueryException $e) {
+						// 	$msg = "Problem to save in sizeset table";
+						// 	return view('batch.error',compact('msg'));
+						// }
+						// dd("test");
+
+
+						// dd($sizeset_sample_one[0]->style_scanned);
+
+						if (is_null($sizeset_sample_one[0]->style_scanned)) {
+
+							// dd("is null");
+							
+							$style_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' "));
+
+							// dd($style_sample);
+
+							$new = 0;
+							foreach ($style_sample as $line) {
+								if ($line->style_scanned == 'NEW'){
+									$new = $new + 1;
+								}
+							}
+
+							// dd($new);
+
+							if ($new > 0) {
+
+								$style_color_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND color = '".$color."' "));
+
+								foreach ($style_color_sample as $line) {
+									$sizeset = Sizeset::findOrFail($line->id);
+									$sizeset->style_scanned = 'OLD';
+									$sizeset->save();
+								}
+
+								// $msg1 = $msg1.' This Item + color scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
+
+							} else {
+
+								$style_color_sample = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM sizeset WHERE style = '".$style."' AND color = '".$color."' "));
+
+
+
+								foreach ($style_color_sample as $line) {
+									$sizeset = Sizeset::findOrFail($line->id);
+									$sizeset->style_scanned = 'NEW';
+									$sizeset->save();
+								}
+
+								// $msg1 = $msg1.' This Item + color scanned first time for sizeset! PROIZVOD PRVI PUT SKENIRAN I ODABRAN ZA UZORAK ZA SIZESET!';
+							}
+						}
+					}
+
+				} else {
+					// $msg = $msg.' This SKU not exist in sizeset table, OVAJ SKU NE POSTOJI U Sizeset TABELI !!! Zovi Zlatka.';
+			 	 	// return view('batch.error', compact('msg'));
+
+			 	 	// Import in size set.
+					$bulk = new Sizeset;
+
+                	$sku = $style.'-'.$size.'-'.$color;
+					$bulk->sku = $sku;
+
+					$bulk->style = $style;
+					$bulk->color = $color; 
+					$bulk->size = $size;
+					
+					$bulk->scanned = 'NO';
+					$bulk->collected = 'NO';
+					$bulk->shipped = 'NO';
+
+					$bulk->save();
+
+					$msg = $msg.'OVAJ SKU Nije POSTOJAO U Sizeset TABELI, SAD JE DODAT, SKENIRAJ PONOVO KUTIJU! ';
+			 	 	return view('batch.error', compact('msg'));
+
+				}
 			
-			// Record Batch
-			// try {
+				// if ($style_scanned == 'NEW') {
+				// 	$msg1 = $msg1.' This Style scanned very first time for all colors (NEW), should be taken for sizeset! PROIZVOD PRVI PUT SKENIRAN U SVIM VARIJANTAMA (NEW) I ODABRAN ZA UZORAK SIZESET!';
+				// } else {
+				// 	$msg1 = $msg1.' This Style + Color scanned first time (OLD), should be taken for sizeset! PROIZVOD PRVI PUT SKENIRAN, ALI JE VEC SKENIRAN U DRUGOJ VARIJANTI (OLD) I ODABRAN ZA UZORAK SIZESET!';
+				// }
+				
+			}
+
+*/
+			// dd("record");
+			
+			///////// Record Batch ////////////
+
+			try {
 				$table = new Batch;
 
 				$table->checked_by_name = $checked_by_name;
-				$table->checked_by_id = $checked_by_id;
+				// dd($checked_by_name);
+				$table->checked_by_id = (int)$checked_by_id;
 				
 				$table->batch_name = $batch_name;
 				$table->batch_date = $batch_date;
 				$table->batch_user = $batch_user;
 				$table->batch_order = $batch_order;
-
 				$table->sku = $sku;
 				$table->style = $style;
 				$table->color = $color;
 				$table->size = $size;
-
 				$table->po = $po;
 				$table->brand = $brand;
 				$table->category_name = $category_name;
 				$table->category_id = $category_id;
-
 				$table->module_name = $module_name;
-				
+				// dd($module_name);
 				$table->cartonbox = $cartonbox;
-				$table->cartonbox_qty = $cartonbox_qty;
-				$table->cartonbox_produced = $cartonbox_produced;
+				// dd($cartonbox);
+				$table->cartonbox_qty = (int)$cartonbox_qty;
+				// dd($cartonbox_produced);
+				$table->cartonbox_produced = (int)$cartonbox_produced;
 				$table->cartonbox_status = $cartonbox_status;
 				$table->cartonbox_start_date = $cartonbox_start_date;
 				$table->cartonbox_finish_date = $cartonbox_finish_date;
 
 				$table->bluebox = $bluebox;
 				
-				$table->batch_qty = $batch_qty;
+				$table->batch_qty = (int)$batch_qty;
 				$table->batch_brand_id = $batch_brand_id;
 				$table->batch_brand_min = $batch_brand_min;
 				$table->batch_brand_max =  $batch_brand_max;
@@ -563,13 +852,17 @@ class ControllerBatch extends Controller {
 				$table->deleted = FALSE;
 
 				$table->flash = $flash;
-						
+				$table->bonus_relevant = $bonus_relevant;
+			 	// dd($table);
+
 				$table->save();
-			// }
-			// catch (\Illuminate\Database\QueryException $e) {
-			// 	$msg = "Problem to save batch in table";
-			// 	return view('batch.error',compact('msg'));
-			// }
+			}
+			catch (\Illuminate\Database\QueryException $e) {
+				dd($e);
+				$msg = "Problem to save batch in table";
+				return view('batch.error',compact('msg'));
+			}
+			
 
 			// Record Garmets
 			$batch_qty;
@@ -601,6 +894,7 @@ class ControllerBatch extends Controller {
 					$table->save();
 				}
 				catch (\Illuminate\Database\QueryException $e) {
+					dd($e);
 					$msg = "Problem to save garment in table";
 					return view('batch.error',compact('msg'));
 				}
@@ -609,10 +903,11 @@ class ControllerBatch extends Controller {
 			//return Redirect::to('/garment/by_batch/'.$batch_name);
 
 			if ($msg1 != ''){
-				return view('batch.sample', compact('msg1','batch_name'));
+				return view('batch.sample', compact('msg1','batch_name','module_name'));
 			}
 			
-			return Redirect::to('/batch/checkbarcode/'.$batch_name);
+			return Redirect::to('/scan_cont/'.$batch_name.'/'.$module_name); // New scan QC operator
+			// return Redirect::to('/batch/checkbarcode/'.$batch_name.'/'.$module_name); //Old
 
 		// }
 		// catch (\Illuminate\Database\QueryException $e) {
@@ -622,13 +917,96 @@ class ControllerBatch extends Controller {
 		// }	
 	}
 
-	public function batch_checkbarcode ($name)
-	{
+	public function scan_cont($name, $module) {
+
+		if (substr($module, 0, 1) == "K" ) {
+			try {
+				return view('batch.scan_cont_k',compact('name','module'));
+			}
+			catch (\Illuminate\Database\QueryException $e) {
+				return view('batch.scan_cont_k',compact('name','module'));
+			}
+		} else {
+
+			try {
+			return view('batch.scan_cont',compact('name','module'));
+			}
+			catch (\Illuminate\Database\QueryException $e) {
+				return view('batch.scan_cont',compact('name','module'));
+			}
+		}
+		
+	
+	}
+
+	public function scan_cont_post(Request $request) {
+
+		$this->validate($request, ['batch_name' => 'required', 'audit' => 'required']);
+
+		$input = $request->all(); 
+		// dd($input);
+
+		$batch_name = $input['batch_name'];
+		$module_name = $input['module'];
+		$audit = $input['audit'];
+
+		if (isset($input['shift'])) {
+			$shift = $input['shift'];
+		} else {
+			$shift = NULL;
+		}
+		// dd($shift);
+
+		$msg1 = '';
+
+		$audit_check = strpos($audit,"R");
+		if ($audit_check == 0) {
+			// dd("First");
+		} else {
+			// dd("not first");
+			$msg = "Barcode of audit or RS label is not correct!";
+			return view('batch.error',compact('msg'));
+		}
+
+		// $audit_check = explode("R", $audit);
+		// dd($audit_check);
+		// dd(strlen($audit_check[1]));
+		// if (strlen($audit_check[1]) == 5) {
+			
+		// 	// continue
+		// } else {
+		// 	$msg = "Barcode of audit is not correct!";
+		// 	return view('batch.error',compact('msg'));
+		// }
+		// // dd($audit);
+
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT id FROM batch WHERE batch_name = '".$batch_name."'"));
+		// dd($batch[0]->id);
+
 		try {
-			return view('batch.checkbarcode',compact('name'));
+
+			$b = Batch::findOrFail($batch[0]->id);
+			$b->audit = $audit;
+			$b->shift = $shift;
+			$b->save();
+
 		}
 		catch (\Illuminate\Database\QueryException $e) {
-			return view('batch.checkbarcode',compact('name'));
+			$msg = "Problem to save audit in batch";
+			return view('batch.error',compact('msg'));
+		}
+
+		return Redirect::to('/batch/checkbarcode/'.$batch_name.'/'.$module_name);
+	
+	}
+
+	public function batch_checkbarcode ($name, $module)
+	{
+		try {
+			return view('batch.checkbarcode',compact('name','module'));
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return view('batch.checkbarcode',compact('name','module'));
 		}
 	}
 
@@ -641,7 +1019,10 @@ class ControllerBatch extends Controller {
 		// dd($input);
 
 		$batch_name = $input['batch_name'];
+		$module = $input['module'];
 		$barcode_insert = $input['barcode'];
+
+		$msg1 = '';
 
 		try {
 
@@ -654,9 +1035,11 @@ class ControllerBatch extends Controller {
 			$size_to_search = str_replace("/","-",$size);
 					
 			//$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM cartiglio WHERE Cod_Bar = '".$barcode."'"));
-			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND Tgl_ITA = '".$size_to_search."'"));
+			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND ((tagliaCod = '".$size_to_search."') OR (tagliaCod = '".$size."')) "));
+			// dd($barcode);
 			
 			try {
+				
 				if(isset($barcode[0])) {
 					if ($barcode[0]->Cod_Bar) {
 					$barcode_indb = $barcode[0]->Cod_Bar;
@@ -688,23 +1071,83 @@ class ControllerBatch extends Controller {
 			$b->batch_barcode = $barcode_indb;
 			$b->save();
 
-		}
-		catch (\Illuminate\Database\QueryException $e) {
+		} catch (\Illuminate\Database\QueryException $e) {
 			$msg = "Barcode not found in cartiglio database, PROIZVOD NE POSTOJI U Cartiglio BAZI!!! (Javi IT sektoru)";
 			return view('batch.error',compact('msg'));
 		}
 
 		if ($barcode_insert != $barcode_indb) {
-			$msg = "Barcode not match with barcode from cartiglio database, BARKODOVI SE NE SLAZU! ";
-			return view('batch.error_continue',compact('msg','batch_name'));
+			$msg1 = "Barcode not match with barcode from cartiglio database, BARKODOVI SE NE SLAZU! ";
+			// return view('batch.error_continue',compact('msg','batch_name'));
 		}
+
+		// Check if mandatory to check box quantity
+		
+		$count_box = DB::connection('sqlsrv')->select(DB::raw("SELECT count_box FROM modules WHERE module = '".$module."'"));
+		//dd($count_box[0]->count_box);
+
 
 		// user NotCheck
 		if ($batch_user == '10') {
+
 			return Redirect::to('/notcheck/'.$batch_name);
+
 		} else {
-			return Redirect::to('/garment/by_batch/'.$batch_name);	
+
+			if (isset($count_box[0])) {
+
+				if ($count_box[0]->count_box == "YES") {
+					
+					return view('batch.count_box',compact('batch_name','msg1'));
+					
+				} else {
+
+					if ($msg1 == "") {
+						return Redirect::to('/garment/by_batch/'.$batch_name);
+
+					} else {
+						return view('batch.error_continue',compact('msg1','batch_name'));			
+					}
+				}
+			} else {
+
+				if ($msg1 == "") {
+					return Redirect::to('/garment/by_batch/'.$batch_name);
+
+				} else {
+					return view('batch.error_continue',compact('msg1','batch_name'));			
+				}
+			}
 		}
+	}
+
+	public function count_box_store(Request $request) {
+		//
+		$this->validate($request, ['batch_name' => 'required', 'count_box' => 'required']);
+
+		$input = $request->all(); 
+		// dd($input);
+
+		$batch_name = $input['batch_name'];
+		$count_box = $input['count_box'];
+
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT id FROM batch WHERE batch_name = '".$batch_name."'"));
+		// dd($batch[0]->id);
+
+		try {
+
+			$b = Batch::findOrFail($batch[0]->id);
+			$b->count_qty = $count_box;
+			
+			$b->save();
+
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			$msg = "Problem to find batch and save count_box";
+			return view('batch.error',compact('msg'));
+		}
+
+		return Redirect::to('/garment/by_batch/'.$batch_name);	
 	}
 
 	public function inside()
@@ -750,6 +1193,7 @@ class ControllerBatch extends Controller {
 				$batch_brand_max_reject = $b->batch_brand_max_reject;
 			}
 
+			/*
 			if ($batch_brand_max_reject < $total_rejected_garments) {
 				$suggestion = "Reject";
 				return view('batch.confirm',compact('batch','batchid','garments','defects','total_defects','total_rejected_defects','total_rejected_garments','suggestion'));
@@ -757,6 +1201,29 @@ class ControllerBatch extends Controller {
 				$suggestion = "Accept";
 				return Redirect::to('/batch/accept/'.$batchid->id);
 			}
+			*/
+
+			
+			if ($total_rejected_garments == 0) {
+
+				// dd("Accept");
+				$suggestion = "Accept";
+				return Redirect::to('/batch/accept/'.$batchid->id);
+
+			} else if ($batch_brand_max_reject >= $total_rejected_garments) {
+
+				// dd("Zamena");
+				$suggestion = "Zamena";
+				return Redirect::to('/batch/zamena/'.$batchid->id);
+
+			} else {
+
+				// dd("Reject");
+				$suggestion = "Reject";
+				return view('batch.confirm',compact('batch','batchid','garments','defects','total_defects','total_rejected_defects','total_rejected_garments','suggestion'));
+
+			}
+			
 		}
 		catch (\Illuminate\Database\QueryException $e) {
 			return Redirect::to('/batch/');
@@ -768,11 +1235,26 @@ class ControllerBatch extends Controller {
 		try {
 			$batch = Batch::findOrFail($id);
 			$batch->batch_status = "Accept";
+			$batch->bonus_relevant = "IGNORE";
 			$batch->save();
 			return Redirect::to('/batch/');
 		}
 		catch (\Illuminate\Database\QueryException $e) {
 			return Redirect::to('/batch/accept/'.$id);
+		}
+	}
+
+	public function zamena($id) 
+	{
+		try {
+			$batch = Batch::findOrFail($id);
+			$batch->batch_status = "Zamena";
+			
+			$batch->save();
+			return Redirect::to('/batch/');
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return Redirect::to('/batch/zamena/'.$id);
 		}
 	}
 
@@ -831,6 +1313,7 @@ class ControllerBatch extends Controller {
 			$batch = Batch::findOrFail($id);
 			$batch->batch_status = "Reject";
 			$batch->repaired = "NO";
+			// $batch->bonus_relevant = NULL;
 			$batch->save();
 			return Redirect::to('/batch/');
 		}
@@ -854,27 +1337,34 @@ class ControllerBatch extends Controller {
 
 	public function not_checked($id) 
 	{
-		try {
+		// try {
 			// Add status to batch
 			$batch = Batch::findOrFail($id);
 			$batch->batch_status = "Not checked";
 			$batch->save();
 
+			// $batch = DB::connection('sqlsrv')->select(DB::raw("UPDATE batch SET batch_status = 'Not checked' WHERE id = '".$id."' "));
+
 			// Add status to garments inside batch
-			
-			$garments = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM garment WHERE batch_name = '".$batch->batch_name."'"));
+			$garments = DB::connection('sqlsrv')->select(DB::raw("SELECT id FROM garment WHERE batch_name = '".$batch->batch_name."'"));
 			foreach ($garments as $garment) {
 				$gar = Garment::findOrFail($garment->id);
 				$gar->garment_status = "Not checked";
 				$gar->save();
 			}
+			
 
-			$defects = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM defect WHERE batch_name = '".$batch->batch_name."'"));
+			//$garments = DB::connection('sqlsrv')->select(DB::raw("UPDATE garment SET garment_status = 'Not checked'	WHERE batch_name = '".$batch->batch_name."' "));
+
+			$defects = DB::connection('sqlsrv')->select(DB::raw("SELECT id FROM defect WHERE batch_name = '".$batch->batch_name."'"));
 			foreach ($defects as $defect) {
 				$def = Defect::findOrFail($defect->id);
 				$def->deleted = TRUE;
 				$def->save();
 			}
+
+			//$defects = DB::connection('sqlsrv')->select(DB::raw("UPDATE defect SET deleted = 'TRUE'	WHERE batch_name = '".$batch->batch_name."'"));
+
 			
 			// user NotCheck
 			$name_id = Auth::user()->name_id;
@@ -884,10 +1374,11 @@ class ControllerBatch extends Controller {
 			} else {
 				return Redirect::to('/batch/');
 			}
-		}
-		catch (\Illuminate\Database\QueryException $e) {
-			return Redirect::to('/batch/not_checked/'.$id);
-		}
+
+		// }
+		// catch (\Illuminate\Database\QueryException $e) {
+			// return Redirect::to('/batch/not_checked/'.$id);
+		// }
 	}
 
 	public function delete($id) 
@@ -930,11 +1421,13 @@ class ControllerBatch extends Controller {
 															      ,[module_name]
 															      ,[cartonbox]
 															      ,[batch_status]
+															      ,[cartonbox_produced]
 															      ,[repaired]
 															      ,[repaired_by_name]
 															      ,[date_of_sending_to_repair]
 															      ,[repaired_comment]
 															      ,[flash]
+															      ,[audit]
 															  FROM [finalaudit].[dbo].[batch]
 															  WHERE batch_status = 'Reject' AND [repaired] = 'NO'
 															  ORDER BY [created_at] asc
@@ -1022,4 +1515,107 @@ class ControllerBatch extends Controller {
 			return Redirect::to('/cb_to_repair');
 		}
 	}
+
+	
+	public function bonus_relevant_page()
+	{	
+		return view('batch.bonus_relevant_page');
+	}
+
+	public function bonus_relevant_page_access(Request $request)
+	{	
+		$input = $request->all();
+		$pass = $input['pass'];
+
+		// dd($pass);
+		if ($pass == '1234') {
+			return Redirect::to('bonus_relevant');
+		} 
+	}
+	
+
+	public function bonus_relevant_table()
+	{	
+		// dd("test");
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT [id]
+															      ,[batch_name]
+															      ,[sku]
+															      ,[po]
+															      ,[module_name]
+															      ,[cartonbox]
+															      ,[batch_status]
+															      ,[flash]
+															      ,[batch_status]
+															      ,[bonus_relevant]
+
+															  FROM [finalaudit].[dbo].[batch]
+															  WHERE batch_status = 'Reject' AND ([bonus_relevant] IS NULL) 
+															  ORDER BY [created_at] asc
+															  "));
+		
+		return view('batch.bonus_relevant', compact('batch'));
+	}
+
+	public function bonus_relevant_edit($id)
+	{
+		$batch = Batch::findOrFail($id);
+		return view('batch.bonus_relevant_update', compact('batch'));
+	}
+
+	public function bonus_relevant_post($id, Request $request)
+	{	
+		
+		$input = $request->all();
+
+		try {
+			$batch = Batch::findOrFail($id);
+			$batch->bonus_relevant = $input['bonus'];
+						
+			$batch->save();
+			return Redirect::to('/bonus_relevant');
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return Redirect::to('/bonus_relevant');
+		}
+	}
+
+	public function zamena_table()
+	{	
+		// dd("test");
+		$batch = DB::connection('sqlsrv')->select(DB::raw("SELECT [id]
+															      ,[batch_name]
+															      ,[sku]
+															      ,[po]
+															      ,[module_name]
+															      ,[cartonbox]
+															      ,[batch_status]
+															      ,[flash]
+															      ,[batch_status]
+															      
+
+															  FROM [finalaudit].[dbo].[batch]
+															  WHERE batch_status = 'Zamena'
+															  ORDER BY [created_at] asc
+															  "));
+		
+		return view('batch.zamena_table', compact('batch'));
+	}
+
+	public function zamena_post($id, Request $request)
+	{	
+		
+		$input = $request->all();
+
+		try {
+			$batch = Batch::findOrFail($id);
+			$batch->bonus_relevant = $input['bonus'];
+						
+			$batch->save();
+			return Redirect::to('/bonus_relevant');
+		}
+		catch (\Illuminate\Database\QueryException $e) {
+			return Redirect::to('/bonus_relevant');
+		}
+	}
+
 }

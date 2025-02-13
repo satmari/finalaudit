@@ -111,6 +111,15 @@ return [
 			'prefix'   => '',
 		],
 
+		'sqlsrv5' => [
+			'driver'   => 'sqlsrv',
+			'host'     => env('DB_HOST5', 'localhost'),
+			'database' => env('DB_DATABASE5', 'forge'),
+			'username' => env('DB_USERNAME5', 'forge'),
+			'password' => env('DB_PASSWORD5', ''),
+			'prefix'   => '',
+		],
+
 	],
 
 	/*

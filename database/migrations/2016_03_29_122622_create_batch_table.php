@@ -58,8 +58,6 @@ class CreateBatchTable extends Migration {
 
 			$table->boolean('deleted')->nullable();
 			
-			$table->timestamps();
-
 			// $table->string('repaired')->nullable();
    			// $table->string('repaired_by_id')->nullable();
 			// $table->string('repaired_by_name')->nullable();
@@ -69,6 +67,14 @@ class CreateBatchTable extends Migration {
 			// $table->string('repaired_comment')->nullable();
 
 			// $table->string('flash')->nullable();
+
+			// $table->integer('count_qty')->nullable(); //added 2017.07.12
+			// $table->string('audit')->nullable(); //added 2019.06.06 
+			// $table->string('bonus_relevant')->nullable(); //added 2019.06.07
+
+			// $table->string('shift')->nullable(); //add
+
+			$table->timestamps();
 
 		});
 	}

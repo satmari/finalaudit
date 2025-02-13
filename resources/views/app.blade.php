@@ -37,7 +37,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ url('/') }}"><b>Final Audit Application</b></a>
+				<a class="navbar-brand" href="{{ url('/') }}"><b>Final Audit</b></a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -79,6 +79,9 @@
 
 						    <li role="separator" class="divider"></li>
 							<li><a href="{{ url('/activity_type') }}">Activity Types</a></li>
+
+							<li role="separator" class="divider"></li>
+							<li><a href="{{ url('/module') }}">Modules</a></li>
 						  </ul>
 						</div>
 					</li>
@@ -95,6 +98,12 @@
 						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
 					</ul>
 					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/bonus_relevant_page') }}">Bonus relevant</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/zamena_table') }}">Zamena</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
 					</ul>
 					<ul class="nav navbar-nav">
@@ -109,12 +118,21 @@
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/activity') }}">Activities <span class="badge"></span></a></li>
 					</ul>
+					{{-- <ul class="nav navbar-nav">
+						<li><a href="https://portal.office.com" target="_blank"><b>WebMail</b> <span class="badge"></span></a></li>
+					</ul>--}}
 					
 				@endif
 
 				@if(Auth::check() && (Auth::user()->level() == 5))
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/bonus_relevant_page') }}">Bonus relevant</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/zamena_table') }}">Zamena</a></li>
 					</ul>
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
@@ -139,6 +157,12 @@
 					</ul>
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/cb_to_repair') }}">CB to repair</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/bonus_relevant_page') }}">Bonus relevant</a></li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url('/zamena_table') }}">Zamena</a></li>
 					</ul>
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/ecommerce') }}">E-commerce <span class="badge"></span></a></li>
@@ -218,6 +242,11 @@ $(function() {
 	// 	autoFocus: true,
 	// 	source: '{{ URL('getmoduledata')}}'
 	// });
+
+	$('#sort').bootstrapTable({
+	    
+	});
+
 	$('#filter').keyup(function () {
 
         var rex = new RegExp($(this).val(), 'i');
@@ -227,21 +256,16 @@ $(function() {
         }).show();
 	});
 
-
 	$('#myTabs a').click(function (e) {
   		e.preventDefault()
   		$(this).tab('show')
 	});
+
 	$('#myTabs a:first').tab('show') // Select first tab
 
 	$(function() {
     	$( "#datepicker" ).datepicker();
   	});
-
-  	
-	$('#sort').bootstrapTable({
-    
-	});
 
 	//$('.table tr').each(function(){
   		

@@ -25,7 +25,8 @@ class AddRepaired extends Migration {
 			// $table->string('repaired_comment')->nullable();
 
 			// $table->string('flash')->nullable();
-    		
+
+			   		
 		});
 	}
 

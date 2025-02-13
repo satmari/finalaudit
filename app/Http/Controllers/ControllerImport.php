@@ -170,11 +170,12 @@ class ControllerImport extends Controller {
 							$bulk->collected = 'NO';
 							$bulk->shipped = 'NO';
 
+							var_dump($bulk);
 							$bulk->save();
 						
 						// } catch (\Illuminate\Database\QueryException $e) {
 	                			
-	     //            	}
+	     				// }
 
 	                }
 	            });
@@ -204,15 +205,18 @@ class ControllerImport extends Controller {
 	                foreach($readerarray as $row)
 	                {
 
-	                	try {
+	                	// try {
 
 	                	$bulk = new Sizeset;
 
-	                	$sku = $row['style'].'-'.$row['size'];
+	                	// $sku = $row['style'].'-'.$row['size'];
+	                	$sku = $row['style'].'-'.$row['size'].'-'.$row['color_code']; // after modification from 2018.04.25
+
 						$bulk->sku = $sku;
 
 						$bulk->style = $row['style'];
 						//$bulk->color = ''; // not exist in imput file
+						$bulk->color = $row['color_code']; // form 2018.04.25
 						$bulk->size = $row['size'];
 						//$bulk->color_desc = $row['color_description'];
 
@@ -222,9 +226,10 @@ class ControllerImport extends Controller {
 
 						$bulk->save();
 
-						} catch (\Illuminate\Database\QueryException $e) {
+						// } catch (\Illuminate\Database\QueryException $e) {
 	                			
-	                	}
+	     //            	}
+	                	
 	                }
 	            });
 	    }

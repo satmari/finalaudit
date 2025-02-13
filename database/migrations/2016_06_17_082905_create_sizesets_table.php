@@ -35,6 +35,8 @@ class CreateSizesetsTable extends Migration {
 			$table->string('shipped_user')->nullable();
 
 			$table->string('temp_coloumn')->nullable();
+
+			$table->string('style_scanned')->nullable(); //added latter
 			
 			$table->timestamps();
 		});

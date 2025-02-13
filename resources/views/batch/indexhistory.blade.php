@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Batch Table (Last 7 days)
+                            <div class="panel-heading">Batch Table (Last 30 days)
                             
                             </div>
                             <div class="input-group"> <span class="input-group-addon">Filter</span>
@@ -16,6 +16,9 @@
                             </div>
 
                             <table class="table table-striped table-bordered" id="sort" 
+
+                            data-show-export="true"
+                            data-export-types="['excel']"
                             >
                             <!--
                             data-show-export="true"
@@ -41,16 +44,17 @@
                             -->
                                 <thead>
                                     <tr>
-                                        <!-- <td>Id</td> -->
-                                        <td><b>Batch Name</b></td>
-                                        <td>Cartonbox</td>
-                                        <td>SKU</td>
-                                        <td>Module</td>
-                                        <td>Batch qty</td>
-                                        <td>Rejected Garments</td>
-                                        <td>Final Status</td>
+                                        <!-- <th>Id</th> -->
+                                        <th  data-sortable="true"><b>Batch Name</b></th>
+                                        <th>Cartonbox</th>
+                                        <th>SKU</th>
+                                        <th  data-sortable="true">Module</th>
+                                        <th>Batch qty</th>
+                                        <th>Rejected Garments</th>
+                                        <th>Audit</th>
+                                        <th>Final Status</th>
                                         
-                                        <!-- <td></td> -->
+                                        <!-- <th></th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="searchable">
@@ -63,6 +67,7 @@
                                         <td>{{ $req->module_name }}</td>
                                         <td>{{ $req->batch_qty }}</td>
                                         <td>{{ $req->RejectedCount }}</td>
+                                        <td>{{ $req->audit }}</td>
                                         {{-- <td><b>{{ $req->batch_status }}</b></td> --}}
                                         
                                         @if ($req->batch_status == "Reject")

@@ -358,6 +358,19 @@ class ControllerBatch_bulk extends Controller {
     	$variant = $inteos_array[0]['Variant Code'];
     	$sku = $style." ".$variant;
     	//list($color, $size) = explode('-', $variant);
+		
+		$brlinija = substr_count($variant,"-");
+		// echo $brlinija." ";
+
+		if ($brlinija == 2)
+		{
+			list($color, $size1, $size2) = explode('-', $variant);
+			$size = $size1."-".$size2;
+			// echo $color." ".$size;	
+		} else {
+			list($color, $size) = explode('-', $variant);
+			// echo $color." ".$size;
+		}
 
     	$cartonbox = $cbcode;
 	    // $cartonbox_qty = $inteos_array[0]['BoxQuant'];
@@ -448,7 +461,21 @@ class ControllerBatch_bulk extends Controller {
     	$style = $inteos_array[0]['StyCod'];
     	$variant = $inteos_array[0]['Variant'];
     	$sku = $style." ".$variant;
-    	list($color, $size) = explode('-', $variant);
+
+    	$brlinija = substr_count($variant,"-");
+		// echo $brlinija." ";
+
+		if ($brlinija == 2)
+		{
+			list($color, $size1, $size2) = explode('-', $variant);
+			$size = $size1."-".$size2;
+			// echo $color." ".$size;	
+		} else {
+			list($color, $size) = explode('-', $variant);
+			// echo $color." ".$size;
+		}
+
+    	// list($color, $size) = explode('-', $variant);
 
     	$cartonbox = $cbcode;
 	    // $cartonbox_qty = $inteos_array[0]['BoxQuant'];
@@ -875,7 +902,7 @@ class ControllerBatch_bulk extends Controller {
 			$size_to_search = str_replace("/","-",$size);
 					
 			//$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT * FROM cartiglio WHERE Cod_Bar = '".$barcode."'"));
-			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND Tgl_ITA = '".$size_to_search."'"));
+			$barcode = DB::connection('sqlsrv')->select(DB::raw("SELECT Cod_Bar FROM cartiglio WHERE Cod_Art_CZ = '".$style."' AND Cod_Col_CZ = '".$color."' AND tagliaCod = '".$size_to_search."'"));
 			
 			try {
 				if(isset($barcode[0])) {
